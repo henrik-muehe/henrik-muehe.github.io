@@ -13,7 +13,9 @@ layout: layout
 
   {{ content }}
   <div class="pull"></div>
-  {% include twitter.html %}
+  <div class="pull-left">{% include twitter.html %}</div>
+  <div class="pull-left">{% include facebook.html %}</div>
+  <div class="clearfix"></div>
   <hr>
   {% include disqus.html %}
 </section>
