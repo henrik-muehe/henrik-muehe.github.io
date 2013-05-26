@@ -5,6 +5,7 @@ auto: true
 rdiscount:
   extensions: [smart]
 title : Henrik Mühe
+paginate: 5
 production_url : http://muehe.org
 description: "Everything concerning Henrik Mühe."
 disqus_shortname: henrik-muehe

@@ -1,7 +1,3 @@
----
-layout: layout
----
-
 <section class="content">
   <h1>
     <a href="{{ page.url }}">{{ page.title }}</a>
@@ -11,12 +7,12 @@ layout: layout
     {{ page.date | date: "%B %e, %Y" }}
   </section>
 
-  {{ content }}
+  {{ page.content }}
+
+  <div><a href="{{page.url}}">Discuss...</a>
 
   <div class="pull"></div>
   <div class="pull-left">{% include twitter.html %}</div>
   <div class="pull-left">{% include facebook.html %}</div>
   <div class="clearfix"></div>
-  <hr>
-  {% include disqus.html %}
 </section>
