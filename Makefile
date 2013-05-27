@@ -5,7 +5,8 @@ build:
 	@echo "${HR}"
 	@echo "Building UP assets..."
 	@echo "${HR}"
-	@recess --compress _assets/up.less > css/up.css
+	@cat /dev/null > css/up.css
+	@recess --compress _assets/up.less >> css/up.css
 	@echo "Compiling and Compressing Less and CSS files with Recess... ${CHECK} Done"
 	@cat _assets/bootstrapjs/* > js/up.js.tmp
 	@echo >> js/up.js.tmp

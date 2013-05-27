@@ -3,9 +3,12 @@ layout: post
 title: "Tetris in roughly 4kb"
 category: posts
 ---
+
+<div style="font-size:20px; margin-bottom:10px"><a href="http://tetris.muehe.org" target="_NEW"><i class="icon-play"></i>&nbsp; Just play tetris</a></div>
+
 First off, I am absolutely not among the [tetris maniacs of this world](http://chrishiggins.com/w/2013/02/03/playing-to-lose/) (the story is a recent HN find). While browsing the stack-exchange network though, I discovered [codegolf](http://codegolf.stackexchange.com/) and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and -- honestly -- was missing the feeling of competing at something.
 
-<a href="http://tetris.muehe.org/" target="_NEW"><img alt="Tetris Screenshot, click to play!" src="http://i.stack.imgur.com/wfziG.png" width="30%" style="float:left; margin:20px;" /></a>
+<a href="http://tetris.muehe.org/" target="_NEW"><img class="pull-left" style="margin-right:20px;" alt="Tetris Screenshot, click to play!" src="http://i.stack.imgur.com/wfziG.png" /></a>
 
 What I found is the challenge to [reimplement Tetris in less than 4kb](http://codegolf.stackexchange.com/questions/11175/reimplementing-tetris). The description was attractive: No fighting to remove every last superfluous byte from the code but a well-chosen limit inside which one could implement some subset of features and a popularity contest as the winning criterion.
 
