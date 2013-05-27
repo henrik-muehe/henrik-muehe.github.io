@@ -5,4 +5,9 @@ title: "Henrik Mühe"
 
 {% for page in paginator.posts %}
 {% include post_content.html %}
+<div class="clearfix"></div>
+{% if forloop.last == false %}
+<hr>
+{% endif %}
 {% endfor %}
+
