@@ -1,0 +1,28 @@
+<div id="shareme"></div>
+<script>
+$('#shareme').sharrre({
+  share: {
+    googlePlus: true,
+    facebook: true,
+    twitter: true,
+  },
+  buttons: {
+    googlePlus: {size: 'tall', annotation:'bubble'},
+    facebook: {layout: 'box_count'},
+    twitter: {count: 'vertical'},
+  },
+  enableHover: false,
+  enableCounter: false,
+  enableTracking: true
+});
+</script>
+<style type="text/css">
+  #shareme{
+    margin-top:10px;
+    float:left;
+  }
+  .sharrre .button{
+    float:left;
+    width:60px;
+  }
+</style>
