@@ -1,6 +1,6 @@
-<div id="shareme"></div>
+<div class="shareme" id="{{page.date | date: "%s" }}{{page.url | escape | replace: '/', '' | replace: '-', ''}}"></div>
 <script>
-$('#shareme').sharrre({
+$('#{{page.date | date: "%s" }}{{page.url | escape | replace: '/', '' | replace: '-', ''}}').sharrre({
   share: {
     googlePlus: true,
     facebook: true,
@@ -14,11 +14,11 @@ $('#shareme').sharrre({
   enableHover: false,
   enableCounter: false,
   enableTracking: true,
-  url: {{ site.production_url }}{{ post.url }}
+  url: '{{ site.production_url }}{{ page.url }}'
 });
 </script>
 <style type="text/css">
-  #shareme{
+  .shareme{
     margin-top:10px;
     float:left;
   }
