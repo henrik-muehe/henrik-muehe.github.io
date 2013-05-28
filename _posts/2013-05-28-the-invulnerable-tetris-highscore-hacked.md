@@ -4,7 +4,7 @@ title: "The Invulnerable Highscore? Hacked!"
 category: posts
 ---
 
-<span class="pull-right"><a href="/images/highscore_hack.png"><img style="margin-left:20px; margin-top:0px" alt="Screenshot of the hacked Tetris Highscore, click to see full screenshot." src="/images/highscore_hack.png" /></a></span>
+<span class="pull-right" style="width:60%"><a href="/images/highscore_hack.png"><img style="margin-left:20px; margin-top:0px; max-width: 100%" alt="Screenshot of the hacked Tetris Highscore, click to see full screenshot." src="/images/highscore_hack.png"/></a></span>
 
 ... and by a python script too, or so I hear.
 
