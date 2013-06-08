@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Visualize your traffic!</h1><h3><a target=\"_NEW\" href=\"http://traffic.muehe.org\">(click here to try)</a></h3><h1>"
+title: "Visualize your traffic (to work)!</h1><h3><a target=\"_NEW\" href=\"http://traffic.muehe.org\">(click here to try)</a></h3><h1>"
 category: posts
 ---
 I recently started commuting from and to work by car instead of using the subway. This -- sadly -- was not by choice but rather because a) I broke my foot and b) the subway does not currently go straight to work but you have to use a shuttle bus.
@@ -9,7 +9,7 @@ When we started commuting by car, we noticed that traffic patterns differed quit
 
 <a href="http://traffic.muehe.org/" target="_NEW"><img class="pull-right" style="margin-left:20px; max-width:100%; width:50%" alt="Traffic Scraper screenshot" src="/images/traffic.png" /></a>
 
-On the right, you can see my solution to the problem so far. From a technical perspective, there is essential two main components; the screen scraper and the visualization hosted by a minimal node http server behind nginx.
+On the right, you can see my solution to the problem so far. From a technical perspective, there is essential two main components; the screen scraper and the client-side visualization hosted via nginx.
 
 Scraping the traffic data is extremely simple and could be achived using only bash scripting and cron. I opted, however, for using a [css selector library](https://github.com/MatthewMueller/cheerio) that works with [node.js](http://nodejs.org/) due to the obvious comfort and because all my previous screenscrapers were in ruby  and I wanted to learn something new. At first, I only implemented logging to a text file (`node scraper.js >> logfile`) but later added a database backend as I have started logging more routes than just my current way to work. In the future, I might post on screen scraping more complex websites but for traffic information there's nothing in place like referrer validation, cookies, rate limiting etc. -- it comes down to a `get`-request and then extracting one number from the html source which is very doable.
 
