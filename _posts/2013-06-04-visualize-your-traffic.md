@@ -1,8 +1,10 @@
 ---
 layout: post
-title: "Visualize your traffic (to work)!</h1><h3><a target=\"_NEW\" href=\"http://traffic.muehe.org\">(click here to try)</a></h3><h1>"
+title: "Visualize your traffic (to work)!"
 category: posts
 ---
+<a target=\"_NEW\" href=\"http://traffic.muehe.org\">(click here to try)</a>
+
 I recently started commuting from and to work by car instead of using the subway. This -- sadly -- was not by choice but rather because a) I broke my foot and b) the subway does not currently go straight to work but you have to use a shuttle bus.
 
 When we started commuting by car, we noticed that traffic patterns differed quite a bit depending on time, day and weather. I wouldn't say there's a huge advantage you can get from knowing all about the traffic patterns. Maybe, though, you can do less experimenting and more knowing when it comes to determining the best moment to start the commute to work and thus minimize the amount of time spend on the road. If you will, this can be viewed as a more technology driven approach to the commute time minimizations done by [Mason Chang](http://www.masonchang.com/blog/2012/6/15/frequent-flyer-hacks.html) that I recently enjoyed reading.
