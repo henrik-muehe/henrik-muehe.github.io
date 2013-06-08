@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Visualize your traffic!"
+title: "Visualize your traffic!</h1><h3><a target=\"_NEW\" href=\"http://traffic.muehe.org\">(click here to try)</a></h3><h1>"
 category: posts
 ---
 I recently started commuting from and to work by car instead of using the subway. This -- sadly -- was not by choice but rather because a) I broke my foot and b) the subway does not currently go straight to work but you have to use a shuttle bus.
