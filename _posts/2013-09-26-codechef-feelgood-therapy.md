@@ -32,6 +32,7 @@ The input format is
 
 and a simple parser can be written using C++ streams, for instance:
 	
+{% highlight cpp %}
 	struct Edge { uint32_t from; uint32_t to; uint32_t weight; }
 	uint32_t vertexCount; uint32_t edgeCount;
 	std::cin >> vertexCount >> edgeCount;;
@@ -41,6 +42,8 @@ and a simple parser can be written using C++ streams, for instance:
 		std::cin >> e.from >> e.to >> e.weight;
 		edges.push_back(e);
 	}
+	/* code untested */
+{% endhighlight %}
 
 This is very readable code and it does not use evil methods like `fscan`. Unfortunately, it is also incredibly slow. I submitted a parser like this (without any other code to solve anything) to see how fast it was and it timed out. I was so shocked that I uploaded an empty solution to see if that would time out too -- it didn't.
 
@@ -52,6 +55,7 @@ As with every issue, a quick search on StackOverflow reveals that `std::cin` is 
 
 The resulting reader class with some details stripped looks like this:
 
+{% highlight cpp %}
 	class BufferedReader {
 		/// Size of the input buffer
 		static const uint64_t BufferSize = 1024*200;
@@ -84,6 +88,7 @@ The resulting reader class with some details stripped looks like this:
 		}
 		...
 	};
+{% endhighlight %}
 
 Before you mock the use of goto, breaking out multiple nested loops is actually the only allows usage that does not cause [this](http://xkcd.com/292/) to happen. Using this optimized parser lead to the submission not timing out but instead failing with "wrong result" -- as no result was returned by my implementation so far. The runtime for parsing was returned though and now amounted to roughly 1% of what the competitors had as their total runtime.
 
@@ -93,8 +98,7 @@ For the output of the solution which is a _|V|_ times _|V|_ matrix, I opted for 
 
 The first run of the complete solution worked and yielded a correct result -- albeit at a too leisurely pace for my taste: 16.09 (unit missing from CodeChef, that actually really sucks). To be number one on the leaderboard, roughly 2x are required. Quick testing and profiling on a generated random graph shows that some time is spend generating the output. A separate run of the [PoorMansProfiler](http://poormansprofiler.org/) actually reveals, that 50% of the wallclock time is spend writing the output, specifically, calling `itoa`. 
 
-Googling "optimizing `itoa`" actually yields plenty results and is left as an exercise to the reader. The finished output writer is displayed here for reference. The key part is swapping out `sprintf` for an optimized routine inspired by the more complete one authored by Victor Zwerovich ([GitHub](https://github.com/vitaut/format)). 
-
+{% highlight cpp %}
 	class FixedWriter {
 		/// The output buffer
 		std::vector<char> buffer;
@@ -125,8 +129,11 @@ Googling "optimizing `itoa`" actually yields plenty results and is left as an ex
 			assert(len==index);
 		}
 	};
+{% endhighlight %}
 
-<img class="pull-left" style="margin-right:20px; max-width:100%; width:50%" alt="Leaderboard after final submission." src="/images/leaderboard_after.png" /></a>
+<img class="pull-right" style="margin-left:20px; max-width:100%; width:25%; min-width:300px;" alt="Leaderboard after final submission." src="/images/leaderboard_after.png" /></a>
+
+Googling "optimizing `itoa`" actually yields plenty results and is left as an exercise to the reader. The finished output writer is displayed here for reference. The key part is swapping out `sprintf` for an optimized routine inspired by the more complete one authored by Victor Zwerovich ([GitHub](https://github.com/vitaut/format)). 
 
 And alas, 2x, top of the leaderboard. Remember, the problem was classified as easy. I figure much of this code is not entry level code. A better metric for determining the difficulty of a task is probably the number of successful submissions. 
 
