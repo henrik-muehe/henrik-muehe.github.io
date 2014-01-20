@@ -3,9 +3,9 @@ layout: post
 title: "Profiling only parts of your code with perf."
 category: posts
 ---
-Perf is an excellent tool for profiling linux software. It uses hardware performance counters to give you information on your code's performance. This makes it a very low overhead alternative to -- for instance -- valgrind which uses instrumentation. Both ways of profiling software have their merits but perf is a great tool to just keep running all the time to find severe performance bottlenecks with ease. 
+[Perf](https://perf.wiki.kernel.org/index.php/Main_Page) is an excellent tool for profiling linux software. It uses hardware performance counters to give you information on your code's performance. This makes it a very low overhead alternative to -- for instance -- [valgrind](http://valgrind.org/) which uses instrumentation. Both ways of profiling software have their merits but perf is a great tool to just keep running all the time to find severe performance bottlenecks with ease. 
 
-That said, I frequently have to profile only a part of my code. This is due to the fact that I write lots of database benchmarks which frequently load or even generate an initial dataset which they than run queries on. I usually care for query instead of loading performance, therefore I'd like to profile only the query part of my application. This can be done using API calls to the excellent performance counters C api but in my case, an easier way of achieving what I need it to use a "perf wrapper". In you code, that wrapper looks like this:
+That said, I frequently have to profile only a part of my code. This is due to the fact that I write lots of database benchmarks which frequently load or even generate an initial dataset which they than run queries on. I usually care for query instead of loading performance, therefore I'd like to profile only the query part of my application. This can be done using API calls to the excellent [performance counters C api](http://icl.cs.utk.edu/papi/) but in my case, an easier way of achieving what I need it to use a "perf wrapper". In you code, that wrapper looks like this:
 
 {% highlight cpp %}
 // ...
@@ -67,7 +67,7 @@ struct System
         body();
 
         // Kill profiler  
-        kill(pid,SIGTERM);
+        kill(pid,SIGINT);
         waitpid(pid,nullptr,0);
     }
 
@@ -76,5 +76,7 @@ struct System
     }
 };
 {% endhighlight %}
+
+You can take a look at your results by executing either `perf report -i loading.data` or `perf report -i queries.data` depending on which part you are interested in.
 
 Of course, this only works and looks this good if you use C++11 but who would want to use anything less.
