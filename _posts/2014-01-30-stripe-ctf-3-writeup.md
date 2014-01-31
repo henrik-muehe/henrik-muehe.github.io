@@ -5,7 +5,7 @@ category: posts
 ---
 <a href="https://stripe-ctf.com/achievements/Henrik" target="_NEW"><img class="pull-right" style="margin-left:20px; max-width:100%; width:25%; min-width: 300px; border-radius: 15px;" alt="My score after Stripe CTF officially ended." src="/images/ctf_score.png" /></a>
 
-*Note: I'll add the source once submissions are off. Since the contest is **officially over** here goes the text part of it, I doubt anyone will quickly implement all of it.*
+*~~Note: I'll add the source once submissions are off. Since the contest is **officially over** here goes the text part of it, I doubt anyone will quickly implement all of it.~~ It's all on Github now!*
 
 Stripe-CTF is a recurring programming challenge which completed its third iteration just hours ago. I have not participated in other iterations of Stripe's code challenge, primarily because I have heard about it the first time only two weeks ago on HN. While the last iterations concerned web security, this iteration had the topic of distributed systems. Our credo is frequently to first scale the system on one node before you think about scaling it out so that was my general approach to the problems which were in essence:
 
