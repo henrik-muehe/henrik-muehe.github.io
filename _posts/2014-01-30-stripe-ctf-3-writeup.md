@@ -7,6 +7,8 @@ category: posts
 
 *~~Note: I'll add the source once submissions are off. Since the contest is **officially over** here goes the text part of it, I doubt anyone will quickly implement all of it.~~ It's all on Github now!*
 
+~~Note: I posted a screenshot of Google Analytics [here](http://muehe.org/posts/the-hackernews-effect/) so that you can take a look of what a 4th place on Hacker News looks like in terms of visits.~~
+
 Stripe-CTF is a recurring programming challenge which completed its third iteration just hours ago. I have not participated in other iterations of Stripe's code challenge, primarily because I have heard about it the first time only two weeks ago on HN. While the last iterations concerned web security, this iteration had the topic of distributed systems. Our credo is frequently to first scale the system on one node before you think about scaling it out so that was my general approach to the problems which were in essence:
 
 1. Determine whether a specific word is contained in a dictionary (single node, fastest wins)
