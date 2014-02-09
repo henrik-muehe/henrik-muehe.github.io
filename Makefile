@@ -11,6 +11,7 @@ build:
 	@cat _assets/bootstrapjs/* > js/up.js.tmp
 	@echo >> js/up.js.tmp
 	@cat _assets/up.js >> js/up.js.tmp
+	@cat _assets/instantclick.min.js >> js/up.js.tmp
 	@cat _assets/sharrre/jquery.sharrre-1.3.4.js >> js/up.js.tmp
 	@uglifyjs  js/up.js.tmp > js/up.js
 	@rm -rf js/up.js.tmp
