@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Henrik Mühe</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Personal blog and website.">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Henrik Mühe">
+    
+
+    
+<link rel="stylesheet" href="/website/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+    
+      <link href="/website/posts/index.xml" rel="alternate" type="application/rss+xml" title="Henrik Mühe" />
+      <link href="/website/posts/index.xml" rel="feed" type="application/rss+xml" title="Henrik Mühe" />
+      
+    
+
+    
+      <link rel="canonical" href="https://henrik-muehe.github.io/website/posts/">
+    
+
+    <meta property="og:url" content="https://henrik-muehe.github.io/website/posts/">
+  <meta property="og:site_name" content="Henrik Mühe">
+  <meta property="og:title" content="Posts">
+  <meta property="og:description" content="Personal blog and website.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+  <meta itemprop="name" content="Posts">
+  <meta itemprop="description" content="Personal blog and website.">
+  <meta itemprop="datePublished" content="2019-01-01T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2019-01-01T00:00:00+00:00">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Posts">
+  <meta name="twitter:description" content="Personal blog and website.">
+
+      
+    
+	<link rel="stylesheet" href="/website/css/syntax.css">
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/website/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Henrik Mühe
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/portfolio/" title="Portfolio page">
+              Portfolio
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/sailing/" title="Sailing page">
+              Sailing
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Posts
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="pa3 pa4-ns nested-copy-line-height">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy nested-links mid-gray"></section>
+    <section class="flex-ns mt5 flex-wrap justify-around">
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2019-01-01-thermostat/" class="link black dim">
+        Building your own more expensive Nest: Arduino, Android, React Native.
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>I recently bought a used <a href="https://www.fiatusa.com/500e.html">Fiat 500e</a>, naturally I set out to reverse engineer the CAN bus in it. That led me to discover Arduinos (which I knew existed but had never used) as well as <a href="https://en.wikipedia.org/wiki/ESP8266">ESP8266s</a>. I had previously used <a href="https://www.fhem.de/">FHEM</a> to wire up my heater in Germany but it felt outdated even in 2011, much more so now so I decided to go for something prettier.</p>
+<p><img src="/images/heater/breadboard.jpg" alt=""></p>
+<p>I first build a prototype on a breadboard that could connect to our wifi and control the heater. The Arduino acts as a temperature sensor as well as a way of switching our heater on. It however does not implement any control mechanism, instead it subscribes and publishes to an <a href="https://en.wikipedia.org/wiki/MQTT">MQTT</a> server and the actual control-loop is implemented using <a href="http://nodered.org">Node-RED</a>. This seems beneficial as it is much easier to maintain software on a Linux machine than OTA updating an Arduino. Also, it allows leveraging cool plugins available in Node-RED.</p>
+    </div>
+    <a href="/website/posts/2019-01-01-thermostat/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2016-12-25-reverse-engineering-through-trilateration/" class="link black dim">
+        Reverse-engineering exact location information through trilateration.
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Many datasets on the internet <a href="http://blog.includesecurity.com/2014/02/how-i-was-able-to-track-location-of-any.html">accidentally expose location information</a> by
+allowing distance based search (&ldquo;find everything within 3 miles around this
+point&rdquo;) from arbitrary points of origin. I happened upon such a dataset and
+wanted to try rediscover the original location through trilateration.</p>
+<p>Trilateration, which is commonly wrongly referred to as triangulation, is the
+process of finding a location <code>L</code> given three other locations <code>A</code>, <code>B</code>, <code>C</code> and
+their distance to <code>L</code> (let&rsquo;s call that <code>dA</code>, <code>dB</code> and <code>dC</code>). Very surprisingly
+to me, I was not able to find a lot of good, sure-fire solutions to this easily
+when I wanted to solve a trilateration problem so there&rsquo;s a summary of what I
+found.</p>
+    </div>
+    <a href="/website/posts/2016-12-25-reverse-engineering-through-trilateration/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2016-11-25-automating-allocation-reports-in-ledger/" class="link black dim">
+        Automating allocation reports in Ledger.
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <h2 id="motivation">Motivation</h2>
+<p>If you own any stocks or funds you probably want to track the allocation, meaning
+how much money is in stocks and funds respectively. Some fairly well known low
+key investment strategies rely on balancing this ratio, for instance
+<a href="https://www.amazon.com/Four-Pillars-Investing-Building-Portfolio/dp/0071747052/ref=pd_sim_14_6?_encoding=UTF8&amp;pd_rd_i=0071747052&amp;pd_rd_r=Q2MDGYSD50HBFQ3PWE64&amp;pd_rd_w=D5pEg&amp;pd_rd_wg=nXyfZ&amp;psc=1&amp;refRID=Q2MDGYSD50HBFQ3PWE64">this one</a>.</p>
+<p>In Ledger, allocations can be modelled easily through allocation based accounts
+and automatic transactions. This is outlined <a href="http://www.ledger-cli.org/3.0/doc/ledger3.html#Asset-Allocation">here</a>.
+If you do this however, you still have to manually update allocations for every
+fund you own which is a nuisance, especially if you own something like a target
+retirement investment fund which naturally and purposefully changes its allocation
+strategy over time.</p>
+    </div>
+    <a href="/website/posts/2016-11-25-automating-allocation-reports-in-ledger/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2016-11-21-automating-commodity-prices-in-ledger/" class="link black dim">
+        Automating commodity prices in Ledger.
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <h2 id="motivation">Motivation</h2>
+<p>If you use Ledger CLI, chances are you will use more commodities than just
+dollar. This is actually one of Ledger&rsquo;s best features. For instance, I
+track our 401k in Ledger and it allows me to list the ticker symbols of the
+funds we have purchased inside the 401k as well as the fact that this is pre-tax
+money. Our opening balances look something like this:</p>
+<pre><code>2016/07/19 * Opening Balance
+  Assets:Checking                     $200.00
+  Assets:Investments:401              3.1 VFIFX @ p$29.8
+  Assets:Investments:401              2.5 VTTSX @ p$29.8
+  ...
+  Income:Opening Balances
+</code></pre>
+<p>Roughly, this means that we have two different funds in our 401k with ticker
+symbols <code>VFIFX</code> and <code>VTTSX</code> respectively. Also, the funds are not valued in dollars but
+in <code>p$</code> which is our commodity for pre-tax money. The idea is that this money,
+if accessed today, has a much lower actual value because we&rsquo;d have to pay
+federal, state and penality taxes on it. Therefore, the price database for
+this looks like this</p>
+    </div>
+    <a href="/website/posts/2016-11-21-automating-commodity-prices-in-ledger/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2016-11-20-loading-chase-transactions-into-ledger/" class="link black dim">
+        Loading Chase.com transactions into Ledger
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>When trying to <a href="/posts/command-line-accounting">migrate away from Mint to Ledger</a>, one of the major obstacles is automating the work of entering every 3 dollar coffee shop transaction manually. Ledger does provide some help in this area through the use of <a href="http://www.ledger-cli.org/3.0/doc/ledger3.html#xact">ledger xact</a>, yet as of today, we enter 25 transactions per week into ledger and a large chunk of them is from our Chase credit cards. Automation seems to be the easiest way to make this a lot less painful.</p>
+    </div>
+    <a href="/website/posts/2016-11-20-loading-chase-transactions-into-ledger/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2016-11-19-command-line-accounting/" class="link black dim">
+        Command line accounting: From mint.com to Ledger.
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>I&rsquo;ve recently switched all my families accounting from manually looking at
+bank websites + <a href="http://mint.com">mint.com</a> to <a href="http://ledger-cli.org/3.0/doc/ledger3.html">Ledger</a>.
+This post describes the first part of that fairly long but ultimately successful
+journey: Motivation and Challenges.</p>
+<h2 id="motivation-a-if-your-bank-dropped-1000-from-your-account-would-you-notice">Motivation A: If your bank dropped $1,000 from your account, would you notice?</h2>
+<p>I think my dad would have. He had all statements printed. In Germany, you do this
+at a small machine in the bank building (or you have the printouts mailed to you)
+and by putting them into a folder, you see old and new balances as well as the
+transactions between the two. This presumably makes spotting that something is off
+fairly easy.</p>
+    </div>
+    <a href="/website/posts/2016-11-19-command-line-accounting/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2015-03-29-parsing-expressions/" class="link black dim">
+        Parsing expressions
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>Expressions occur naturally in many languages, for instance in SQL. Usual ways of executing expressions are by interpretation or code generation. While I want to eventually talk about code generation, a sensible first step approaching expressions is parsing them from text which I will discuss in the blog post.</p>
+<p>Looking at a SQL statement, we find multiple expression but will first focus on the one used to find qualifying tuples which comes after the <code>WHERE</code> keyword:</p>
+    </div>
+    <a href="/website/posts/2015-03-29-parsing-expressions/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2015-01-20-c-mythbusters-counting-up-and-down/" class="link black dim">
+        C Mythbusters: Counting up vs. down
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>A while ago, I stumbled upon a
+<a href="http://www.codeproject.com/Articles/6154/Writing-Efficient-C-and-C-Code-Optimization">guide to writing optimized C code</a>.
+I had read a few of the ideas before and previously discounted them as &ldquo;something the
+optimizer should really do for you&rdquo;. In this and the next few posts I will take
+individual pieces of advice and fact check whether rewriting your code as
+suggested actually helps or not.</p>
+<p>Let&rsquo;s start with a simple proposition: <strong>Counting down to zero is cheaper
+than counting up</strong>. A similar proposition is sometimes encountered which this
+post will investigate as well: <strong>Comparing != (not equal) is faster than
+&lt; lower than in a loop</strong>.</p>
+    </div>
+    <a href="/website/posts/2015-01-20-c-mythbusters-counting-up-and-down/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2014-05-05-h1b-things-to-remember/" class="link black dim">
+        H1B: Things to Remember
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>I am trying to write down everything that I remembered to do before leaving for the US so that posterity can benefit from it. I will add what I forgot later on.</p>
+<h2 id="dmv-report-car-insurance-report">DMV Report, Car insurance report</h2>
+<p>I have requested a report from my file with the Germany equivalent of the DMV just in case. I also asked my car insurance provider to send a letter stating that I am in good standing with them and have not had them pay for anything in the last 11 years. Apparently, some auto insurance carriers in the US will give you a discount if you can provide such information but no matter if useful or not things like this are easier to do before leaving.</p>
+    </div>
+    <a href="/website/posts/2014-05-05-h1b-things-to-remember/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2014-03-11-ssh-into-docker-containers-by-name/" class="link black dim">
+        SSH into Docker containers by name
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>I hacked together an SSH proxy so that you can direct SSH into docker containers using their name. It&rsquo;s on <a href="https://github.com/henrik-muehe/docker-ssh">github</a>, excerpt from the README:</p>
+<p><a href="https://github.com/henrik-muehe/docker-ssh"><strong>docker-ssh</strong></a></p>
+<p>Allows connecting to all your local docker containers using ssh simply like this:</p>
+<pre><code>ssh container-name.docker
+</code></pre>
+<p>if container-name is the name of the container and ssh is running in it. Automatically install for the current user using</p>
+<pre><code>curl -s https://raw.githubusercontent.com/henrik-muehe/docker-ssh/master/install | /bin/bash
+</code></pre>
+<p>Enjoy!</p>
+    </div>
+    <a href="/website/posts/2014-03-11-ssh-into-docker-containers-by-name/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+    </section>
+    <ul class="pagination pagination-default">
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
+      </li>
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+      <li class="page-item active">
+        <a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/page/3/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      </li>
+    </ul></article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://henrik-muehe.github.io/website/" >
+    &copy;  Henrik Mühe 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

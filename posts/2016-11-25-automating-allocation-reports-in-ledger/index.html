@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Automating allocation reports in Ledger. | Henrik Mühe</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Motivation
+If you own any stocks or funds you probably want to track the allocation, meaning
+how much money is in stocks and funds respectively. Some fairly well known low
+key investment strategies rely on balancing this ratio, for instance
+this one.
+In Ledger, allocations can be modelled easily through allocation based accounts
+and automatic transactions. This is outlined here.
+If you do this however, you still have to manually update allocations for every
+fund you own which is a nuisance, especially if you own something like a target
+retirement investment fund which naturally and purposefully changes its allocation
+strategy over time.">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Henrik Mühe">
+    
+
+    
+<link rel="stylesheet" href="/website/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://henrik-muehe.github.io/website/posts/2016-11-25-automating-allocation-reports-in-ledger/">
+    
+
+    <meta property="og:url" content="https://henrik-muehe.github.io/website/posts/2016-11-25-automating-allocation-reports-in-ledger/">
+  <meta property="og:site_name" content="Henrik Mühe">
+  <meta property="og:title" content="Automating allocation reports in Ledger.">
+  <meta property="og:description" content="Motivation If you own any stocks or funds you probably want to track the allocation, meaning how much money is in stocks and funds respectively. Some fairly well known low key investment strategies rely on balancing this ratio, for instance this one.
+In Ledger, allocations can be modelled easily through allocation based accounts and automatic transactions. This is outlined here. If you do this however, you still have to manually update allocations for every fund you own which is a nuisance, especially if you own something like a target retirement investment fund which naturally and purposefully changes its allocation strategy over time.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2016-11-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2016-11-25T00:00:00+00:00">
+
+  <meta itemprop="name" content="Automating allocation reports in Ledger.">
+  <meta itemprop="description" content="Motivation If you own any stocks or funds you probably want to track the allocation, meaning how much money is in stocks and funds respectively. Some fairly well known low key investment strategies rely on balancing this ratio, for instance this one.
+In Ledger, allocations can be modelled easily through allocation based accounts and automatic transactions. This is outlined here. If you do this however, you still have to manually update allocations for every fund you own which is a nuisance, especially if you own something like a target retirement investment fund which naturally and purposefully changes its allocation strategy over time.">
+  <meta itemprop="datePublished" content="2016-11-25T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2016-11-25T00:00:00+00:00">
+  <meta itemprop="wordCount" content="486">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Automating allocation reports in Ledger.">
+  <meta name="twitter:description" content="Motivation If you own any stocks or funds you probably want to track the allocation, meaning how much money is in stocks and funds respectively. Some fairly well known low key investment strategies rely on balancing this ratio, for instance this one.
+In Ledger, allocations can be modelled easily through allocation based accounts and automatic transactions. This is outlined here. If you do this however, you still have to manually update allocations for every fund you own which is a nuisance, especially if you own something like a target retirement investment fund which naturally and purposefully changes its allocation strategy over time.">
+
+      
+    
+	<link rel="stylesheet" href="/website/css/syntax.css">
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/website/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Henrik Mühe
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/portfolio/" title="Portfolio page">
+              Portfolio
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/sailing/" title="Sailing page">
+              Sailing
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Automating allocation reports in Ledger.</h1>
+      
+      <p class="tracked"><strong>Henrik Mühe</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-11-25T00:00:00Z">November 25, 2016</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="motivation">Motivation</h2>
+<p>If you own any stocks or funds you probably want to track the allocation, meaning
+how much money is in stocks and funds respectively. Some fairly well known low
+key investment strategies rely on balancing this ratio, for instance
+<a href="https://www.amazon.com/Four-Pillars-Investing-Building-Portfolio/dp/0071747052/ref=pd_sim_14_6?_encoding=UTF8&amp;pd_rd_i=0071747052&amp;pd_rd_r=Q2MDGYSD50HBFQ3PWE64&amp;pd_rd_w=D5pEg&amp;pd_rd_wg=nXyfZ&amp;psc=1&amp;refRID=Q2MDGYSD50HBFQ3PWE64">this one</a>.</p>
+<p>In Ledger, allocations can be modelled easily through allocation based accounts
+and automatic transactions. This is outlined <a href="http://www.ledger-cli.org/3.0/doc/ledger3.html#Asset-Allocation">here</a>.
+If you do this however, you still have to manually update allocations for every
+fund you own which is a nuisance, especially if you own something like a target
+retirement investment fund which naturally and purposefully changes its allocation
+strategy over time.</p>
+<p>In a nutshell, we need an automated way of creating records like this:</p>
+<pre><code>= expr ( commodity == 'VFIFX' and account =~ /^Assets:/ )
+    (Allocation:Cash)                    0.0178
+    (Allocation:Stock:US Stock)          0.5383
+    (Allocation:Stock:Non US Stock)      0.34259999999999996
+    (Allocation:Bond)                    0.0968
+    (Allocation:Other)                   0.0045000000000000005
+</code></pre>
+<p>This would then allow fun queries like</p>
+<pre><code>ledger bal Allocation: -X '$'
+</code></pre>
+<p>which roughly yields</p>
+<pre><code>200.00$  Allocation
+ 60.00$    Bond
+ 20.00$    Cash
+  2.00$    Other
+118.00$    Stock
+ 38.00$      Non US Stock
+ 80.00$      US Stock
+</code></pre>
+<p>or alternatively</p>
+<pre><code>ledger bal Allocation: -X '$' -%
+</code></pre>
+<p>which roughly yields</p>
+<pre><code>100.00%  Allocation
+ 30.00%    Bond
+ 10.00%    Cash
+  1.00%    Other
+ 59.00%    Stock
+ 19.00%      Non US Stock
+ 40.00%      US Stock
+</code></pre>
+<h2 id="automation">Automation</h2>
+<p>A reasonable source for asset allocation per fund is Morningstar. There, each
+fund has a <em>Portfolio</em> page which shows asset allocation. Let&rsquo;s try to extract
+that.</p>
+<!-- raw HTML omitted -->
+<p>First, let&rsquo;s use Ledger to determine what kind of commodities we might need to
+figure out allocation for:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ruby" data-lang="ruby"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># Determine symbols used in ledger.</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">symbols</span> <span class="o">=</span> <span class="sb">`ledger reg --register-format &#39;%(commodity)</span><span class="se">\n</span><span class="sb">&#39; | sort | uniq`</span><span class="o">.</span><span class="n">split</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"># Remove currencies.</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="n">symbols</span> <span class="o">-=</span> <span class="o">[</span><span class="s2">&#34;EURO&#34;</span><span class="p">,</span> <span class="s2">&#34;$&#34;</span><span class="p">,</span> <span class="s2">&#34;p$&#34;</span><span class="p">,</span> <span class="s2">&#34;$p&#34;</span><span class="o">]</span></span></span></code></pre></div>
+<p>Then we load the Morningstar page and extract all relevant data using Nokogiri.
+I used Selenium to do scraping for banks before however here that seems like
+overkill. The website does not rely on Javascript so much, it really just
+renders HTML server side which, combined with a DOM parser, allows for very
+easy data extraction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ruby" data-lang="ruby"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">symbols</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">symbol</span><span class="o">|</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="c1"># Query morningstar.</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="n">clean_symbol</span> <span class="o">=</span> <span class="n">symbol</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/[^a-zA-Z0-9]/</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="n">doc</span> <span class="o">=</span> <span class="no">Nokogiri</span><span class="o">::</span><span class="no">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&#34;http://portfolios.morningstar.com/fund/summary?t=</span><span class="si">#{</span><span class="n">clean_symbol</span><span class="si">}</span><span class="s2">&amp;region=usa&amp;culture=en-US&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  <span class="n">table</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&#34;//h3[contains(text(), &#39;Asset Allocation&#39;)]/following::tbody[1]&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  <span class="n">category</span> <span class="o">=</span>  <span class="n">doc</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&#34;//*[contains(@class, &#39;categoryName&#39;)]/text()&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  <span class="n">rows</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&#34;.//tr&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="n">allocation</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  <span class="n">rows</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="n">cells</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&#34;.//*/text()&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="k">next</span> <span class="k">if</span> <span class="n">cells</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="n">allocation</span><span class="o">[</span><span class="n">cells</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">to_s</span><span class="o">]</span> <span class="o">=</span> <span class="n">cells</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">to_s</span><span class="o">.</span><span class="n">to_f</span> <span class="o">*</span> <span class="mi">0</span><span class="o">.</span><span class="mo">01</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">  <span class="k">end</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">  <span class="c1"># ...</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="k">end</span></span></span></code></pre></div>
+<p>Essentially, we use a few XPath expression to find the relevant data in the page
+and extract the asset allocation. The code ommitted here is a very dumb
+heuristic to determine allocation when we are not dealing with a fund or when
+no data is available. We use the category name, which is usually something
+like &ldquo;Total Stock Market Fund&rdquo; or &ldquo;Total International Bond Market Fund&rdquo; as a
+basis for the allocation decision and otherwise just assume it&rsquo;s a stock for
+the simple reason that I don&rsquo;t trade individual bonds.</p>
+<p>As usual, the code for this is
+<a href="https://github.com/henrik-muehe/ledger-tools">here</a>.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://henrik-muehe.github.io/website/" >
+    &copy;  Henrik Mühe 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

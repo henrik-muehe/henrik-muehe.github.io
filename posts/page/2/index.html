@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Henrik Mühe</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Personal blog and website.">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Henrik Mühe">
+    
+
+    
+<link rel="stylesheet" href="/website/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+    
+      <link href="/website/posts/index.xml" rel="alternate" type="application/rss+xml" title="Henrik Mühe" />
+      <link href="/website/posts/index.xml" rel="feed" type="application/rss+xml" title="Henrik Mühe" />
+      
+    
+
+    
+      <link rel="canonical" href="https://henrik-muehe.github.io/website/posts/">
+    
+
+    <meta property="og:url" content="https://henrik-muehe.github.io/website/posts/">
+  <meta property="og:site_name" content="Henrik Mühe">
+  <meta property="og:title" content="Posts">
+  <meta property="og:description" content="Personal blog and website.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+  <meta itemprop="name" content="Posts">
+  <meta itemprop="description" content="Personal blog and website.">
+  <meta itemprop="datePublished" content="2019-01-01T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2019-01-01T00:00:00+00:00">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Posts">
+  <meta name="twitter:description" content="Personal blog and website.">
+
+      
+    
+	<link rel="stylesheet" href="/website/css/syntax.css">
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/website/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Henrik Mühe
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/portfolio/" title="Portfolio page">
+              Portfolio
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/sailing/" title="Sailing page">
+              Sailing
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Posts
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="pa3 pa4-ns nested-copy-line-height">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy nested-links mid-gray"></section>
+    <section class="flex-ns mt5 flex-wrap justify-around">
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2014-02-28-switching-docker-from-aufs-to-devicemapper/" class="link black dim">
+        Switching Docker from aufs to devicemapper
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>We use <a href="http://docker.io">Docker</a> for various teaching webservices (<a href="http://codematch.muehe.org">Codematch</a>, <a href="http://xquery.db.in.tum.de">Xquery</a>, <a href="http://datalog.db.in.tum.de">Datalog</a>) we want to offer to students but which should not cause our webserver to be more exposed. Docker has been good so far and we have already used the architecture to migrate all containers from the original dev host to the production webserver host. Here, we&rsquo;ll talk about switching from AUFS to Devicemapper as a storage backend.</p>
+<h2 id="why-device-mapper">Why device mapper?</h2>
+<p>I can not attest to either storage backend being strictly better or worse than the other. However, for us the benefit is being able to run IBM DB2 without resorting to mounting an external volume for the DB2 container. This is beneficial, as using external storage break the versioned architecture of docker while keeping all data inside the container&rsquo;s filesystem yields a nice separation of concerns.</p>
+    </div>
+    <a href="/website/posts/2014-02-28-switching-docker-from-aufs-to-devicemapper/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2014-02-04-the-hackernews-effect/" class="link black dim">
+        The HackerNews Effect
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>My <a href="http://muehe.org/posts/stripe-ctf-3-writeup/">Stripe-CTF Writeup</a> actually made it 4th place on <a href="https://news.ycombinator.com/">HackerNews</a> and I just wanted to share how that looks in Google Analytics. Sufficient to say I was very happy with hosting a static, Jekyll generated blog on Github.io when I was the realtime analytics numbers climb beyond 300 concurrent visitors. Also, my Alexa rank jumped about 25,000,000 places to 300000th most visited website in the US. Good times, thank you.</p>
+<!-- raw HTML omitted -->
+    </div>
+    <a href="/website/posts/2014-02-04-the-hackernews-effect/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2014-01-30-stripe-ctf-3-writeup/" class="link black dim">
+        Stripe-CTF 3 Writeup
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <!-- raw HTML omitted -->
+<p><em><del>Note: I&rsquo;ll add the source once submissions are off. Since the contest is <strong>officially over</strong> here goes the text part of it, I doubt anyone will quickly implement all of it.</del> It&rsquo;s all on Github now!</em></p>
+<p><em>Note: I posted a screenshot of Google Analytics <a href="http://muehe.org/posts/the-hackernews-effect/">here</a> so that you can take a look of what a 4th place on Hacker News looks like in terms of visits.</em></p>
+    </div>
+    <a href="/website/posts/2014-01-30-stripe-ctf-3-writeup/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2014-01-20-profiling-only-parts-of-your-code-with-perf/" class="link black dim">
+        Profiling only parts of your code with perf.
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p><a href="https://perf.wiki.kernel.org/index.php/Main_Page">Perf</a> is an excellent tool for profiling linux software. It uses hardware performance counters to give you information on your code&rsquo;s performance. This makes it a very low overhead alternative to &ndash; for instance &ndash; <a href="http://valgrind.org/">valgrind</a> which uses instrumentation. Both ways of profiling software have their merits but perf is a great tool to just keep running all the time to find severe performance bottlenecks with ease.</p>
+<p>That said, I frequently have to profile only a part of my code. This is due to the fact that I write lots of database benchmarks which frequently load or even generate an initial dataset which they than run queries on. I usually care for query instead of loading performance, therefore I&rsquo;d like to profile only the query part of my application. This can be done using API calls to the excellent <a href="http://icl.cs.utk.edu/papi/">performance counters C api</a> but in my case, an easier way of achieving what I need it to use a &ldquo;perf wrapper&rdquo;. In you code, that wrapper looks like this:</p>
+    </div>
+    <a href="/website/posts/2014-01-20-profiling-only-parts-of-your-code-with-perf/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2013-09-26-codechef-feelgood-therapy/" class="link black dim">
+        CodeChef Feelgood Therapy
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>Coding challenges are great for anyone who codes, likes to win and has too much time on his hands. I participated in an extensive one earlier this year, I learned a lot. Coding challenges have been institutionalized, one platform offering such challenges is <a href="http://www.codechef.com">CodeChef</a>. There is different types of challenges on CodeChef. One such type is code golf where the goal is keeping the source code as short as possible, to me, something utterly useless. Short, readable code is great, code like <a href="http://de.wikipedia.org/wiki/Forkbomb"><code>:(){ :|:&amp;};:</code></a> is not. More interesting challenges are timed, hard problems. I am not the lunch-time challenge type where time limits range between one and a couple of hours but a contest lasting for say a week gets my attention.</p>
+    </div>
+    <a href="/website/posts/2013-09-26-codechef-feelgood-therapy/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2013-06-04-visualize-your-traffic/" class="link black dim">
+        Visualize your traffic (to work)!
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p><!-- raw HTML omitted -->(click here to try)<!-- raw HTML omitted --></p>
+<p>I recently started commuting from and to work by car instead of using the subway. This &ndash; sadly &ndash; was not by choice but rather because a) I broke my foot and b) the subway does not currently go straight to work but you have to use a shuttle bus.</p>
+<p>When we started commuting by car, we noticed that traffic patterns differed quite a bit depending on time, day and weather. I wouldn&rsquo;t say there&rsquo;s a huge advantage you can get from knowing all about the traffic patterns. Maybe, though, you can do less experimenting and more knowing when it comes to determining the best moment to start the commute to work and thus minimize the amount of time spend on the road. If you will, this can be viewed as a more technology driven approach to the commute time minimizations done by <a href="http://www.masonchang.com/blog/2012/6/15/frequent-flyer-hacks.html">Mason Chang</a> that I recently enjoyed reading.</p>
+    </div>
+    <a href="/website/posts/2013-06-04-visualize-your-traffic/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2013-05-28-the-invulnerable-tetris-highscore-hacked/" class="link black dim">
+        The Invulnerable Highscore? Hacked!
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>&hellip; and by a python script too, or so I hear.</p>
+<p>I was mildly shocked that a colleague was able to hack the invulnerable highscore. I bet free lunch on the high score not being hackable easily and I was wrong &ndash; but not by design. I just missed to add the most important line of the entire highscore verification mechanism. My colleague spotted the mistake while studying the code and &ndash; instead of filing an issue on <a href="https://github.com/henrik-muehe/tetris">Github</a> &ndash; opted to go for the free lunch instead.</p>
+    </div>
+    <a href="/website/posts/2013-05-28-the-invulnerable-tetris-highscore-hacked/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2013-05-26-tetris-in-roughly-4kb/" class="link black dim">
+        Tetris in roughly 4kb
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <!-- raw HTML omitted -->
+<p>First off, I am absolutely not among the <a href="http://chrishiggins.com/w/2013/02/03/playing-to-lose/">tetris maniacs of this world</a> (the story is a recent HN find). While browsing the stack-exchange network though, I discovered <a href="http://codegolf.stackexchange.com/">codegolf</a> and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and &ndash; honestly &ndash; was missing the feeling of competing at something.</p>
+    </div>
+    <a href="/website/posts/2013-05-26-tetris-in-roughly-4kb/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2011-01-16-ardrone-with-gps-and-a-magnetic-compass/" class="link black dim">
+        AR.Drone with GPS and a magnetic compass
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>I&rsquo;ve put my drone back together with working GPS and compass attached. After calibrating the compass in it&rsquo;s new place the readings are pretty solid. I&rsquo;m hoping to be able to correct navdata output for yaw with it pretty soon :-)</p>
+<h2 id="pictures">Pictures:</h2>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+    </div>
+    <a href="/website/posts/2011-01-16-ardrone-with-gps-and-a-magnetic-compass/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/website/posts/2011-01-10-attaching-an-i2c-compass-to-the-ardrone/" class="link black dim">
+        Attaching an I2C compass to the AR.Drone
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <p>I&rsquo;ve recently attached a magnetic compass to the drone using the i2c bus. Let me start by saying that a good compass is not exactly cheap, I paid about 25€ for it and I&rsquo;ve seen it being sold for over 100€ so it&rsquo;s an expensive toy. Also, from what I&rsquo;ve gathered, it&rsquo;s really hard to find a good position for it on the drone seeing as all the motors have a strong magnetic field. Right now, my drone isn&rsquo;t exactly flyable but I will share my experience with the additional sensor nonetheless, even though I have not found an ideal spot to place it at yet.</p>
+    </div>
+    <a href="/website/posts/2011-01-10-attaching-an-i2c-compass-to-the-ardrone/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+    </section>
+    <ul class="pagination pagination-default">
+      <li class="page-item">
+        <a href="/website/posts/" aria-label="First" class="page-link" role="button"><span aria-hidden="true">&laquo;&laquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/" aria-label="Previous" class="page-link" role="button"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/" aria-label="Page 1" class="page-link" role="button">1</a>
+      </li>
+      <li class="page-item active">
+        <a aria-current="page" aria-label="Page 2" class="page-link" role="button">2</a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/page/3/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/website/posts/page/3/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      </li>
+    </ul></article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://henrik-muehe.github.io/website/" >
+    &copy;  Henrik Mühe 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

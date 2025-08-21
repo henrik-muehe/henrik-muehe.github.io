@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Reverse-engineering exact location information through trilateration. | Henrik Mühe</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="
+
+
+Many datasets on the internet accidentally expose location information by
+allowing distance based search (&ldquo;find everything within 3 miles around this
+point&rdquo;) from arbitrary points of origin. I happened upon such a dataset and
+wanted to try rediscover the original location through trilateration.
+Trilateration, which is commonly wrongly referred to as triangulation, is the
+process of finding a location L given three other locations A, B, C and
+their distance to L (let&rsquo;s call that dA, dB and dC). Very surprisingly
+to me, I was not able to find a lot of good, sure-fire solutions to this easily
+when I wanted to solve a trilateration problem so there&rsquo;s a summary of what I
+found.">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Henrik Mühe">
+    
+
+    
+<link rel="stylesheet" href="/website/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://henrik-muehe.github.io/website/posts/2016-12-25-reverse-engineering-through-trilateration/">
+    
+
+    <meta property="og:url" content="https://henrik-muehe.github.io/website/posts/2016-12-25-reverse-engineering-through-trilateration/">
+  <meta property="og:site_name" content="Henrik Mühe">
+  <meta property="og:title" content="Reverse-engineering exact location information through trilateration.">
+  <meta property="og:description" content="Many datasets on the internet accidentally expose location information by allowing distance based search (“find everything within 3 miles around this point”) from arbitrary points of origin. I happened upon such a dataset and wanted to try rediscover the original location through trilateration.
+Trilateration, which is commonly wrongly referred to as triangulation, is the process of finding a location L given three other locations A, B, C and their distance to L (let’s call that dA, dB and dC). Very surprisingly to me, I was not able to find a lot of good, sure-fire solutions to this easily when I wanted to solve a trilateration problem so there’s a summary of what I found.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2016-12-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2016-12-25T00:00:00+00:00">
+
+  <meta itemprop="name" content="Reverse-engineering exact location information through trilateration.">
+  <meta itemprop="description" content="Many datasets on the internet accidentally expose location information by allowing distance based search (“find everything within 3 miles around this point”) from arbitrary points of origin. I happened upon such a dataset and wanted to try rediscover the original location through trilateration.
+Trilateration, which is commonly wrongly referred to as triangulation, is the process of finding a location L given three other locations A, B, C and their distance to L (let’s call that dA, dB and dC). Very surprisingly to me, I was not able to find a lot of good, sure-fire solutions to this easily when I wanted to solve a trilateration problem so there’s a summary of what I found.">
+  <meta itemprop="datePublished" content="2016-12-25T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2016-12-25T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1766">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Reverse-engineering exact location information through trilateration.">
+  <meta name="twitter:description" content="Many datasets on the internet accidentally expose location information by allowing distance based search (“find everything within 3 miles around this point”) from arbitrary points of origin. I happened upon such a dataset and wanted to try rediscover the original location through trilateration.
+Trilateration, which is commonly wrongly referred to as triangulation, is the process of finding a location L given three other locations A, B, C and their distance to L (let’s call that dA, dB and dC). Very surprisingly to me, I was not able to find a lot of good, sure-fire solutions to this easily when I wanted to solve a trilateration problem so there’s a summary of what I found.">
+
+      
+    
+	<link rel="stylesheet" href="/website/css/syntax.css">
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/website/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Henrik Mühe
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/portfolio/" title="Portfolio page">
+              Portfolio
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/sailing/" title="Sailing page">
+              Sailing
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Reverse-engineering exact location information through trilateration.</h1>
+      
+      <p class="tracked"><strong>Henrik Mühe</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-12-25T00:00:00Z">December 25, 2016</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Many datasets on the internet <a href="http://blog.includesecurity.com/2014/02/how-i-was-able-to-track-location-of-any.html">accidentally expose location information</a> by
+allowing distance based search (&ldquo;find everything within 3 miles around this
+point&rdquo;) from arbitrary points of origin. I happened upon such a dataset and
+wanted to try rediscover the original location through trilateration.</p>
+<p>Trilateration, which is commonly wrongly referred to as triangulation, is the
+process of finding a location <code>L</code> given three other locations <code>A</code>, <code>B</code>, <code>C</code> and
+their distance to <code>L</code> (let&rsquo;s call that <code>dA</code>, <code>dB</code> and <code>dC</code>). Very surprisingly
+to me, I was not able to find a lot of good, sure-fire solutions to this easily
+when I wanted to solve a trilateration problem so there&rsquo;s a summary of what I
+found.</p>
+<p><strong>Code</strong> is <a href="https://github.com/henrik-muehe/trilateration">here</a>.</p>
+<h1 id="a-linear-algebra-approach">A linear algebra approach.</h1>
+<p>Given the aforementioned setup with absolutely accurate values and under the
+assumption that the earth is flat, <code>L</code> can be found by finding the intersection
+of the three circles around <code>A</code>, <code>B</code> and <code>C</code> with their respective diameters.
+Unfortunately, neither is the earth flat nor du we commonly have perfect values
+for the diameters (and potentially the coordinates of <code>A</code>, <code>B</code> and <code>C</code>).</p>
+<p>With reasonably good data however, we can compute <code>L</code> as the intersection of
+the spheres around <code>A</code>, <code>B</code> and <code>C</code> with their respective diameters. Let&rsquo;s look
+at that, I hacked together this 3d demo (this is zoom and panable by dragging
+and mouse wheel scrolling):</p>
+<!-- raw HTML omitted -->
+<p>In this example, the three known points are Moscow, Madrid and London and the
+diameters are the distance from Munich, Germany calculated using the <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine</a>
+formula. If you zoom into the intersection of the spheres, we actually do hit
+Munich pretty well and the spheres don&rsquo;t seem to overlap so that&rsquo;s a start.</p>
+<p>Let&rsquo;s assume our input is 3 sets of latitude/longitude and distance in kilometers. We need to map this to a coordinate system where we can actually
+determine the intersection somewhat easily. A good candidate is <a href="https://en.wikipedia.org/wiki/ECEF">ECEF</a>. Ideally, a library should be used as this gets iffy very quickly. Forward mapping from geo coordinates to ECEF is
+still reasonably straight forward, the back-mapping is an iterative algorithm
+and not trivial. A great library for this with bindings to many languages is
+<a href="https://github.com/OSGeo/proj.4">PROJ.4</a>.</p>
+<p>Once we&rsquo;ve mapped the geo coordinates to xyz coordinates on the earth&rsquo;s ellipsoid&rsquo;s surface, we can now proceed to determining the intersection of the
+spheres around our xyz points and map the point of intersection back to geo
+coordinates using PROJ4. Determining the intersection can be done as described
+in <a href="http://gis.stackexchange.com/questions/66/trilateration-using-3-latitude-and-longitude-points-and-3-distances">this stackexchange post</a>. The post suggests manually converting coordinates back and forth between ECEF and geo coordinates; I&rsquo;ll show in the next section why that may not be such a good idea.</p>
+<h1 id="trying-it">Trying it:</h1>
+<p>The reason I am investigating this is that I happened upon a website which
+allows me to search for things sorting them by distance from my location. It
+does not reveal the location of the search results. I figured I may be able
+to search for them from 3 different locations and do the trilateration, which,
+when tried visually by drawing circles on Google Maps, looked <em>very</em> promising.</p>
+<p>I first tried the approach posted <a href="http://gis.stackexchange.com/questions/66/trilateration-using-3-latitude-and-longitude-points-and-3-distances">here</a>. This does in fact yield points which are in the right vicinity but not quite where the location actually is. I initially
+only looked at the distance between the trilateration results and the actual
+location. Plotting the results on a map is a lot more helpful in understanding
+what the problem is:</p>
+<p><img src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBs5UxN2SwhQuZJvf5ZwVogkNxDrcMIo4s&amp;center=48.28918807515703,11.580218296782743&amp;zoom=12&amp;size=350x350&amp;maptype=roadmap&amp;markers=color:red%7Clabel:C%7C48.247939,11.559488&amp;markers=color:red%7Clabel:C%7C48.262075,11.560071&amp;markers=color:red%7Clabel:C%7C48.267218,11.558019&amp;markers=color:red%7Clabel:C%7C48.269552,11.559301&amp;markers=color:red%7Clabel:C%7C48.269837,11.556691&amp;markers=color:red%7Clabel:C%7C48.2708,1.558131&amp;markers=color:red%7Clabel:C%7C48.272093,11.558116&amp;markers=color:red%7Clabel:C%7C48.274487,11.559263&amp;markers=color:red%7Clabel:C%7C48.276323,11.560208&amp;markers=color:red%7Clabel:C%7C48.277686,11.560275&amp;markers=color:red%7Clabel:C%7C48.277903,11.56081&amp;markers=color:red%7Clabel:C%7C48.278655,11.555912&amp;markers=color:red%7Clabel:C%7C48.278664,11.559886&amp;markers=color:red%7Clabel:C%7C48.279612,11.5583&amp;markers=color:red%7Clabel:C%7C48.279784,11.560236&amp;markers=color:red%7Clabel:C%7C48.280245,11.560296&amp;markers=color:red%7Clabel:C%7C48.280425,11.560676&amp;markers=color:red%7Clabel:C%7C48.280798,11.559221&amp;markers=color:red%7Clabel:C%7C48.281661,11.558881&amp;markers=color:red%7Clabel:C%7C48.282263,11.558182&amp;markers=color:red%7Clabel:C%7C48.282821,11.55836&amp;markers=color:red%7Clabel:C%7C48.283014,11.557517&amp;markers=color:red%7Clabel:C%7C48.283911,11.55819&amp;markers=color:red%7Clabel:C%7C48.284256,11.560446&amp;markers=color:red%7Clabel:C%7C48.284369,11.560485&amp;markers=color:red%7Clabel:C%7C48.284444,11.558022&amp;markers=color:red%7Clabel:C%7C48.284682,11.559411&amp;markers=color:red%7Clabel:C%7C48.284902,11.560046&amp;markers=color:red%7Clabel:C%7C48.28494,11.56046&amp;markers=color:red%7Clabel:C%7C48.285603,11.559484&amp;markers=color:red%7Clabel:C%7C48.285609,11.557574&amp;markers=color:red%7Clabel:C%7C48.286095,11.560118&amp;markers=color:red%7Clabel:C%7C48.286378,11.558738&amp;markers=color:red%7Clabel:C%7C48.286401,11.559171&amp;markers=color:red%7Clabel:C%7C48.286493,11.560083&amp;markers=color:red%7Clabel:C%7C48.286649,11.560385&amp;markers=color:red%7Clabel:C%7C48.286915,11.559731&amp;markers=color:red%7Clabel:C%7C48.28705,11.56014&amp;markers=color:red%7Clabel:C%7C48.290228,11.558475&amp;markers=color:red%7Clabel:C%7C48.290786,11.560173&amp;markers=color:red%7Clabel:C%7C48.291239,11.560182&amp;markers=color:red%7Clabel:C%7C48.295268,11.558536&amp;markers=color:red%7Clabel:C%7C48.295544,11.559323&amp;markers=color:red%7Clabel:C%7C48.297491,11.557252&amp;markers=color:red%7Clabel:C%7C48.299444,11.55824&amp;markers=color:red%7Clabel:C%7C48.302652,11.558214&amp;markers=color:red%7Clabel:C%7C48.307185,11.558095&amp;markers=color:red%7Clabel:C%7C48.323014,11.562276&amp;markers=color:red%7Clabel:C%7C48.330766,11.560341&amp;markers=color:red%7Clabel:C%7C48.332074,11.560282&amp;markers=color:red%7Clabel:C%7C48.333327,11.561327&amp;markers=color:red%7Clabel:C%7C48.333564,11.560982&amp;markers=color:red%7Clabel:C%7C48.333838,11.560938&amp;markers=color:red%7Clabel:C%7C48.333873,11.560562&amp;markers=color:red%7Clabel:C%7C48.334345,11.56045&amp;markers=color:red%7Clabel:C%7C48.334388,11.560493&amp;markers=color:red%7Clabel:C%7C48.336175,11.560444&amp;markers=color:red%7Clabel:C%7C48.336241,11.560455&amp;markers=color:red%7Clabel:C%7C48.336258,11.560462&amp;markers=color:red%7Clabel:C%7C48.336383,11.560503&amp;markers=color:red%7Clabel:C%7C48.3366,1.560505&amp;markers=color:red%7Clabel:C%7C48.337306,11.560488&amp;markers=color:red%7Clabel:C%7C48.337413,11.560998&amp;markers=color:red%7Clabel:C%7C48.338533,11.560041&amp;markers=color:red%7Clabel:C%7C48.338683,11.560056&amp;markers=color:red%7Clabel:C%7C48.33888,11.560102&amp;markers=color:red%7Clabel:C%7C48.339428,11.561391&amp;markers=color:red%7Clabel:C%7C48.339672,11.562541&amp;markers=color:red%7Clabel:C%7C48.339682,11.559785&amp;markers=color:red%7Clabel:C%7C48.339754,11.559878&amp;markers=color:red%7Clabel:C%7C48.340049,11.559765&amp;markers=color:red%7Clabel:C%7C48.340318,11.56061&amp;markers=color:red%7Clabel:C%7C48.340799,11.561574&amp;markers=color:red%7Clabel:C%7C48.341461,11.560379&amp;markers=color:red%7Clabel:C%7C48.341843,11.560338&amp;markers=color:red%7Clabel:C%7C48.342058,11.560666&amp;markers=color:red%7Clabel:C%7C48.351947,11.564378" alt=""></p>
+<p>The actual location is Haimhausen. We observe two problems: First, the points used for <code>A</code>, <code>B</code> and <code>C</code> are all south-east of Haimhausen. It looks like we
+are a little short of the target in the east-west axis. Then, much worse, the
+points seem quite spread out on the north-south axis. This led me to suspect that the conversion from geo to ECEF listed on stack overflow is not quite
+accurate enough for what I wanted. The post mentions that &ldquo;if using an ellipsoid this step is slightly different&rdquo; which is quite the understatement. In fact, the
+code for doing the proper ECEF conversion is fantastically more complicated. A
+good example for validating ones implementation (and for looking at the code used in their implementation) can be found <a href="http://www.oc.nps.edu/oc2902w/coord/llhxyz.htm">here</a>.</p>
+<p>I decided to try using python&rsquo;s PROJ.4 bindings to make this projection easier
+and see if it improves the result at all. Low and behold, using an ellipsoid:</p>
+<p><img src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBs5UxN2SwhQuZJvf5ZwVogkNxDrcMIo4s&amp;center=48.28918807515703,11.580218296782743&amp;zoom=12&amp;size=350x350&amp;maptype=roadmap&amp;markers=color:red%7Clabel:C%7C48.310584,11.560533&amp;markers=color:red%7Clabel:C%7C48.310231,11.560106&amp;markers=color:red%7Clabel:C%7C48.310764,11.560605&amp;markers=color:red%7Clabel:C%7C48.311026,11.561065&amp;markers=color:red%7Clabel:C%7C48.310834,11.560833&amp;markers=color:red%7Clabel:C%7C48.309923,11.559732&amp;markers=color:red%7Clabel:C%7C48.308634,11.557936&amp;markers=color:red%7Clabel:C%7C48.310592,11.560728&amp;markers=color:red%7Clabel:C%7C48.310605,11.560504&amp;markers=color:red%7Clabel:C%7C48.310801,11.560255&amp;markers=color:red%7Clabel:C%7C48.310148,11.561501&amp;markers=color:red%7Clabel:C%7C48.311623,11.558381&amp;markers=color:red%7Clabel:C%7C48.309857,11.561047&amp;markers=color:red%7Clabel:C%7C48.31021,11.56016&amp;markers=color:red%7Clabel:C%7C48.310627,11.55957&amp;markers=color:red%7Clabel:C%7C48.310174,11.560439&amp;markers=color:red%7Clabel:C%7C48.311271,11.558326&amp;markers=color:red%7Clabel:C%7C48.310859,11.560612&amp;markers=color:red%7Clabel:C%7C48.310888,11.560599&amp;markers=color:red%7Clabel:C%7C48.31022,11.560889&amp;markers=color:red%7Clabel:C%7C48.310778,11.560458&amp;markers=color:red%7Clabel:C%7C48.31001,11.55979&amp;markers=color:red%7Clabel:C%7C48.307979,11.557807&amp;markers=color:red%7Clabel:C%7C48.309772,11.556134&amp;markers=color:red%7Clabel:C%7C48.310292,11.558173&amp;markers=color:red%7Clabel:C%7C48.309976,11.558123&amp;markers=color:red%7Clabel:C%7C48.311785,11.559404&amp;markers=color:red%7Clabel:C%7C48.310509,11.560581&amp;markers=color:red%7Clabel:C%7C48.310627,11.560468&amp;markers=color:red%7Clabel:C%7C48.310901,11.560269&amp;markers=color:red%7Clabel:C%7C48.306166,11.564742&amp;markers=color:red%7Clabel:C%7C48.309437,11.560459&amp;markers=color:red%7Clabel:C%7C48.310275,11.560089&amp;markers=color:red%7Clabel:C%7C48.310913,11.559835&amp;markers=color:red%7Clabel:C%7C48.309632,11.560412&amp;markers=color:red%7Clabel:C%7C48.310544,11.560642&amp;markers=color:red%7Clabel:C%7C48.310882,11.560689&amp;markers=color:red%7Clabel:C%7C48.309505,11.560497&amp;markers=color:red%7Clabel:C%7C48.303205,11.559495&amp;markers=color:red%7Clabel:C%7C48.310899,11.561173&amp;markers=color:red%7Clabel:C%7C48.310005,11.559832&amp;markers=color:red%7Clabel:C%7C48.308902,11.55791&amp;markers=color:red%7Clabel:C%7C48.310904,11.558778&amp;markers=color:red%7Clabel:C%7C48.310858,11.557358&amp;markers=color:red%7Clabel:C%7C48.312219,11.556962&amp;markers=color:red%7Clabel:C%7C48.310573,11.56275&amp;markers=color:red%7Clabel:C%7C48.311493,11.560307&amp;markers=color:red%7Clabel:C%7C48.311397,11.560423&amp;markers=color:red%7Clabel:C%7C48.31045,11.560695&amp;markers=color:red%7Clabel:C%7C48.310533,11.56015&amp;markers=color:red%7Clabel:C%7C48.310468,11.561145&amp;markers=color:red%7Clabel:C%7C48.310487,11.559157&amp;markers=color:red%7Clabel:C%7C48.31085,11.560195&amp;markers=color:red%7Clabel:C%7C48.309821,11.561671&amp;markers=color:red%7Clabel:C%7C48.311542,11.560269&amp;markers=color:red%7Clabel:C%7C48.309265,11.559951&amp;markers=color:red%7Clabel:C%7C48.3095,11.560897&amp;markers=color:red%7Clabel:C%7C48.307467,11.556556&amp;markers=color:red%7Clabel:C%7C48.309375,11.560289&amp;markers=color:red%7Clabel:C%7C48.308856,11.559273&amp;markers=color:red%7Clabel:C%7C48.310777,11.55961&amp;markers=color:red%7Clabel:C%7C48.310132,11.560328&amp;markers=color:red%7Clabel:C%7C48.311557,11.560374&amp;markers=color:red%7Clabel:C%7C48.310005,11.558864&amp;markers=color:red%7Clabel:C%7C48.30657,11.560096&amp;markers=color:red%7Clabel:C%7C48.310886,11.560694&amp;markers=color:red%7Clabel:C%7C48.309981,11.560851&amp;markers=color:red%7Clabel:C%7C48.312487,11.562478&amp;markers=color:red%7Clabel:C%7C48.309788,11.559245&amp;markers=color:red%7Clabel:C%7C48.30806,11.55933&amp;markers=color:red%7Clabel:C%7C48.310529,11.557819&amp;markers=color:red%7Clabel:C%7C48.310562,11.558023&amp;markers=color:red%7Clabel:C%7C48.310505,11.558021&amp;markers=color:red%7Clabel:C%7C48.310595,11.557972" alt=""></p>
+<p>This is <em>vastly</em> better than before. North-south as well as west-east axis seem to be about equally skewed now. I was however still convinced that this could
+be improved. My suspicion was that the distance metric used for calculating
+the geo-coordiante distance pairs on the server differed from <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine</a> or
+<a href="https://en.wikipedia.org/wiki/Vincenty%27s_formulae">Vincenty</a>. I played around with the numbers a little bit but eventually tried multiplying all distances with a small factor. This yields a much better result
+and makes the trilaterated points cluster a lot more densely. I tried this with
+many known points from the dataset and this constant helps all trilaterations
+about equally. It looks like internally, the source of the data set maps all
+geo coordiantes on a flat x-y plane and calculates distances on that plane. Result with the correction factor:</p>
+<p><img src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBs5UxN2SwhQuZJvf5ZwVogkNxDrcMIo4s&amp;center=48.28918807515703,11.580218296782743&amp;zoom=12&amp;size=350x350&amp;maptype=roadmap&amp;markers=color:red%7Clabel:C%7C48.31437,11.55945&amp;markers=color:red%7Clabel:C%7C48.314345,11.559423&amp;markers=color:red%7Clabel:C%7C48.314401,11.559465&amp;markers=color:red%7Clabel:C%7C48.314277,11.559346&amp;markers=color:red%7Clabel:C%7C48.31436,11.55944&amp;markers=color:red%7Clabel:C%7C48.31432,11.559396&amp;markers=color:red%7Clabel:C%7C48.314327,11.559364&amp;markers=color:red%7Clabel:C%7C48.314358,11.559533&amp;markers=color:red%7Clabel:C%7C48.314414,11.559414&amp;markers=color:red%7Clabel:C%7C48.314411,11.559396&amp;markers=color:red%7Clabel:C%7C48.31435,11.559637&amp;markers=color:red%7Clabel:C%7C48.314066,11.55753&amp;markers=color:red%7Clabel:C%7C48.314385,11.55937&amp;markers=color:red%7Clabel:C%7C48.314362,11.559413&amp;markers=color:red%7Clabel:C%7C48.313481,11.560227&amp;markers=color:red%7Clabel:C%7C48.314204,11.559571&amp;markers=color:red%7Clabel:C%7C48.314149,11.55937&amp;markers=color:red%7Clabel:C%7C48.314384,11.559278&amp;markers=color:red%7Clabel:C%7C48.314297,11.559319&amp;markers=color:red%7Clabel:C%7C48.31311,11.559857&amp;markers=color:red%7Clabel:C%7C48.314395,11.559426&amp;markers=color:red%7Clabel:C%7C48.31427,11.559411&amp;markers=color:red%7Clabel:C%7C48.314447,11.559426&amp;markers=color:red%7Clabel:C%7C48.314369,11.558763&amp;markers=color:red%7Clabel:C%7C48.314462,11.559309&amp;markers=color:red%7Clabel:C%7C48.314464,11.559395&amp;markers=color:red%7Clabel:C%7C48.314385,11.559422&amp;markers=color:red%7Clabel:C%7C48.314406,11.559831&amp;markers=color:red%7Clabel:C%7C48.314311,11.5597&amp;markers=color:red%7Clabel:C%7C48.31433,11.559335&amp;markers=color:red%7Clabel:C%7C48.314305,11.559503&amp;markers=color:red%7Clabel:C%7C48.314338,11.559469&amp;markers=color:red%7Clabel:C%7C48.314479,11.559308&amp;markers=color:red%7Clabel:C%7C48.313963,11.559704&amp;markers=color:red%7Clabel:C%7C48.314175,11.559839&amp;markers=color:red%7Clabel:C%7C48.313522,11.558404&amp;markers=color:red%7Clabel:C%7C48.313941,11.559234&amp;markers=color:red%7Clabel:C%7C48.314084,11.559519&amp;markers=color:red%7Clabel:C%7C48.314377,11.559156&amp;markers=color:red%7Clabel:C%7C48.314479,11.559501&amp;markers=color:red%7Clabel:C%7C48.314371,11.559508&amp;markers=color:red%7Clabel:C%7C48.314551,11.559417&amp;markers=color:blue%7Clabel:C%7C48.314551,11.559417" alt=""></p>
+<p>The reason I&rsquo;m showing more than one result point is because I actually have
+10 source points with distances and this is the trilateration algorithm run
+on each combination of three out of those 10 source points.</p>
+<h1 id="trilateration-as-an-optimization-problem">Trilateration as an optimization problem.</h1>
+<p>I mentioned this to a friend who suggested thinking about it as an optimization problem. I pondered this for a bit and googled it and that quickly got me excited: We can likely express this in a fairly clean way and have all the hard work be done by a nonlinear solver. This reduces code, does away with coordinate system conversions and - even better - allows taking all source points into account at the same time.</p>
+<p>I hacked this up in python. We try to optimize the squared difference of the distances from target point <code>L</code> to all input points <code>A</code>, <code>B</code>, &hellip; etc. Let&rsquo;s assume <code>L</code> is an array consisting of latitude and longitude and the input points are an array <code>points</code> consisting of one array per point containing latitude, longitude and distance in that order. The python now comes out to this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">def</span> <span class="nf">distfunc</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="n">distsum</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="n">dist</span> <span class="o">=</span> <span class="n">vincenty</span><span class="p">([</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">-</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        <span class="n">distsum</span> <span class="o">+=</span> <span class="n">dist</span><span class="o">*</span><span class="n">dist</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="k">return</span> <span class="n">distsum</span></span></span></code></pre></div>
+<p>We can use <code>scipy.optimize</code> to minimize <code>distfunc</code> using the <code>fmin_powell</code> method. This comes down to:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">L</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_powell</span><span class="p">(</span><span class="n">distfunc</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">points</span><span class="p">,),</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">ftol</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span></span></code></pre></div>
+<p>One thing we have to do, however is to either pick the initial guess (<code>[0,0]</code> in the example call) close to the answer or we have to make sure that distfunc returns something large for values of <code>L</code> for which it is not defined. Otherwise, the result will be outside of the range of valid geo coordinates simply because the <code>vincenty</code> function does produce distances even for illegal inputs, expect for the fact that they are not well-defined.</p>
+<p>In addition to constraining illegal values for <code>L</code>, for my input data set I had to take the fact that all distances seemed to be off by a factor into account. This can be easily done using this approach by adding a third variable to <code>L</code> and having it optimized as well, which is the magic factor. This changes the distance computation to</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="ln">1</span><span class="cl">  <span class="n">dist</span> <span class="o">=</span> <span class="n">vincenty</span><span class="p">([</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">-</span> <span class="n">L</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></span></span></code></pre></div>
+<p>and requires for the initial guess to be extended by one more zero to <code>[0,0,0]</code>. I tried the algorithm with a dataset which had 30 points with
+distances and a known result for <code>L</code>. The following list is the number of points together with median, average and 90th-percentile error from the actual point in kilometers.</p>
+<pre><code>3 Median: 15.916440 Average: 13.894293 90th-percentile: 18.584305
+4 Median: 14.115303 Average:  9.638456 90th-percentile: 17.695530
+5 Median: 14.087114 Average: 10.022226 90th-percentile: 17.623656
+6 Median: 14.207656 Average: 12.087994 90th-percentile: 20.107994
+7 Median: 14.012734 Average: 12.129031 90th-percentile: 20.082207
+8 Median:  0.000563 Average:  0.000600 90th-percentile:  0.000651
+9 Median:  0.000549 Average:  0.000555 90th-percentile:  0.000639
+10 Median: 0.000534 Average:  0.004449 90th-percentile:  0.000802
+</code></pre>
+<p>With 10 points, the error is 50 <em>centimeters</em> (less than 2 feet). Seeing as most geo coordinates in databases are probably geocoded, this is more than enough for reconstructing the original address of a point. Visually, the red pin is the original, the blue one is the trilatered point:</p>
+<p><img src="https://maps.googleapis.com/maps/api/staticmap?size=350x350&amp;maptype=roadmap&amp;markers=color:red%7Clabel:C%7C48.14696,11.73628&amp;markers=color:blue%7Clabel:C%7C48.1469580033,11.7362750243&amp;key=AIzaSyBs5UxN2SwhQuZJvf5ZwVogkNxDrcMIo4s" alt=""></p>
+<p>I know, the red one is basically invisible. Let&rsquo;s zoom in:</p>
+<p><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=22&amp;size=350x350&amp;maptype=roadmap&amp;markers=color:red%7Clabel:C%7C48.14696,11.73628&amp;markers=color:blue%7Clabel:C%7C48.1469580033,11.7362750243&amp;key=AIzaSyBs5UxN2SwhQuZJvf5ZwVogkNxDrcMIo4s" alt=""></p>
+<p>A remaining question is why this only starts delivering good results at 8 points and not less. I am guessing this is because of the introduction of the additional distance factor which is only correctly determined with 8 or more points. Since the API I am reverse trilaterating allows me to essentially get an unlimited number of points, this is not a big issue.</p>
+<h1 id="protecting-yourself-from-trilateration">Protecting yourself from trilateration.</h1>
+<p>For me, it&rsquo;s great that I can recover the location information from the provided data; it gives me an edge over other consumers of the data. In general though, you probably don&rsquo;t want to make this mistake and protect the location information your customers enter into your website. This is actually subtle. At first sight, adding a random number to all reported distances seems like an easy fix. Let&rsquo;s do that and run the optimization algorithm again. This is with 250m added in either direction for every coordinate:</p>
+<pre><code>  7 Median: 0.177487 Average: 5.900967 90th-percentile: 17.687421
+  8 Median: 0.161858 Average: 0.171432 90th-percentile: 0.213890
+</code></pre>
+<p>Well, this is already 200m accurate at 8 points. We can improve by using way more points:</p>
+<pre><code>  31 Median: 0.121494 Average: 0.121494 90th-percentile: 0.121494
+</code></pre>
+<p>Even though we added ±250m to all points, we found the original coordinates with error of only 120 meters. This is what that looks like:</p>
+<p><img src="https://maps.googleapis.com/maps/api/staticmap?size=350x350&amp;maptype=roadmap&amp;markers=color:red%7Clabel:C%7C48.14696,11.73628&amp;markers=color:blue%7Clabel:C%7C48.1469133011,11.737911198&amp;key=AIzaSyBs5UxN2SwhQuZJvf5ZwVogkNxDrcMIo4s" alt=""></p>
+<p>That&rsquo;s not that far off and we can do even better by adding more points (even though this gets better quite slowly).</p>
+<p><strong>From my point of view, what one has to do is NOT use the user supplied geo location in the distance formula to begin with.</strong> For instance, one could select a representative point <code>P</code> within 500 meters and calculate all distances from there. This way, the user supplied location is not even part of the distance calculation and at most the selected representative point can be trilaterated back from the data. However, if the same point <code>P</code> is chosen for any location within 500 meters of it, then a reasonable degree of anonymity can be achieved in urban areas.</p>
+<p>The <strong>code</strong> for this is <a href="https://github.com/henrik-muehe/trilateration">here</a>.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://henrik-muehe.github.io/website/" >
+    &copy;  Henrik Mühe 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

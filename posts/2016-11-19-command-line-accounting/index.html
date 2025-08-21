@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Command line accounting: From mint.com to Ledger. | Henrik Mühe</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="I&rsquo;ve recently switched all my families accounting from manually looking at
+bank websites &#43; mint.com to Ledger.
+This post describes the first part of that fairly long but ultimately successful
+journey: Motivation and Challenges.
+Motivation A: If your bank dropped $1,000 from your account, would you notice?
+I think my dad would have. He had all statements printed. In Germany, you do this
+at a small machine in the bank building (or you have the printouts mailed to you)
+and by putting them into a folder, you see old and new balances as well as the
+transactions between the two. This presumably makes spotting that something is off
+fairly easy.">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Henrik Mühe">
+    
+
+    
+<link rel="stylesheet" href="/website/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://henrik-muehe.github.io/website/posts/2016-11-19-command-line-accounting/">
+    
+
+    <meta property="og:url" content="https://henrik-muehe.github.io/website/posts/2016-11-19-command-line-accounting/">
+  <meta property="og:site_name" content="Henrik Mühe">
+  <meta property="og:title" content="Command line accounting: From mint.com to Ledger.">
+  <meta property="og:description" content="I’ve recently switched all my families accounting from manually looking at bank websites &#43; mint.com to Ledger. This post describes the first part of that fairly long but ultimately successful journey: Motivation and Challenges.
+Motivation A: If your bank dropped $1,000 from your account, would you notice? I think my dad would have. He had all statements printed. In Germany, you do this at a small machine in the bank building (or you have the printouts mailed to you) and by putting them into a folder, you see old and new balances as well as the transactions between the two. This presumably makes spotting that something is off fairly easy.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2016-11-19T00:00:00+00:00">
+    <meta property="article:modified_time" content="2016-11-19T00:00:00+00:00">
+
+  <meta itemprop="name" content="Command line accounting: From mint.com to Ledger.">
+  <meta itemprop="description" content="I’ve recently switched all my families accounting from manually looking at bank websites &#43; mint.com to Ledger. This post describes the first part of that fairly long but ultimately successful journey: Motivation and Challenges.
+Motivation A: If your bank dropped $1,000 from your account, would you notice? I think my dad would have. He had all statements printed. In Germany, you do this at a small machine in the bank building (or you have the printouts mailed to you) and by putting them into a folder, you see old and new balances as well as the transactions between the two. This presumably makes spotting that something is off fairly easy.">
+  <meta itemprop="datePublished" content="2016-11-19T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2016-11-19T00:00:00+00:00">
+  <meta itemprop="wordCount" content="729">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Command line accounting: From mint.com to Ledger.">
+  <meta name="twitter:description" content="I’ve recently switched all my families accounting from manually looking at bank websites &#43; mint.com to Ledger. This post describes the first part of that fairly long but ultimately successful journey: Motivation and Challenges.
+Motivation A: If your bank dropped $1,000 from your account, would you notice? I think my dad would have. He had all statements printed. In Germany, you do this at a small machine in the bank building (or you have the printouts mailed to you) and by putting them into a folder, you see old and new balances as well as the transactions between the two. This presumably makes spotting that something is off fairly easy.">
+
+      
+    
+	<link rel="stylesheet" href="/website/css/syntax.css">
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/website/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Henrik Mühe
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/portfolio/" title="Portfolio page">
+              Portfolio
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/sailing/" title="Sailing page">
+              Sailing
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Command line accounting: From mint.com to Ledger.</h1>
+      
+      <p class="tracked"><strong>Henrik Mühe</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-11-19T00:00:00Z">November 19, 2016</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>I&rsquo;ve recently switched all my families accounting from manually looking at
+bank websites + <a href="http://mint.com">mint.com</a> to <a href="http://ledger-cli.org/3.0/doc/ledger3.html">Ledger</a>.
+This post describes the first part of that fairly long but ultimately successful
+journey: Motivation and Challenges.</p>
+<h2 id="motivation-a-if-your-bank-dropped-1000-from-your-account-would-you-notice">Motivation A: If your bank dropped $1,000 from your account, would you notice?</h2>
+<p>I think my dad would have. He had all statements printed. In Germany, you do this
+at a small machine in the bank building (or you have the printouts mailed to you)
+and by putting them into a folder, you see old and new balances as well as the
+transactions between the two. This presumably makes spotting that something is off
+fairly easy.</p>
+<!-- raw HTML omitted -->
+<p>For me, this is probably a no. My checking account balance is usually fairly
+high since our rent is payed by check and
+<a href="https://www.google.com/search?q=bay%20area%20rent#q=mountain+view+rent+average">is a few thousand dollars</a>
+that have to be on the account when the check is cashed. Some days, I would
+probably notice a thousand dollars missing. Other days I wouldn&rsquo;t.</p>
+<p>Worse yet, I just read an intriguing email thread at work where someone&rsquo;s bank
+took credit card payments for <em>someone else&rsquo;s</em> credit card off of their checking
+account. The colleague who, quite embarrassedly actually, reported this, did not
+notice the $100-ish payments which did not belong to them going out of their
+account for 5 years. I think this is not completely unlikely to happen for
+others as well.</p>
+<p>Now does this mean that I am losing money from my bank misreporting my balance
+or payments going out that shouldn&rsquo;t? Probably no, but at the same time I feel
+I might just not notice which is bad.</p>
+<h2 id="motivation-b-how-many-accounts-do-you-have-and-what-is-the-sum-of-all-balances">Motivation B: How many accounts do you have and what is the sum of all balances?</h2>
+<p>This sounds like a fantastic problem to have but realistically I simply don&rsquo;t
+know. We have 5ish credit cards in the US, we have 3 credit cards in Germany,
+we have 2 checking accounts in the US, 2 checking accounts in Germany, we have
+401ks, we have all kinds of other weird financial products and very little cash.
+And really the only reason that I know we have all these random accounts is
+because I just put all of this into ledger. This is part of why this is
+important and cool work. You actually have one place that is aware of all
+accounts and it knows how to deal with different commodities and convert between
+them so you can get a digestible picture.</p>
+<!-- raw HTML omitted -->
+<p>Mint partially solves this. If you only have accounts in the US and all of them
+work with Mint, then this could be a decent tool. I never much cared for many
+parts of the interface but if you are comfortable with it and Motivation A
+doesn&rsquo;t matter to you then this is probably not the worst solution.</p>
+<h2 id="getting-from-mint-to-ledger">Getting from Mint to Ledger.</h2>
+<p>I made one simplifying assumption first: I won&rsquo;t care about the past. While this
+is not at all true, it just didn&rsquo;t seem worth it to import a year or more of
+past transactions and categorize them from scratch. Granted, it would give
+insight into past behavior but the last two or so months are probably sufficient for
+that.</p>
+<p>Then I needed to solve the most fundamental issue: How do I stop myself from
+starting entering things in Ledger and then stopping 2 weeks later when it
+becomes a chore. My solution to this is automation. I do not enjoy copy and
+pasting stuff from my bank&rsquo;s website. Neither do I want to log into 5 websites
+every three days just so that my finances are up to date. What simplifies this
+is that we really only use one credit card frequently, one checking account
+and one bank in Germany. It seemed reasonable to automate all transaction
+downloading for three financial institutions and maintaining that code. With a
+little luck one might even be able to find a second person who would help
+maintain that if open sourced.</p>
+<p>What I&rsquo;ve ended up with now is a solution consisting of:</p>
+<ul>
+<li>Ledger file in Dropbox.</li>
+<li>Automated downloading of transactions from
+<ul>
+<li>Chase,</li>
+<li>our Credit Union, and</li>
+<li>our German bank.</li>
+</ul>
+</li>
+<li>Automated report generation from the ledger file.</li>
+</ul>
+<p>The next post will talk about the implementation of the automated downloader
+for Chase as this had about the most caveats. The code will go on Github when
+that post is ready.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://henrik-muehe.github.io/website/" >
+    &copy;  Henrik Mühe 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

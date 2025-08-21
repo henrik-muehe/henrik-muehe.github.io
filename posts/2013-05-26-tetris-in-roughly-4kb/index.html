@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Tetris in roughly 4kb | Henrik Mühe</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="
+First off, I am absolutely not among the tetris maniacs of this world (the story is a recent HN find). While browsing the stack-exchange network though, I discovered codegolf and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and &ndash; honestly &ndash; was missing the feeling of competing at something.">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Henrik Mühe">
+    
+
+    
+<link rel="stylesheet" href="/website/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://henrik-muehe.github.io/website/posts/2013-05-26-tetris-in-roughly-4kb/">
+    
+
+    <meta property="og:url" content="https://henrik-muehe.github.io/website/posts/2013-05-26-tetris-in-roughly-4kb/">
+  <meta property="og:site_name" content="Henrik Mühe">
+  <meta property="og:title" content="Tetris in roughly 4kb">
+  <meta property="og:description" content="First off, I am absolutely not among the tetris maniacs of this world (the story is a recent HN find). While browsing the stack-exchange network though, I discovered codegolf and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and – honestly – was missing the feeling of competing at something.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2013-05-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2013-05-26T00:00:00+00:00">
+
+  <meta itemprop="name" content="Tetris in roughly 4kb">
+  <meta itemprop="description" content="First off, I am absolutely not among the tetris maniacs of this world (the story is a recent HN find). While browsing the stack-exchange network though, I discovered codegolf and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and – honestly – was missing the feeling of competing at something.">
+  <meta itemprop="datePublished" content="2013-05-26T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2013-05-26T00:00:00+00:00">
+  <meta itemprop="wordCount" content="639">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Tetris in roughly 4kb">
+  <meta name="twitter:description" content="First off, I am absolutely not among the tetris maniacs of this world (the story is a recent HN find). While browsing the stack-exchange network though, I discovered codegolf and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and – honestly – was missing the feeling of competing at something.">
+
+      
+    
+	<link rel="stylesheet" href="/website/css/syntax.css">
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/website/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Henrik Mühe
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/portfolio/" title="Portfolio page">
+              Portfolio
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/sailing/" title="Sailing page">
+              Sailing
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Tetris in roughly 4kb</h1>
+      
+      <p class="tracked"><strong>Henrik Mühe</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2013-05-26T00:00:00Z">May 26, 2013</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><!-- raw HTML omitted -->
+<p>First off, I am absolutely not among the <a href="http://chrishiggins.com/w/2013/02/03/playing-to-lose/">tetris maniacs of this world</a> (the story is a recent HN find). While browsing the stack-exchange network though, I discovered <a href="http://codegolf.stackexchange.com/">codegolf</a> and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and &ndash; honestly &ndash; was missing the feeling of competing at something.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>What I found is the challenge to <a href="http://codegolf.stackexchange.com/questions/11175/reimplementing-tetris">reimplement Tetris in less than 4kb</a>. The description was attractive: No fighting to remove every last superfluous byte from the code but a well-chosen limit inside which one could implement some subset of features and a popularity contest as the winning criterion.</p>
+<p>So how do you win this, right?</p>
+<p>Well, a language that executes in the browser seems to be an obvious choice. All visitors can quickly launch tetris and play a round. If you first need to get your hands on a BASIC compiler you will probably lose 50% of your potential up-votes from the fact that people can not actually play your implementation unless they are very eager to try it. I used CoffeeScript, first because pure Javascript is very painful and second because CoffeeScript allows much more concise, functional style code.</p>
+<p>So at roughly 3.8kib without any length optimizations I had most of the required functionality. Except for some optimizations, I was finished, which completely defeated the point of having a competition to play in. Luckily, I saw a comment of a competitor wanting to do another implementation and decided to implement a highscore. I am a computer scientist, so quite naturally, I wanted to show off to my colleagues and whoever else was willing to open the tetris link. What I did not want though, is someone faking his way on top of the highscore as &ndash; I am sure &ndash; someone would have tried.</p>
+<p>The highscore implementation was done using a lightweight node backend to complement the frontend CoffeeScript code. I factored the whole tetris game into a library and included it both on the frontend and on the backend. What happens when you max out is that most of the moves you made during the game (all final placements of all blocks as well as your random number generator seed) are send to the server and the entire game is reevaluated there.</p>
+<p>To further drive my more engaged colleagues insane, the client side high score is not send to the server at all, only the computed score is used. This is nonsensical for a product since it makes validating bug reports on the lines of &ldquo;It said I had 500k but I only have 20k on the high score list!&rdquo; very difficult &ndash; for my purposes though, it saved a couple of bytes ;-)</p>
+<p>During the 4 weeks I had the game on <a href="http://nodejitsu.com">Nodejitsu</a>, someone made it to 1000k points which equals at least 2 hours of constant playing (the game does not become harder over time); as far as I can tell, no one tricked the system. Feel free to try though, a <a href="http://tetris.muehe.org/">running version of Tetris</a> is hosted on my computer &ndash; sadly I had to reset the highscore.</p>
+<!-- raw HTML omitted -->
+<p>For me, the contest worked out though. First, it was a good replacement for the constant kick I got out of the previous coding challenge, second, the code limit stopped me from implementing too many pointless features and today I am happy to say that I am no longer addicted to coding challenges. Additionally, I have more codegolf flair now than I have on the actual Stackoverflow but this nice combined display here on the right makes it look less like I am a code maniac and more like I am a valuable contributor to the Stackexchange community.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://henrik-muehe.github.io/website/" >
+    &copy;  Henrik Mühe 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

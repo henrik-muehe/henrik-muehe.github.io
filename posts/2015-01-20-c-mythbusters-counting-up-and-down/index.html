@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>C Mythbusters: Counting up vs. down | Henrik Mühe</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="A while ago, I stumbled upon a
+guide to writing optimized C code.
+I had read a few of the ideas before and previously discounted them as &ldquo;something the
+optimizer should really do for you&rdquo;. In this and the next few posts I will take
+individual pieces of advice and fact check whether rewriting your code as
+suggested actually helps or not.
+Let&rsquo;s start with a simple proposition: Counting down to zero is cheaper
+than counting up. A similar proposition is sometimes encountered which this
+post will investigate as well: Comparing != (not equal) is faster than
+&lt; lower than in a loop.">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Henrik Mühe">
+    
+
+    
+<link rel="stylesheet" href="/website/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://henrik-muehe.github.io/website/posts/2015-01-20-c-mythbusters-counting-up-and-down/">
+    
+
+    <meta property="og:url" content="https://henrik-muehe.github.io/website/posts/2015-01-20-c-mythbusters-counting-up-and-down/">
+  <meta property="og:site_name" content="Henrik Mühe">
+  <meta property="og:title" content="C Mythbusters: Counting up vs. down">
+  <meta property="og:description" content="A while ago, I stumbled upon a guide to writing optimized C code. I had read a few of the ideas before and previously discounted them as “something the optimizer should really do for you”. In this and the next few posts I will take individual pieces of advice and fact check whether rewriting your code as suggested actually helps or not.
+Let’s start with a simple proposition: Counting down to zero is cheaper than counting up. A similar proposition is sometimes encountered which this post will investigate as well: Comparing != (not equal) is faster than &lt; lower than in a loop.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2015-01-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2015-01-20T00:00:00+00:00">
+
+  <meta itemprop="name" content="C Mythbusters: Counting up vs. down">
+  <meta itemprop="description" content="A while ago, I stumbled upon a guide to writing optimized C code. I had read a few of the ideas before and previously discounted them as “something the optimizer should really do for you”. In this and the next few posts I will take individual pieces of advice and fact check whether rewriting your code as suggested actually helps or not.
+Let’s start with a simple proposition: Counting down to zero is cheaper than counting up. A similar proposition is sometimes encountered which this post will investigate as well: Comparing != (not equal) is faster than &lt; lower than in a loop.">
+  <meta itemprop="datePublished" content="2015-01-20T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2015-01-20T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1737">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="C Mythbusters: Counting up vs. down">
+  <meta name="twitter:description" content="A while ago, I stumbled upon a guide to writing optimized C code. I had read a few of the ideas before and previously discounted them as “something the optimizer should really do for you”. In this and the next few posts I will take individual pieces of advice and fact check whether rewriting your code as suggested actually helps or not.
+Let’s start with a simple proposition: Counting down to zero is cheaper than counting up. A similar proposition is sometimes encountered which this post will investigate as well: Comparing != (not equal) is faster than &lt; lower than in a loop.">
+
+      
+    
+	<link rel="stylesheet" href="/website/css/syntax.css">
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/website/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Henrik Mühe
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/portfolio/" title="Portfolio page">
+              Portfolio
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/website/sailing/" title="Sailing page">
+              Sailing
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">C Mythbusters: Counting up vs. down</h1>
+      
+      <p class="tracked"><strong>Henrik Mühe</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2015-01-20T00:00:00Z">January 20, 2015</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>A while ago, I stumbled upon a
+<a href="http://www.codeproject.com/Articles/6154/Writing-Efficient-C-and-C-Code-Optimization">guide to writing optimized C code</a>.
+I had read a few of the ideas before and previously discounted them as &ldquo;something the
+optimizer should really do for you&rdquo;. In this and the next few posts I will take
+individual pieces of advice and fact check whether rewriting your code as
+suggested actually helps or not.</p>
+<p>Let&rsquo;s start with a simple proposition: <strong>Counting down to zero is cheaper
+than counting up</strong>. A similar proposition is sometimes encountered which this
+post will investigate as well: <strong>Comparing != (not equal) is faster than
+&lt; lower than in a loop</strong>.</p>
+<p>This should be easy enough to code, benchmark and look at the assembly. Please
+scroll down to the end of the post for a full disclaimer and test environment
+discussion.</p>
+<p><strong>Counting up:</strong>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="ln">1</span><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int64_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">100000000ll</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="k">asm</span><span class="p">(</span><span class="s">&#34;nop&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span></span></span></code></pre></div></p>
+<p><strong>Counting down:</strong>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="ln">1</span><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int64_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">100000000ll</span><span class="p">;</span> <span class="n">i</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="k">asm</span><span class="p">(</span><span class="s">&#34;nop&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span></span></span></code></pre></div></p>
+<p>As you can see, the code executes the same number of noops but the up
+implementation is counting <em>up</em> and comparing using <em>lower then</em> while the down
+implementation counts <em>down</em> and compares <em>not equal</em> with zero.</p>
+<p>Let&rsquo;s run it and benchmark:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ perf stat -r <span class="m">100</span> -d ./count_up
+</span></span><span class="line"><span class="ln">2</span><span class="cl">...
+</span></span><span class="line"><span class="ln">3</span><span class="cl">0.440219748 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.73% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">$ perf stat -r <span class="m">100</span> -d ./count_down
+</span></span><span class="line"><span class="ln">6</span><span class="cl">...
+</span></span><span class="line"><span class="ln">7</span><span class="cl">0.440001691 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.68% <span class="o">)</span></span></span></code></pre></div>
+<p>What do you know! Same exact thing. Does this mean subtraction and <em>lower then</em>
+versus <em>not equal</em> is equally fast on this machine? Let&rsquo;s look at the assembly:</p>
+<p><strong>Up:</strong>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">000082e4 &lt;main&gt;:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    82e4:	e5 9f 20 18 	ldr	r2, [pc, #24]
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    82e8:	e3 a0 30    	mov	r3, #0
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    82ec:	e1 a0       	nop
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    82f0:	e2 83 30 01 	add	r3, r3, #1
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    82f4:	e1 53 00 02 	cmp	r3, r2
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    82f8:	1a ff ff fb 	bne	82ec &lt;main+0x8&gt;
+</span></span><span class="line"><span class="ln">8</span><span class="cl">    ...
+</span></span><span class="line"><span class="ln">9</span><span class="cl">    8304:	05 f5 e1 00 	.word	0x05f5e100</span></span></code></pre></div></p>
+<p><strong>Down:</strong>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">000082e4 &lt;main&gt;:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    82e4:	e5 9f 20 18 	ldr	r2, [pc, #24]
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    82e8:	e3 a0 30    	mov	r3, #0
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    82ec:	e1 a0       	nop
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    82f0:	e2 83 30 01 	add	r3, r3, #1
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    82f4:	e1 53 00 02 	cmp	r3, r2
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    82f8:	1a ff ff fb 	bne	82ec &lt;main+0x8&gt;
+</span></span><span class="line"><span class="ln">8</span><span class="cl">    ...
+</span></span><span class="line"><span class="ln">9</span><span class="cl">    8304:	05 f5 e1 00 	.word	0x05f5e100</span></span></code></pre></div></p>
+<p>Yep, it looks like I <code>objdump -S</code>ed the same file twice, however, I did not.
+This actually generates the same assembly. Even cooler, it generates completely
+different assembly with <code>-O0</code> but optimizes to the exact same assembly. Our
+benchmarking results make a lot of sense.</p>
+<p>Therefore, both</p>
+<ul>
+<li><strong>counting down to zero is cheaper than counting up, and</strong></li>
+<li><strong>comparing != (not equal) is faster than &lt; lower than in a loop</strong></li>
+</ul>
+<p>are
+busted for cases where the compiler is free to make this optimization.
+One must not discount that compilers have advanced quite a bit
+in the 10 years from the time <a href="http://www.codeproject.com/Articles/6154/Writing-Efficient-C-and-C-Code-Optimization">the article I referenced earlier</a>
+was written but this is still great to know. I remember at least one occasion when someone
+suggested rewriting a somewhat hot loop this way and this basically tells us
+that &ndash; as long as the loop is changed the way it was changed here &ndash; it&rsquo;s
+probably not gonna lead to anything whatsoever. While the whole idea of rewriting
+a loop construct like this is only sensible for the absolute hottest of loops,
+counting down is not a bulletproof solution.</p>
+<p>Before we look at the case when the compiler can not optimize the loop, let&rsquo;s
+quickly check the results on more common platforms.</p>
+<p><strong>Other platforms:</strong></p>
+<p><em>Intel(R) Xeon(R) CPU X7560  @ 2.27GHz, gcc 4.9:</em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">0.089669005 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.01% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">0.089674167 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.01% <span class="o">)</span></span></span></code></pre></div>
+<p>Interestingly, this machine counts down but also optimizes both programs to the
+exact same assembly. A guess as to why this is done is because <code>mov</code> can actually
+take the constant <code>0x5f5e100</code> as an immediate, therefore the compiler saves one
+register.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0000000000400400 &lt;main&gt;:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  400400:	b8 00 e1 f5 05       	mov    $0x5f5e100,%eax
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  400405:	0f 1f 00             	nopl   (%rax)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  400408:	90                   	nop
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  400409:	48 83 e8 01          	sub    $0x1,%rax
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  40040d:	75 f9                	jne    400408 &lt;main+0x8&gt;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">  40040f:	31 c0                	xor    %eax,%eax
+</span></span><span class="line"><span class="ln">8</span><span class="cl">  400411:	c3                   	retq   </span></span></code></pre></div>
+<p><em>Intel(R) Atom(TM) CPU N2800   @ 1.86GHz, gcc 4.8.2:</em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">0.113469278 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.60% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">0.112894989 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.23% <span class="o">)</span></span></span></code></pre></div>
+<p>Ditto with the subtraction in both cases.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0000000000400400 &lt;main&gt;:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  400400:	b8 00 e1 f5 05       	mov    $0x5f5e100,%eax
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  400405:	0f 1f 00             	nopl   (%rax)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  400408:	90                   	nop
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  400409:	48 83 e8 01          	sub    $0x1,%rax
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  40040d:	75 f9                	jne    400408 &lt;main+0x8&gt;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">  40040f:	31 c0                	xor    %eax,%eax
+</span></span><span class="line"><span class="ln">8</span><span class="cl">  400411:	c3                   	retq   </span></span></code></pre></div>
+<p><strong>Loops with a data dependent body &ndash; from C to machine code</strong></p>
+<p>Wisely, <a href="http://databasearchitects.blogspot.com/">Thomas Neumann</a> suggested
+going beyond whether writing your C code nop loop in a &ldquo;count up&rdquo; or &ldquo;count down&rdquo; manner
+matters. This adds a much more important question that has so far not been
+neglected in this writeup: <strong>What if the compiler simply can not change
+the way your loop is counting</strong> because you are actually using the loop variable inside
+the loops body in a way that does not give the compiler the freedom to change
+the direction of the loop.</p>
+<p>To generate a sensible benchmark for this deeper investigation, we examine
+the instructions required to count up versus
+down and stop gcc from optimizing one into the other. From the previous
+examples, we assume that there is in fact a difference in terms of execution time
+of the instructions used to count up versus those used for counting down. If there
+was none, gcc would likely not go through the hassle of optimizing one into the
+other (and in different directions as well: ARM gcc converts to loops counting up,
+the two x86 platforms examined convert to instructions counting down).</p>
+<p>In C, we go with Thomas&rsquo;s suggestion (see code on GitHub, shortened here for
+readbility) and implement the benchmarks along the lines of this C code snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="k">const</span> <span class="kt">int64_t</span> <span class="n">l</span><span class="o">=</span><span class="mi">100000000ll</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kt">void</span> <span class="nf">insn_down</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int64_t</span> <span class="n">i</span><span class="o">=</span><span class="n">l</span><span class="p">;</span> <span class="n">i</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;nop&#34;</span><span class="o">::</span><span class="s">&#34;r&#34;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="kt">void</span> <span class="nf">insn_up</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int64_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">!=</span><span class="n">l</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;nop&#34;</span><span class="o">::</span><span class="s">&#34;r&#34;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="kt">void</span> <span class="nf">insn_up_lt</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int64_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">l</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;nop&#34;</span><span class="o">::</span><span class="s">&#34;r&#34;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="p">...</span></span></span></code></pre></div>
+<p>Now we validate that gcc indeed generates the code we were looking for:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">00000000004005f0 &lt;insn_up_eq&gt;:
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  400600:	90                   	nop
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  400601:	48 83 c0 01          	add    $0x1,%rax
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  400605:	48 39 c7             	cmp    %rax,%rdi
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  400608:	75 f6                	jne    400600 &lt;insn_up_eq+0x10&gt;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">00000000004005a0 &lt;insn_down&gt;:
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  4005b0:	90                   	nop
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  4005b1:	48 83 ef 01          	sub    $0x1,%rdi
+</span></span><span class="line"><span class="ln">11</span><span class="cl">  4005b5:	75 f9                	jne    4005b0 &lt;insn_down+0x10&gt;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln">13</span><span class="cl">00000000004005c0 &lt;insn_up_lt&gt;:
+</span></span><span class="line"><span class="ln">14</span><span class="cl">  4005d8:	90                   	nop
+</span></span><span class="line"><span class="ln">15</span><span class="cl">  4005d9:	48 83 c0 01          	add    $0x1,%rax
+</span></span><span class="line"><span class="ln">16</span><span class="cl">  4005dd:	48 39 c7             	cmp    %rax,%rdi
+</span></span><span class="line"><span class="ln">17</span><span class="cl">  4005e0:	7f f6                	jg     4005d8 &lt;insn_up_lt+0x18&gt;</span></span></code></pre></div>
+<p>This looks really great, however it is on x86. For ARM, the C code leads to
+terrible code being generated. For the purposes of this evaluation, we will
+therefore not look at ARM for now as the arm benchmark would require manually
+written (inline) assembly.</p>
+<p>Measuring this on the same Atom CPU used above, we get the following results:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">count up:        0.114563958 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.92% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">count dn:        0.112721510 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.24% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">insn  up:        0.166884574 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.28% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">insn  dn:        0.113022031 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.51% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">insn  lt:        0.193557023 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.31% <span class="o">)</span></span></span></code></pre></div>
+<p>Quite obviously, counting down is the better choice on this machine (Intel Atom)
+when it comes to machine code. This is also visible in the fact that <code>insn_down</code>
+requires one instruction less as seen above. Also, gcc makes the right decision
+and optimizes both ways of expressing the loop in C to the faster option</p>
+<p>Running the same benchmark on the Intel Xeon mentioned before, we see a completely
+different picture, first the assembly:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">00000000004005f0 &lt;insn_up_eq&gt;:
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  400600:	90                   	nop
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  400601:	48 83 c0 01          	add    $0x1,%rax
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  400605:	48 39 c7             	cmp    %rax,%rdi
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  400608:	75 f6                	jne    400600 &lt;insn_up_eq+0x10&gt;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">00000000004005a0 &lt;insn_down&gt;:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  4005b0:	90                   	nop
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  4005b1:	48 83 ef 01          	sub    $0x1,%rdi
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  4005b5:	75 f9                	jne    4005b0 &lt;insn_down+0x10&gt;
+</span></span><span class="line"><span class="ln">11</span><span class="cl">00000000004005c0 &lt;insn_up_lt&gt;:
+</span></span><span class="line"><span class="ln">12</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln">13</span><span class="cl">  4005d8:	90                   	nop
+</span></span><span class="line"><span class="ln">14</span><span class="cl">  4005d9:	48 83 c0 01          	add    $0x1,%rax
+</span></span><span class="line"><span class="ln">15</span><span class="cl">  4005dd:	48 39 c7             	cmp    %rax,%rdi
+</span></span><span class="line"><span class="ln">16</span><span class="cl">  4005e0:	7f f6                	jg     4005d8 &lt;insn_up_lt+0x18&gt;</span></span></code></pre></div>
+<p>While the assembly is again one instruction shorter for the countdown loop, the
+benchmark results paint a different picture:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">count up:        0.089699257 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.01% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">count dn:        0.089653781 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.01% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">insn  up:        0.089669413 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.02% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">insn  dn:        0.089669189 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.02% <span class="o">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">insn  lt:        0.089663413 seconds <span class="nb">time</span> elapsed <span class="o">(</span> +-  0.02% <span class="o">)</span></span></span></code></pre></div>
+<p>All implementations are equally fast. Regardless whether the loop is expressed in
+C as counting up or down and also regardless whether the machine code used counts
+up from zero or down to zero, the performance of the loop is exactly the same.</p>
+<p><strong>Summary:</strong></p>
+<p>In summary, we can say the following: If the compiler is free to choose the
+direction in which the loop counts, you don&rsquo;t need to worry &ndash; it will do the
+right thing. If a data dependency stops your loop from being optimizable in this
+fashion, the question becomes more interesting. On a fairly wimpy core like my
+Intel Atom, couting down and comparing for (in-)equality was faster. On a premium
+CPU like the Intel Xeon tested here, it did not matter at all, all implementations
+of the for loop were equally fast.</p>
+<p>As a general take away, one should also remember that the difference (if there is one
+on your architecture) between
+the direction of the loop only matters significantly if there&rsquo;s next to no work
+being done in the loop&rsquo;s body. For instance, if you were to access memory in the loop, this will likely completely
+dominate the cost of executing the loop.</p>
+<p><strong>Disclaimer and test environment:</strong></p>
+<p>Unless otherwise noted, all measurements quoted here were taken with this setup:</p>
+<ul>
+<li><code>gcc -O3 -std=gnu99 -Wall -Wextra -Werror -pedantic</code></li>
+<li><code>gcc -v</code> gcc version 4.6.3 (Debian 4.6.3-14+rpi1)</li>
+<li><code>cat /proc/cpuinfo | grep model</code> ARMv6-compatible processor rev 7 (v6l)</li>
+</ul>
+<p>Code on <a href="https://github.com/henrik-muehe/c-mythbusters">GitHub</a>.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://henrik-muehe.github.io/website/" >
+    &copy;  Henrik Mühe 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
