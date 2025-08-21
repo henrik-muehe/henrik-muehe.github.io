@@ -2,178 +2,178 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Henrik Mühe</title>
-    <link>https://henrik-muehe.github.io/posts/</link>
+    <link>https://muehe.org/posts/</link>
     <description>Recent content in Posts on Henrik Mühe</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://henrik-muehe.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://muehe.org/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building your own more expensive Nest: Arduino, Android, React Native.</title>
-      <link>https://henrik-muehe.github.io/posts/2019-01-01-thermostat/</link>
+      <link>https://muehe.org/posts/2019-01-01-thermostat/</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2019-01-01-thermostat/</guid>
-      <description>&lt;p&gt;I recently bought a used &lt;a href=&#34;https://www.fiatusa.com/500e.html&#34;&gt;Fiat 500e&lt;/a&gt;, naturally I set out to reverse engineer the CAN bus in it. That led me to discover Arduinos (which I knew existed but had never used) as well as &lt;a href=&#34;https://en.wikipedia.org/wiki/ESP8266&#34;&gt;ESP8266s&lt;/a&gt;. I had previously used &lt;a href=&#34;https://www.fhem.de/&#34;&gt;FHEM&lt;/a&gt; to wire up my heater in Germany but it felt outdated even in 2011, much more so now so I decided to go for something prettier.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://henrik-muehe.github.io/images/heater/breadboard.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;I first build a prototype on a breadboard that could connect to our wifi and control the heater. The Arduino acts as a temperature sensor as well as a way of switching our heater on. It however does not implement any control mechanism, instead it subscribes and publishes to an &lt;a href=&#34;https://en.wikipedia.org/wiki/MQTT&#34;&gt;MQTT&lt;/a&gt; server and the actual control-loop is implemented using &lt;a href=&#34;http://nodered.org&#34;&gt;Node-RED&lt;/a&gt;. This seems beneficial as it is much easier to maintain software on a Linux machine than OTA updating an Arduino. Also, it allows leveraging cool plugins available in Node-RED.&lt;/p&gt;</description>
+      <guid>https://muehe.org/posts/2019-01-01-thermostat/</guid>
+      <description>&lt;p&gt;I recently bought a used &lt;a href=&#34;https://www.fiatusa.com/500e.html&#34;&gt;Fiat 500e&lt;/a&gt;, naturally I set out to reverse engineer the CAN bus in it. That led me to discover Arduinos (which I knew existed but had never used) as well as &lt;a href=&#34;https://en.wikipedia.org/wiki/ESP8266&#34;&gt;ESP8266s&lt;/a&gt;. I had previously used &lt;a href=&#34;https://www.fhem.de/&#34;&gt;FHEM&lt;/a&gt; to wire up my heater in Germany but it felt outdated even in 2011, much more so now so I decided to go for something prettier.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://muehe.org/images/heater/breadboard.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;I first build a prototype on a breadboard that could connect to our wifi and control the heater. The Arduino acts as a temperature sensor as well as a way of switching our heater on. It however does not implement any control mechanism, instead it subscribes and publishes to an &lt;a href=&#34;https://en.wikipedia.org/wiki/MQTT&#34;&gt;MQTT&lt;/a&gt; server and the actual control-loop is implemented using &lt;a href=&#34;http://nodered.org&#34;&gt;Node-RED&lt;/a&gt;. This seems beneficial as it is much easier to maintain software on a Linux machine than OTA updating an Arduino. Also, it allows leveraging cool plugins available in Node-RED.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Reverse-engineering exact location information through trilateration.</title>
-      <link>https://henrik-muehe.github.io/posts/2016-12-25-reverse-engineering-through-trilateration/</link>
+      <link>https://muehe.org/posts/2016-12-25-reverse-engineering-through-trilateration/</link>
       <pubDate>Sun, 25 Dec 2016 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2016-12-25-reverse-engineering-through-trilateration/</guid>
+      <guid>https://muehe.org/posts/2016-12-25-reverse-engineering-through-trilateration/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;p&gt;Many datasets on the internet &lt;a href=&#34;http://blog.includesecurity.com/2014/02/how-i-was-able-to-track-location-of-any.html&#34;&gt;accidentally expose location information&lt;/a&gt; by&#xA;allowing distance based search (&amp;ldquo;find everything within 3 miles around this&#xA;point&amp;rdquo;) from arbitrary points of origin. I happened upon such a dataset and&#xA;wanted to try rediscover the original location through trilateration.&lt;/p&gt;&#xA;&lt;p&gt;Trilateration, which is commonly wrongly referred to as triangulation, is the&#xA;process of finding a location &lt;code&gt;L&lt;/code&gt; given three other locations &lt;code&gt;A&lt;/code&gt;, &lt;code&gt;B&lt;/code&gt;, &lt;code&gt;C&lt;/code&gt; and&#xA;their distance to &lt;code&gt;L&lt;/code&gt; (let&amp;rsquo;s call that &lt;code&gt;dA&lt;/code&gt;, &lt;code&gt;dB&lt;/code&gt; and &lt;code&gt;dC&lt;/code&gt;). Very surprisingly&#xA;to me, I was not able to find a lot of good, sure-fire solutions to this easily&#xA;when I wanted to solve a trilateration problem so there&amp;rsquo;s a summary of what I&#xA;found.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Automating allocation reports in Ledger.</title>
-      <link>https://henrik-muehe.github.io/posts/2016-11-25-automating-allocation-reports-in-ledger/</link>
+      <link>https://muehe.org/posts/2016-11-25-automating-allocation-reports-in-ledger/</link>
       <pubDate>Fri, 25 Nov 2016 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2016-11-25-automating-allocation-reports-in-ledger/</guid>
+      <guid>https://muehe.org/posts/2016-11-25-automating-allocation-reports-in-ledger/</guid>
       <description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;p&gt;If you own any stocks or funds you probably want to track the allocation, meaning&#xA;how much money is in stocks and funds respectively. Some fairly well known low&#xA;key investment strategies rely on balancing this ratio, for instance&#xA;&lt;a href=&#34;https://www.amazon.com/Four-Pillars-Investing-Building-Portfolio/dp/0071747052/ref=pd_sim_14_6?_encoding=UTF8&amp;amp;pd_rd_i=0071747052&amp;amp;pd_rd_r=Q2MDGYSD50HBFQ3PWE64&amp;amp;pd_rd_w=D5pEg&amp;amp;pd_rd_wg=nXyfZ&amp;amp;psc=1&amp;amp;refRID=Q2MDGYSD50HBFQ3PWE64&#34;&gt;this one&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;In Ledger, allocations can be modelled easily through allocation based accounts&#xA;and automatic transactions. This is outlined &lt;a href=&#34;http://www.ledger-cli.org/3.0/doc/ledger3.html#Asset-Allocation&#34;&gt;here&lt;/a&gt;.&#xA;If you do this however, you still have to manually update allocations for every&#xA;fund you own which is a nuisance, especially if you own something like a target&#xA;retirement investment fund which naturally and purposefully changes its allocation&#xA;strategy over time.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Automating commodity prices in Ledger.</title>
-      <link>https://henrik-muehe.github.io/posts/2016-11-21-automating-commodity-prices-in-ledger/</link>
+      <link>https://muehe.org/posts/2016-11-21-automating-commodity-prices-in-ledger/</link>
       <pubDate>Mon, 21 Nov 2016 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2016-11-21-automating-commodity-prices-in-ledger/</guid>
+      <guid>https://muehe.org/posts/2016-11-21-automating-commodity-prices-in-ledger/</guid>
       <description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;p&gt;If you use Ledger CLI, chances are you will use more commodities than just&#xA;dollar. This is actually one of Ledger&amp;rsquo;s best features. For instance, I&#xA;track our 401k in Ledger and it allows me to list the ticker symbols of the&#xA;funds we have purchased inside the 401k as well as the fact that this is pre-tax&#xA;money. Our opening balances look something like this:&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;2016/07/19 * Opening Balance&#xA;  Assets:Checking                     $200.00&#xA;  Assets:Investments:401              3.1 VFIFX @ p$29.8&#xA;  Assets:Investments:401              2.5 VTTSX @ p$29.8&#xA;  ...&#xA;  Income:Opening Balances&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Roughly, this means that we have two different funds in our 401k with ticker&#xA;symbols &lt;code&gt;VFIFX&lt;/code&gt; and &lt;code&gt;VTTSX&lt;/code&gt; respectively. Also, the funds are not valued in dollars but&#xA;in &lt;code&gt;p$&lt;/code&gt; which is our commodity for pre-tax money. The idea is that this money,&#xA;if accessed today, has a much lower actual value because we&amp;rsquo;d have to pay&#xA;federal, state and penality taxes on it. Therefore, the price database for&#xA;this looks like this&lt;/p&gt;</description>
     </item>
     <item>
       <title>Loading Chase.com transactions into Ledger</title>
-      <link>https://henrik-muehe.github.io/posts/2016-11-20-loading-chase-transactions-into-ledger/</link>
+      <link>https://muehe.org/posts/2016-11-20-loading-chase-transactions-into-ledger/</link>
       <pubDate>Sun, 20 Nov 2016 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2016-11-20-loading-chase-transactions-into-ledger/</guid>
-      <description>&lt;p&gt;When trying to &lt;a href=&#34;https://henrik-muehe.github.io/posts/command-line-accounting&#34;&gt;migrate away from Mint to Ledger&lt;/a&gt;, one of the major obstacles is automating the work of entering every 3 dollar coffee shop transaction manually. Ledger does provide some help in this area through the use of &lt;a href=&#34;http://www.ledger-cli.org/3.0/doc/ledger3.html#xact&#34;&gt;ledger xact&lt;/a&gt;, yet as of today, we enter 25 transactions per week into ledger and a large chunk of them is from our Chase credit cards. Automation seems to be the easiest way to make this a lot less painful.&lt;/p&gt;</description>
+      <guid>https://muehe.org/posts/2016-11-20-loading-chase-transactions-into-ledger/</guid>
+      <description>&lt;p&gt;When trying to &lt;a href=&#34;https://muehe.org/posts/command-line-accounting&#34;&gt;migrate away from Mint to Ledger&lt;/a&gt;, one of the major obstacles is automating the work of entering every 3 dollar coffee shop transaction manually. Ledger does provide some help in this area through the use of &lt;a href=&#34;http://www.ledger-cli.org/3.0/doc/ledger3.html#xact&#34;&gt;ledger xact&lt;/a&gt;, yet as of today, we enter 25 transactions per week into ledger and a large chunk of them is from our Chase credit cards. Automation seems to be the easiest way to make this a lot less painful.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Command line accounting: From mint.com to Ledger.</title>
-      <link>https://henrik-muehe.github.io/posts/2016-11-19-command-line-accounting/</link>
+      <link>https://muehe.org/posts/2016-11-19-command-line-accounting/</link>
       <pubDate>Sat, 19 Nov 2016 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2016-11-19-command-line-accounting/</guid>
+      <guid>https://muehe.org/posts/2016-11-19-command-line-accounting/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve recently switched all my families accounting from manually looking at&#xA;bank websites + &lt;a href=&#34;http://mint.com&#34;&gt;mint.com&lt;/a&gt; to &lt;a href=&#34;http://ledger-cli.org/3.0/doc/ledger3.html&#34;&gt;Ledger&lt;/a&gt;.&#xA;This post describes the first part of that fairly long but ultimately successful&#xA;journey: Motivation and Challenges.&lt;/p&gt;&#xA;&lt;h2 id=&#34;motivation-a-if-your-bank-dropped-1000-from-your-account-would-you-notice&#34;&gt;Motivation A: If your bank dropped $1,000 from your account, would you notice?&lt;/h2&gt;&#xA;&lt;p&gt;I think my dad would have. He had all statements printed. In Germany, you do this&#xA;at a small machine in the bank building (or you have the printouts mailed to you)&#xA;and by putting them into a folder, you see old and new balances as well as the&#xA;transactions between the two. This presumably makes spotting that something is off&#xA;fairly easy.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Parsing expressions</title>
-      <link>https://henrik-muehe.github.io/posts/2015-03-29-parsing-expressions/</link>
+      <link>https://muehe.org/posts/2015-03-29-parsing-expressions/</link>
       <pubDate>Sun, 29 Mar 2015 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2015-03-29-parsing-expressions/</guid>
+      <guid>https://muehe.org/posts/2015-03-29-parsing-expressions/</guid>
       <description>&lt;p&gt;Expressions occur naturally in many languages, for instance in SQL. Usual ways of executing expressions are by interpretation or code generation. While I want to eventually talk about code generation, a sensible first step approaching expressions is parsing them from text which I will discuss in the blog post.&lt;/p&gt;&#xA;&lt;p&gt;Looking at a SQL statement, we find multiple expression but will first focus on the one used to find qualifying tuples which comes after the &lt;code&gt;WHERE&lt;/code&gt; keyword:&lt;/p&gt;</description>
     </item>
     <item>
       <title>C Mythbusters: Counting up vs. down</title>
-      <link>https://henrik-muehe.github.io/posts/2015-01-20-c-mythbusters-counting-up-and-down/</link>
+      <link>https://muehe.org/posts/2015-01-20-c-mythbusters-counting-up-and-down/</link>
       <pubDate>Tue, 20 Jan 2015 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2015-01-20-c-mythbusters-counting-up-and-down/</guid>
+      <guid>https://muehe.org/posts/2015-01-20-c-mythbusters-counting-up-and-down/</guid>
       <description>&lt;p&gt;A while ago, I stumbled upon a&#xA;&lt;a href=&#34;http://www.codeproject.com/Articles/6154/Writing-Efficient-C-and-C-Code-Optimization&#34;&gt;guide to writing optimized C code&lt;/a&gt;.&#xA;I had read a few of the ideas before and previously discounted them as &amp;ldquo;something the&#xA;optimizer should really do for you&amp;rdquo;. In this and the next few posts I will take&#xA;individual pieces of advice and fact check whether rewriting your code as&#xA;suggested actually helps or not.&lt;/p&gt;&#xA;&lt;p&gt;Let&amp;rsquo;s start with a simple proposition: &lt;strong&gt;Counting down to zero is cheaper&#xA;than counting up&lt;/strong&gt;. A similar proposition is sometimes encountered which this&#xA;post will investigate as well: &lt;strong&gt;Comparing != (not equal) is faster than&#xA;&amp;lt; lower than in a loop&lt;/strong&gt;.&lt;/p&gt;</description>
     </item>
     <item>
       <title>H1B: Things to Remember</title>
-      <link>https://henrik-muehe.github.io/posts/2014-05-05-h1b-things-to-remember/</link>
+      <link>https://muehe.org/posts/2014-05-05-h1b-things-to-remember/</link>
       <pubDate>Mon, 05 May 2014 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2014-05-05-h1b-things-to-remember/</guid>
+      <guid>https://muehe.org/posts/2014-05-05-h1b-things-to-remember/</guid>
       <description>&lt;p&gt;I am trying to write down everything that I remembered to do before leaving for the US so that posterity can benefit from it. I will add what I forgot later on.&lt;/p&gt;&#xA;&lt;h2 id=&#34;dmv-report-car-insurance-report&#34;&gt;DMV Report, Car insurance report&lt;/h2&gt;&#xA;&lt;p&gt;I have requested a report from my file with the Germany equivalent of the DMV just in case. I also asked my car insurance provider to send a letter stating that I am in good standing with them and have not had them pay for anything in the last 11 years. Apparently, some auto insurance carriers in the US will give you a discount if you can provide such information but no matter if useful or not things like this are easier to do before leaving.&lt;/p&gt;</description>
     </item>
     <item>
       <title>SSH into Docker containers by name</title>
-      <link>https://henrik-muehe.github.io/posts/2014-03-11-ssh-into-docker-containers-by-name/</link>
+      <link>https://muehe.org/posts/2014-03-11-ssh-into-docker-containers-by-name/</link>
       <pubDate>Tue, 11 Mar 2014 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2014-03-11-ssh-into-docker-containers-by-name/</guid>
+      <guid>https://muehe.org/posts/2014-03-11-ssh-into-docker-containers-by-name/</guid>
       <description>&lt;p&gt;I hacked together an SSH proxy so that you can direct SSH into docker containers using their name. It&amp;rsquo;s on &lt;a href=&#34;https://github.com/henrik-muehe/docker-ssh&#34;&gt;github&lt;/a&gt;, excerpt from the README:&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/henrik-muehe/docker-ssh&#34;&gt;&lt;strong&gt;docker-ssh&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;Allows connecting to all your local docker containers using ssh simply like this:&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;ssh container-name.docker&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;if container-name is the name of the container and ssh is running in it. Automatically install for the current user using&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;curl -s https://raw.githubusercontent.com/henrik-muehe/docker-ssh/master/install | /bin/bash&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Enjoy!&lt;/p&gt;</description>
     </item>
     <item>
       <title>Switching Docker from aufs to devicemapper</title>
-      <link>https://henrik-muehe.github.io/posts/2014-02-28-switching-docker-from-aufs-to-devicemapper/</link>
+      <link>https://muehe.org/posts/2014-02-28-switching-docker-from-aufs-to-devicemapper/</link>
       <pubDate>Fri, 28 Feb 2014 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2014-02-28-switching-docker-from-aufs-to-devicemapper/</guid>
+      <guid>https://muehe.org/posts/2014-02-28-switching-docker-from-aufs-to-devicemapper/</guid>
       <description>&lt;p&gt;We use &lt;a href=&#34;http://docker.io&#34;&gt;Docker&lt;/a&gt; for various teaching webservices (&lt;a href=&#34;http://codematch.muehe.org&#34;&gt;Codematch&lt;/a&gt;, &lt;a href=&#34;http://xquery.db.in.tum.de&#34;&gt;Xquery&lt;/a&gt;, &lt;a href=&#34;http://datalog.db.in.tum.de&#34;&gt;Datalog&lt;/a&gt;) we want to offer to students but which should not cause our webserver to be more exposed. Docker has been good so far and we have already used the architecture to migrate all containers from the original dev host to the production webserver host. Here, we&amp;rsquo;ll talk about switching from AUFS to Devicemapper as a storage backend.&lt;/p&gt;&#xA;&lt;h2 id=&#34;why-device-mapper&#34;&gt;Why device mapper?&lt;/h2&gt;&#xA;&lt;p&gt;I can not attest to either storage backend being strictly better or worse than the other. However, for us the benefit is being able to run IBM DB2 without resorting to mounting an external volume for the DB2 container. This is beneficial, as using external storage break the versioned architecture of docker while keeping all data inside the container&amp;rsquo;s filesystem yields a nice separation of concerns.&lt;/p&gt;</description>
     </item>
     <item>
       <title>The HackerNews Effect</title>
-      <link>https://henrik-muehe.github.io/posts/2014-02-04-the-hackernews-effect/</link>
+      <link>https://muehe.org/posts/2014-02-04-the-hackernews-effect/</link>
       <pubDate>Tue, 04 Feb 2014 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2014-02-04-the-hackernews-effect/</guid>
+      <guid>https://muehe.org/posts/2014-02-04-the-hackernews-effect/</guid>
       <description>&lt;p&gt;My &lt;a href=&#34;http://muehe.org/posts/stripe-ctf-3-writeup/&#34;&gt;Stripe-CTF Writeup&lt;/a&gt; actually made it 4th place on &lt;a href=&#34;https://news.ycombinator.com/&#34;&gt;HackerNews&lt;/a&gt; and I just wanted to share how that looks in Google Analytics. Sufficient to say I was very happy with hosting a static, Jekyll generated blog on Github.io when I was the realtime analytics numbers climb beyond 300 concurrent visitors. Also, my Alexa rank jumped about 25,000,000 places to 300000th most visited website in the US. Good times, thank you.&lt;/p&gt;&#xA;&lt;!-- raw HTML omitted --&gt;</description>
     </item>
     <item>
       <title>Stripe-CTF 3 Writeup</title>
-      <link>https://henrik-muehe.github.io/posts/2014-01-30-stripe-ctf-3-writeup/</link>
+      <link>https://muehe.org/posts/2014-01-30-stripe-ctf-3-writeup/</link>
       <pubDate>Thu, 30 Jan 2014 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2014-01-30-stripe-ctf-3-writeup/</guid>
+      <guid>https://muehe.org/posts/2014-01-30-stripe-ctf-3-writeup/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;&#xA;&lt;p&gt;&lt;em&gt;&lt;del&gt;Note: I&amp;rsquo;ll add the source once submissions are off. Since the contest is &lt;strong&gt;officially over&lt;/strong&gt; here goes the text part of it, I doubt anyone will quickly implement all of it.&lt;/del&gt; It&amp;rsquo;s all on Github now!&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Note: I posted a screenshot of Google Analytics &lt;a href=&#34;http://muehe.org/posts/the-hackernews-effect/&#34;&gt;here&lt;/a&gt; so that you can take a look of what a 4th place on Hacker News looks like in terms of visits.&lt;/em&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Profiling only parts of your code with perf.</title>
-      <link>https://henrik-muehe.github.io/posts/2014-01-20-profiling-only-parts-of-your-code-with-perf/</link>
+      <link>https://muehe.org/posts/2014-01-20-profiling-only-parts-of-your-code-with-perf/</link>
       <pubDate>Mon, 20 Jan 2014 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2014-01-20-profiling-only-parts-of-your-code-with-perf/</guid>
+      <guid>https://muehe.org/posts/2014-01-20-profiling-only-parts-of-your-code-with-perf/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://perf.wiki.kernel.org/index.php/Main_Page&#34;&gt;Perf&lt;/a&gt; is an excellent tool for profiling linux software. It uses hardware performance counters to give you information on your code&amp;rsquo;s performance. This makes it a very low overhead alternative to &amp;ndash; for instance &amp;ndash; &lt;a href=&#34;http://valgrind.org/&#34;&gt;valgrind&lt;/a&gt; which uses instrumentation. Both ways of profiling software have their merits but perf is a great tool to just keep running all the time to find severe performance bottlenecks with ease.&lt;/p&gt;&#xA;&lt;p&gt;That said, I frequently have to profile only a part of my code. This is due to the fact that I write lots of database benchmarks which frequently load or even generate an initial dataset which they than run queries on. I usually care for query instead of loading performance, therefore I&amp;rsquo;d like to profile only the query part of my application. This can be done using API calls to the excellent &lt;a href=&#34;http://icl.cs.utk.edu/papi/&#34;&gt;performance counters C api&lt;/a&gt; but in my case, an easier way of achieving what I need it to use a &amp;ldquo;perf wrapper&amp;rdquo;. In you code, that wrapper looks like this:&lt;/p&gt;</description>
     </item>
     <item>
       <title>CodeChef Feelgood Therapy</title>
-      <link>https://henrik-muehe.github.io/posts/2013-09-26-codechef-feelgood-therapy/</link>
+      <link>https://muehe.org/posts/2013-09-26-codechef-feelgood-therapy/</link>
       <pubDate>Thu, 26 Sep 2013 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2013-09-26-codechef-feelgood-therapy/</guid>
+      <guid>https://muehe.org/posts/2013-09-26-codechef-feelgood-therapy/</guid>
       <description>&lt;p&gt;Coding challenges are great for anyone who codes, likes to win and has too much time on his hands. I participated in an extensive one earlier this year, I learned a lot. Coding challenges have been institutionalized, one platform offering such challenges is &lt;a href=&#34;http://www.codechef.com&#34;&gt;CodeChef&lt;/a&gt;. There is different types of challenges on CodeChef. One such type is code golf where the goal is keeping the source code as short as possible, to me, something utterly useless. Short, readable code is great, code like &lt;a href=&#34;http://de.wikipedia.org/wiki/Forkbomb&#34;&gt;&lt;code&gt;:(){ :|:&amp;amp;};:&lt;/code&gt;&lt;/a&gt; is not. More interesting challenges are timed, hard problems. I am not the lunch-time challenge type where time limits range between one and a couple of hours but a contest lasting for say a week gets my attention.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Visualize your traffic (to work)!</title>
-      <link>https://henrik-muehe.github.io/posts/2013-06-04-visualize-your-traffic/</link>
+      <link>https://muehe.org/posts/2013-06-04-visualize-your-traffic/</link>
       <pubDate>Tue, 04 Jun 2013 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2013-06-04-visualize-your-traffic/</guid>
+      <guid>https://muehe.org/posts/2013-06-04-visualize-your-traffic/</guid>
       <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;(click here to try)&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;&#xA;&lt;p&gt;I recently started commuting from and to work by car instead of using the subway. This &amp;ndash; sadly &amp;ndash; was not by choice but rather because a) I broke my foot and b) the subway does not currently go straight to work but you have to use a shuttle bus.&lt;/p&gt;&#xA;&lt;p&gt;When we started commuting by car, we noticed that traffic patterns differed quite a bit depending on time, day and weather. I wouldn&amp;rsquo;t say there&amp;rsquo;s a huge advantage you can get from knowing all about the traffic patterns. Maybe, though, you can do less experimenting and more knowing when it comes to determining the best moment to start the commute to work and thus minimize the amount of time spend on the road. If you will, this can be viewed as a more technology driven approach to the commute time minimizations done by &lt;a href=&#34;http://www.masonchang.com/blog/2012/6/15/frequent-flyer-hacks.html&#34;&gt;Mason Chang&lt;/a&gt; that I recently enjoyed reading.&lt;/p&gt;</description>
     </item>
     <item>
       <title>The Invulnerable Highscore? Hacked!</title>
-      <link>https://henrik-muehe.github.io/posts/2013-05-28-the-invulnerable-tetris-highscore-hacked/</link>
+      <link>https://muehe.org/posts/2013-05-28-the-invulnerable-tetris-highscore-hacked/</link>
       <pubDate>Tue, 28 May 2013 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2013-05-28-the-invulnerable-tetris-highscore-hacked/</guid>
+      <guid>https://muehe.org/posts/2013-05-28-the-invulnerable-tetris-highscore-hacked/</guid>
       <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;&#xA;&lt;p&gt;&amp;hellip; and by a python script too, or so I hear.&lt;/p&gt;&#xA;&lt;p&gt;I was mildly shocked that a colleague was able to hack the invulnerable highscore. I bet free lunch on the high score not being hackable easily and I was wrong &amp;ndash; but not by design. I just missed to add the most important line of the entire highscore verification mechanism. My colleague spotted the mistake while studying the code and &amp;ndash; instead of filing an issue on &lt;a href=&#34;https://github.com/henrik-muehe/tetris&#34;&gt;Github&lt;/a&gt; &amp;ndash; opted to go for the free lunch instead.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Tetris in roughly 4kb</title>
-      <link>https://henrik-muehe.github.io/posts/2013-05-26-tetris-in-roughly-4kb/</link>
+      <link>https://muehe.org/posts/2013-05-26-tetris-in-roughly-4kb/</link>
       <pubDate>Sun, 26 May 2013 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2013-05-26-tetris-in-roughly-4kb/</guid>
+      <guid>https://muehe.org/posts/2013-05-26-tetris-in-roughly-4kb/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;&#xA;&lt;p&gt;First off, I am absolutely not among the &lt;a href=&#34;http://chrishiggins.com/w/2013/02/03/playing-to-lose/&#34;&gt;tetris maniacs of this world&lt;/a&gt; (the story is a recent HN find). While browsing the stack-exchange network though, I discovered &lt;a href=&#34;http://codegolf.stackexchange.com/&#34;&gt;codegolf&lt;/a&gt; and browsed for interesting challenges, none of which were to be about roughing up code so much that it would fit into a cache-line. I just finished working 2 1/2 months for the SIGMOD Programming Challenge and &amp;ndash; honestly &amp;ndash; was missing the feeling of competing at something.&lt;/p&gt;</description>
     </item>
     <item>
       <title>AR.Drone with GPS and a magnetic compass</title>
-      <link>https://henrik-muehe.github.io/posts/2011-01-16-ardrone-with-gps-and-a-magnetic-compass/</link>
+      <link>https://muehe.org/posts/2011-01-16-ardrone-with-gps-and-a-magnetic-compass/</link>
       <pubDate>Sun, 16 Jan 2011 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2011-01-16-ardrone-with-gps-and-a-magnetic-compass/</guid>
+      <guid>https://muehe.org/posts/2011-01-16-ardrone-with-gps-and-a-magnetic-compass/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve put my drone back together with working GPS and compass attached. After calibrating the compass in it&amp;rsquo;s new place the readings are pretty solid. I&amp;rsquo;m hoping to be able to correct navdata output for yaw with it pretty soon :-)&lt;/p&gt;&#xA;&lt;h2 id=&#34;pictures&#34;&gt;Pictures:&lt;/h2&gt;&#xA;&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Attaching an I2C compass to the AR.Drone</title>
-      <link>https://henrik-muehe.github.io/posts/2011-01-10-attaching-an-i2c-compass-to-the-ardrone/</link>
+      <link>https://muehe.org/posts/2011-01-10-attaching-an-i2c-compass-to-the-ardrone/</link>
       <pubDate>Mon, 10 Jan 2011 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2011-01-10-attaching-an-i2c-compass-to-the-ardrone/</guid>
+      <guid>https://muehe.org/posts/2011-01-10-attaching-an-i2c-compass-to-the-ardrone/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve recently attached a magnetic compass to the drone using the i2c bus. Let me start by saying that a good compass is not exactly cheap, I paid about 25€ for it and I&amp;rsquo;ve seen it being sold for over 100€ so it&amp;rsquo;s an expensive toy. Also, from what I&amp;rsquo;ve gathered, it&amp;rsquo;s really hard to find a good position for it on the drone seeing as all the motors have a strong magnetic field. Right now, my drone isn&amp;rsquo;t exactly flyable but I will share my experience with the additional sensor nonetheless, even though I have not found an ideal spot to place it at yet.&lt;/p&gt;</description>
     </item>
     <item>
       <title>I2C Tools for the AR.Drone</title>
-      <link>https://henrik-muehe.github.io/posts/2011-01-10-i2c-tools-for-the-ardrone/</link>
+      <link>https://muehe.org/posts/2011-01-10-i2c-tools-for-the-ardrone/</link>
       <pubDate>Mon, 10 Jan 2011 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2011-01-10-i2c-tools-for-the-ardrone/</guid>
+      <guid>https://muehe.org/posts/2011-01-10-i2c-tools-for-the-ardrone/</guid>
       <description>&lt;p&gt;As I&amp;rsquo;ve mentioned before, I&amp;rsquo;ve done some investigation concerning the i2c bus on the ar.drone. I just wanted to share the i2c tools used to probe the bus and a couple of results with you real quick. A link to the tools compiled for the drone can be found at the end of this post. Probing the two i2c busses yields the following results:&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;# i2cdetect -y 0&#xA;     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f&#xA;00:          -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;40: -- -- -- -- -- -- -- -- -- 49 -- -- -- -- -- --&#xA;50: 50 -- -- -- -- -- -- -- -- -- -- -- -- 5d -- --&#xA;60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;70: -- -- -- -- -- -- -- --&#xA;# i2cdetect -y 1&#xA;     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f&#xA;00:          -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;20: -- 21 -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --&#xA;70: -- -- -- -- -- -- -- --&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;i2c 0, address 5d is the bottom camera&#xA;i2c 0, address 50 is the 24C32WI eeprom&lt;/p&gt;</description>
     </item>
     <item>
       <title>AR.Drone mainboard overview</title>
-      <link>https://henrik-muehe.github.io/posts/2011-01-06-ardrone-mainboard-overview/</link>
+      <link>https://muehe.org/posts/2011-01-06-ardrone-mainboard-overview/</link>
       <pubDate>Thu, 06 Jan 2011 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2011-01-06-ardrone-mainboard-overview/</guid>
-      <description>&lt;h2 id=&#34;top-view-side-with-ground-camera&#34;&gt;Top view (side with ground camera)&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://henrik-muehe.github.io/images/drone/top.png&#34; alt=&#34;Top view&#34;&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;1: Camera, I2C bus 0 address 5d&#xA;2: I2C connectors for I2C Bus 0 arrive here&#xA;3: DRAM cache&#xA;4: Connector to navigation board, at least one serial port&#xA;5: USB driver SMSC USB3317&#xA;6: Connector to front camera, probably not an I2C device&#xA;7: External connection port with TTYS0 serial port and USB port&#xA;8: ROCm Atheros AR6102G-BM2D wireless&#xA;9: Power supply for the engines&#xA;10: Ground&#xA;11: VCC +5V&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;h2 id=&#34;bottom-view&#34;&gt;Bottom view&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://henrik-muehe.github.io/images/drone/bottom.png&#34; alt=&#34;Bottom view&#34;&gt;&lt;/p&gt;</description>
+      <guid>https://muehe.org/posts/2011-01-06-ardrone-mainboard-overview/</guid>
+      <description>&lt;h2 id=&#34;top-view-side-with-ground-camera&#34;&gt;Top view (side with ground camera)&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://muehe.org/images/drone/top.png&#34; alt=&#34;Top view&#34;&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;1: Camera, I2C bus 0 address 5d&#xA;2: I2C connectors for I2C Bus 0 arrive here&#xA;3: DRAM cache&#xA;4: Connector to navigation board, at least one serial port&#xA;5: USB driver SMSC USB3317&#xA;6: Connector to front camera, probably not an I2C device&#xA;7: External connection port with TTYS0 serial port and USB port&#xA;8: ROCm Atheros AR6102G-BM2D wireless&#xA;9: Power supply for the engines&#xA;10: Ground&#xA;11: VCC +5V&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;h2 id=&#34;bottom-view&#34;&gt;Bottom view&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://muehe.org/images/drone/bottom.png&#34; alt=&#34;Bottom view&#34;&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>BibTeX.js</title>
-      <link>https://henrik-muehe.github.io/posts/2010-06-17-bibtexjs/</link>
+      <link>https://muehe.org/posts/2010-06-17-bibtexjs/</link>
       <pubDate>Thu, 17 Jun 2010 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2010-06-17-bibtexjs/</guid>
+      <guid>https://muehe.org/posts/2010-06-17-bibtexjs/</guid>
       <description>&lt;p&gt;I will soon need a personal website including a list of publications, so I thought: Wouldn&amp;rsquo;t it be great if that was automatically generated from my BibTeX file? In cases like this, I always remember a great quote from Terence Parr:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Why spend 5 days coding something by hand that you could spend five years automating?&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;I agree, although I try not to loose myself in that kind of work. Anyway, the result can be found &lt;a href=&#34;http://code.google.com/p/bibtex-js/&#34;&gt;here&lt;/a&gt;!&lt;/p&gt;</description>
     </item>
     <item>
       <title>Encoding videos for the Aiptek V10</title>
-      <link>https://henrik-muehe.github.io/posts/2009-10-04-encoding-videos-for-the-aiptek-v10/</link>
+      <link>https://muehe.org/posts/2009-10-04-encoding-videos-for-the-aiptek-v10/</link>
       <pubDate>Sun, 04 Oct 2009 00:00:00 +0000</pubDate>
-      <guid>https://henrik-muehe.github.io/posts/2009-10-04-encoding-videos-for-the-aiptek-v10/</guid>
+      <guid>https://muehe.org/posts/2009-10-04-encoding-videos-for-the-aiptek-v10/</guid>
       <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;&#xA;&lt;p&gt;About two weeks ago I felt the need to try out the &lt;a href=&#34;https://en.wikipedia.org/wiki/Aiptek_Inc.&#34;&gt;Aiptek V10 LED Micro Projector&lt;/a&gt; and it actually sucks a lot less than I thought. I am still thinking about selling it again but it was a nice thing to play with and it fulfilled its purpose.&lt;/p&gt;&#xA;&lt;p&gt;What I found to be very problematic is encoding videos for the aiptek with my mac (same problem with linux or other unix-based systems I guess). There are a couple of pitfalls and it took me about 5 hours to figure every detail out so don&amp;rsquo;t waste as much time as I did and try what I came up with!&lt;/p&gt;</description>
     </item>
   </channel>
