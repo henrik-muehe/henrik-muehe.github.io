@@ -6,8 +6,15 @@
     <description>Recent content on Henrik Mühe</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Sep 2026 00:00:00 +0200</lastBuildDate>
     <atom:link href="https://muehe.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Starnberger See — 2026-09-06</title>
+      <link>https://muehe.org/sailing/20260906/</link>
+      <pubDate>Sun, 06 Sep 2026 00:00:00 +0200</pubDate>
+      <guid>https://muehe.org/sailing/20260906/</guid>
+      <description>&lt;p&gt;Sailing the HAPPY CAT STAR on Starnberger See. 15.5 nautical miles in 4 hours 36 minutes.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Building your own more expensive Nest: Arduino, Android, React Native.</title>
       <link>https://muehe.org/posts/2019-01-01-thermostat/</link>
