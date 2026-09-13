@@ -130,6 +130,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/sailing/speed-track.js?v=1"></script>
 
 <div class="mw8 center ph3 pt4">
   <div class="flex flex-wrap">
@@ -145,8 +146,8 @@
           <div><strong>Recorder:</strong> Garmin GPSMAP 78sc</div>
         </div>
         <div class="minimap" id="map-20260913" style="height: 180px; width: 100%; border: 1px solid #ccc; margin-bottom: 10px; overflow: hidden; border-radius: 4px;"></div>
-        <div class="f7 gray mb2">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</div>
-        <script type="application/gpx+xml" class="gpx-data" data-filename="20260913" data-src="/sailing/20260913/track.gpx"></script>
+        <div class="f7 gray mb2">Speed: blue (slow) → red (fast), 0–12+ kn<br>&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</div>
+        <script type="application/gpx+xml" class="gpx-data" data-filename="20260913" data-src="/sailing/20260913/track.gpx" data-speed="true"></script>
         <div class="mt-auto">
           <a href="/sailing/20260913/" class="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-gray">View Details</a>
         </div>
@@ -86996,12 +86997,17 @@ $(document).ready(function() {
       }, 100);
       
       
-      var polyline = L.polyline(points, {
-        color: '#ff4444', 
-        weight: 4, 
-        opacity: 0.9,
-        dashArray: null
-      }).addTo(map);
+      var polyline;
+      if ($(this).data('speed')) {
+        polyline = SailingSpeed.drawTrack(L, SailingSpeed.buildLegs(SailingSpeed.parseGPX(gpx))).addTo(map);
+      } else {
+        polyline = L.polyline(points, {
+          color: '#ff4444',
+          weight: 4,
+          opacity: 0.9,
+          dashArray: null
+        }).addTo(map);
+      }
       
       
       map.fitBounds(polyline.getBounds(), {padding: [15, 15]});
