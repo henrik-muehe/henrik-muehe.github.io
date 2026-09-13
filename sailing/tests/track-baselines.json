@@ -1,0 +1,147 @@
+{
+  "20140802": {
+    "gpx_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "points": 0,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20140830": {
+    "gpx_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "points": 0,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20140913": {
+    "gpx_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "points": 0,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20140920": {
+    "gpx_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "points": 0,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20140923": {
+    "gpx_sha256": "f4721ac561a38e534389ebf12a1e4e01d8fbb9a0461b98c928755bf67519c088",
+    "points": 895,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141014": {
+    "gpx_sha256": "fc809402a1c9fbf2cc7128a20aa68d2fce18689c6025ac298b0cf8f856451b4e",
+    "points": 465,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141019": {
+    "gpx_sha256": "85f986bb1fd55120082807d7b2b09d99f54e08877f72195031224f1c0a4d9e77",
+    "points": 824,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141023": {
+    "gpx_sha256": "ba88abfd1a913dd3933d6c6c0fdccdf4c885d9c864ff24b1102badb6f0eb81f0",
+    "points": 656,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141025": {
+    "gpx_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "points": 0,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141030": {
+    "gpx_sha256": "644b19e646c5cd27fc18d7cd3eec1df92442926224c9d886c3e74550c3b42f7f",
+    "points": 427,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141101": {
+    "gpx_sha256": "d79949bf16c083727f9099b2fd510f82fd291ede89c094dbb4020dd7fef7416c",
+    "points": 3134,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141122": {
+    "gpx_sha256": "c4a38dfafabb8c71939b20209bc4cd36d5eaa88ebd45fb5fa78508b04aab9835",
+    "points": 1152,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141207": {
+    "gpx_sha256": "be3016367b86e951f1ab5b661ab7fe6e2f43b10712ac335605ee58d81d52bc19",
+    "points": 371,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141221": {
+    "gpx_sha256": "c748539e0f4f440065f687a95aff209ddd4b568960bedfa2292fb896ef6c72d6",
+    "points": 440,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20141226": {
+    "gpx_sha256": "639d576d828077afe37bd975b835c5f668d21925763fd57487e8b655487308c8",
+    "points": 443,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20150113": {
+    "gpx_sha256": "0ac702de37683775efabb7d67d9c158e5953c02bb3b43376e1f2d862d8dfe21e",
+    "points": 7133,
+    "time_zone": "Pacific/Honolulu"
+  },
+  "20150115": {
+    "gpx_sha256": "b3c717d8ef1da80a1b750a20f1b3bc80f66bae40d66c4837942f11c7b01c1768",
+    "points": 2516,
+    "time_zone": "Pacific/Honolulu"
+  },
+  "20150122": {
+    "gpx_sha256": "ae0b4545cb447511a1b2f0d7719464d94cfd6f82792412effff31671b43a3a5d",
+    "points": 477,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20150426": {
+    "gpx_sha256": "028f9f8f2ae4096f1db1e3d94904cf276f2603d37ad3af99e77c2aa11b878449",
+    "points": 819,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20150530": {
+    "gpx_sha256": "be3016367b86e951f1ab5b661ab7fe6e2f43b10712ac335605ee58d81d52bc19",
+    "points": 371,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20180317": {
+    "gpx_sha256": "7935b4c1081f4bc52a228ce53d21bd73ffecdc870cc1a300fb0f66c4e7f33b86",
+    "points": 874,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20180323": {
+    "gpx_sha256": "d810ad2b388c15f289e719cf14c8f1d303117164a532e6fb8895b75318896b4b",
+    "points": 787,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20180402": {
+    "gpx_sha256": "06c085702d06f5f91bc57102790591bf4d70b73122d39156bf45984319e93c8f",
+    "points": 1150,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20180408": {
+    "gpx_sha256": "28d5abba0d197c9f05d82d4c292ebc169be00225cb56347a4e7f4f8f164ea586",
+    "points": 1259,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20180413": {
+    "gpx_sha256": "67a4db0ee5369c11e67165c811c90ff4c588ad951a409da3ffd50d05537f4bf9",
+    "points": 946,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20180419": {
+    "gpx_sha256": "7d6c8098e9ee5f341c4c32c618295a5c422abbcae72ce7490b6a8a637b693020",
+    "points": 930,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20180425": {
+    "gpx_sha256": "3879be8f6ee3aca15dc7efb8470fca9d35b243fc3fce0318e87ebdfdcc61dd5a",
+    "points": 627,
+    "time_zone": "America/Los_Angeles"
+  },
+  "20260906": {
+    "gpx_sha256": "2be00d5453f08fe3eae0057fcf2ba5e53ddd476340e356a554a2f7ef931c5b34",
+    "points": 131,
+    "time_zone": "Europe/Berlin"
+  },
+  "20260913": {
+    "gpx_sha256": "0f4b1536e2df4c41ae982c9525dbe65f3c0785c6a156d8c189cebb3ace9093a5",
+    "points": 595,
+    "time_zone": "Europe/Berlin"
+  }
+}

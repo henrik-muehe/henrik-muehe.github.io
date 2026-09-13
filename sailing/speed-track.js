@@ -82,9 +82,10 @@
         // Do not bridge missing positions or separate GPX recording segments.
         if (!validPosition(a) || !validPosition(b)) continue;
         const elapsed = (b.time - a.time) / 1000;
+        const meters = distanceMeters(a, b);
         const knots = Number.isFinite(a.time) && Number.isFinite(b.time) && elapsed > 0
-          ? distanceMeters(a, b) / elapsed * 3600 / 1852 : null;
-        legs.push({ a: a, b: b, elapsed: elapsed, knots: knots });
+          ? meters / elapsed * 3600 / 1852 : null;
+        legs.push({ a: a, b: b, elapsed: elapsed, meters: meters, knots: knots });
       }
     });
     return legs;
@@ -106,10 +107,20 @@
   }
 
   function drawTrack(L, legs) {
-    return L.featureGroup(legs.map(function (leg) {
-      return L.polyline([[leg.a.lat, leg.a.lng], [leg.b.lat, leg.b.lng]], {
-        color: colorForSpeed(leg.knots), weight: 4, opacity: .95,
-        interactive: false, clickable: false, className: 'speed-track-leg'
+    // At most 50 SVG paths, even for a multi-day archive. Only display colors are
+    // rounded to 0.25 kn; geometry and hover speeds retain their full precision.
+    // Every leg remains a separate subpath: never connect disjoint recordings.
+    const groups = new Map();
+    legs.forEach(function (leg) {
+      const bucket = Number.isFinite(leg.knots) ? Math.round(Math.max(0, Math.min(12, leg.knots)) * 4) / 4 : null;
+      const color = colorForSpeed(bucket);
+      if (!groups.has(color)) groups.set(color, []);
+      groups.get(color).push([[leg.a.lat, leg.a.lng], [leg.b.lat, leg.b.lng]]);
+    });
+    return L.featureGroup(Array.from(groups, function (entry) {
+      return L.polyline(entry[1], {
+        color: entry[0], weight: 4, opacity: .95,
+        interactive: false, className: 'speed-track-leg'
       });
     }));
   }
@@ -134,22 +145,33 @@
     return best;
   }
 
-  function tooltipHTML(leg) {
+  function formatTime(time, timeZone = 'UTC') {
+    if (!Number.isFinite(time)) return 'Time unavailable';
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: timeZone, hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hourCycle: 'h23', timeZoneName: 'short'
+    }).format(time);
+  }
+
+  function tooltipHTML(leg, timeZone = 'UTC') {
     const speed = Number.isFinite(leg.knots) ? leg.knots.toFixed(1) + ' kn' : 'Speed unavailable';
     const timeFormat = new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
+      timeZone: timeZone, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
     });
     let detail = 'Missing or non-increasing GPS timestamps';
     if (Number.isFinite(leg.knots)) {
-      const zoneFormat = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Berlin', timeZoneName: 'short' });
+      const zoneFormat = new Intl.DateTimeFormat('en-GB', { timeZone: timeZone, timeZoneName: 'short' });
       const zone = zoneFormat.formatToParts(leg.b.time).find(function (part) { return part.type === 'timeZoneName'; }).value;
+      const dateFormat = new Intl.DateTimeFormat('en-GB', { timeZone: timeZone, day: '2-digit', month: 'short', year: 'numeric' });
+      const startDate = dateFormat.format(leg.a.time), endDate = dateFormat.format(leg.b.time);
+      const dates = startDate === endDate ? startDate : startDate + '–' + endDate;
       detail = timeFormat.format(leg.a.time) + '–' + timeFormat.format(leg.b.time) + ' ' + zone +
-        '<br>GPS segment average · ' + Number(leg.elapsed.toFixed(1)) + ' s';
+        '<br>' + dates + '<br>GPS segment average · ' + Number(leg.elapsed.toFixed(1)) + ' s';
     }
     return '<strong>' + speed + '</strong><br><span>' + detail + '</span>';
   }
 
-  function addSpeedHover(L, map, legs) {
+  function addSpeedHover(L, map, legs, timeZone = 'UTC') {
     const tooltip = L.tooltip({ direction: 'top', offset: [0, -10], opacity: 1, className: 'speed-tooltip' });
     const halo = L.polyline([], { color: '#fff', weight: 10, opacity: .95, interactive: false });
     const highlight = L.polyline([], { weight: 6, opacity: 1, interactive: false });
@@ -174,7 +196,7 @@
         const points = [[leg.a.lat, leg.a.lng], [leg.b.lat, leg.b.lng]];
         halo.setLatLngs(points).addTo(map);
         highlight.setLatLngs(points).setStyle({ color: colorForSpeed(leg.knots) }).addTo(map);
-        tooltip.setContent(tooltipHTML(leg));
+        tooltip.setContent(tooltipHTML(leg, timeZone));
         activeLeg = leg;
       }
       tooltip.setLatLng(map.containerPointToLatLng(found.point)).addTo(map);
@@ -194,7 +216,7 @@
 
   const api = { palette: palette, distanceMeters: distanceMeters, parseGPX: parseGPX, buildLegs: buildLegs,
     colorForSpeed: colorForSpeed, drawTrack: drawTrack, nearestLeg: nearestLeg,
-    tooltipHTML: tooltipHTML, addSpeedHover: addSpeedHover, fillLegend: fillLegend };
+    formatTime: formatTime, tooltipHTML: tooltipHTML, addSpeedHover: addSpeedHover, fillLegend: fillLegend };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else global.SailingSpeed = api;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -28612,7 +28612,12 @@
       
     
 	<link rel="stylesheet" href="/css/syntax.css">
-  </head><body class="ma0 avenir bg-near-white production">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="/sailing/maps.css?v=1">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script defer src="/sailing/speed-track.js?v=2"></script>
+  <script defer src="/sailing/maps.js?v=1"></script>
+</head><body class="ma0 avenir bg-near-white production">
 
     
 
@@ -28675,12 +28680,12 @@
 
     <main class="pb7" role="main">
       
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-<script src="/public/js/TileLayer.EsriRest.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-polylinedecorator/0.7.3/leaflet.polylineDecorator.min.js"></script>
+
+
+
+
+
+
 <script type="application/gpx+xml" id="gpx-source"><?xml version="1.0"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wptx1="http://www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtrx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:trp="http://www.garmin.com/xmlschemas/TripExtensions/v1" xmlns:adv="http://www.garmin.com/xmlschemas/AdventuresExtensions/v1" xmlns:prs="http://www.garmin.com/xmlschemas/PressureExtension/v1" creator="Garmin Desktop App" version="1.1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/ActivityExtension/v1 http://www8.garmin.com/xmlschemas/ActivityExtensionv1.xsd http://www.garmin.com/xmlschemas/AdventuresExtensions/v1 http://www8.garmin.com/xmlschemas/AdventuresExtensionv1.xsd http://www.garmin.com/xmlschemas/PressureExtension/v1 http://www.garmin.com/xmlschemas/PressureExtensionv1.xsd http://www.garmin.com/xmlschemas/TripExtensions/v1 http://www.garmin.com/xmlschemas/TripExtensionsv1.xsd">
 
@@ -57243,137 +57248,14 @@
     <strong>Boat:</strong> Beneteau First 43<br/>
     <strong>Crew:</strong> Anne, Henrik, Lilly<br/>
     <strong>Conditions:</strong> Between 0 and 10 knots, light winds, one nights at anchor, one in habor<br/>
-    <strong>Distance:</strong> <span id="distance"></span> nautical miles<br/>
+    <strong>Distance:</strong> <span id="distance">—</span> nautical miles<br/>
   </div>
-  <div id="map" style="height: 60vh; width: 100%; border: 1px solid #ccc;"></div>
+  <div id="map" class="sailing-map" data-gpx-inline="gpx-source" data-time-zone="Pacific/Honolulu" aria-label="Sailing track colored by estimated speed"></div>
 </div>
 
-<script type="text/coffeescript" charset="utf-8">
 
-  class Point
-    constructor: (p)
 
-  haversine = (start,end) ->
-    Number.prototype.toRad = -> this * Math.PI / 180
-    R = 3441 # nautical mile constant
-    dLat = (end[0] - start[0]).toRad()
-    dLon = (end[1] - start[1]).toRad()
-    lat1 = (start[0])
-    lat2 = (end[0])
-    a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    R * c
 
-  pointToLatLng = (point) -> [parseFloat(point.getAttribute('lat')), parseFloat(point.getAttribute('lon'))]
-
-  trackSource = document.getElementById('gpx-source').textContent;
-  trackDoc = $.parseXML(trackSource)
-  track = $(trackDoc)
-
-  points = (pointToLatLng(p) for p in track.find("trkpt"))
-
-  d = 0; d += haversine(points[p],points[p+1]) for p in [0..(points.length-2)]
-  document.getElementById('distance').innerHTML = d.toFixed(2)
-</script>
-
-<script>
-(function () {
-  function htmlCollectionMap(collection, cb) {
-    var transformed = new Array(collection.length);
-    for (var i = 0; i < collection.length; i++) {
-      transformed[i] = cb(collection.item(i), i);
-    }
-    return transformed;
-  }
-
-  function pointToLatLng(point) {
-    return [parseFloat(point.getAttribute('lat')), parseFloat(point.getAttribute('lon'))];
-  }
-
-  var gpxSource = document.getElementById('gpx-source').textContent;
-
-  if (!gpxSource.match("xml")) {
-    e=document.getElementById('map');
-    e.innerHTML='<b>No track available.</b>';
-    e.style.height = '';
-    e.style.marginTop = '60px';
-    return;
-  }
-
-  var parser = new DOMParser();
-  var gpx = parser.parseFromString(gpxSource, "text/xml");
-  var colors = ['red', 'blue', 'green'];
-
-  var bounds;
-  var map = L.map('map', {maxZoom: '9999'});
-  htmlCollectionMap(gpx.getElementsByTagName('trkseg'), function (segment, idx) {
-    var points = htmlCollectionMap(segment.getElementsByTagName('trkpt'), pointToLatLng);
-    bounds = bounds ? bounds.extend(points) : new L.LatLngBounds(points);
-    L.polyline(points, {color: colors[idx % colors.length]}).addTo(map);
-    L.polylineDecorator(points, {
-      patterns: [
-        {
-          offset: 25, repeat: 25, symbol: L.Symbol.arrowHead({
-            pixelSize: 10,
-            pathOptions: {
-              fillOpacity: 1,
-              weight: 0,
-              color: colors[idx % colors.length]
-            }
-          })
-        },
-      ],
-    }).addTo(map);
-  });
-  map.fitBounds(bounds);
-  
-  
-  var noaaLayer = new L.TileLayer.EsriRest("https://gis.charttools.noaa.gov/arcgis/rest/services/MCS/ENCOnline/MapServer/exts/Maritime%20Chart%20Server/MapServer", {
-      layers: '0,1,2,3,4,5,6,7',
-      transparent: true,
-      attribution: 'Charts from NOAA',
-      display_params: JSON.stringify({
-        "ECDISParameters": {
-          "version":"1.0",
-          "StaticParameters":{
-            "Parameter":[
-              {"name":"AreaSymbolizationType","value":2},
-              {"name":"PointSymbolizationType","value":2}
-            ]
-          },
-          "DynamicParameters":{
-            "Parameter": [
-              {"name":"ColorScheme","value":1},
-              {"name":"DisplayDepthUnits","value":2},
-              {"name":"TwoDepthShades","value":1},
-              {"name":"DisplayNOBJNM","value":2},
-              {"name":"HonorScamin","value":2},
-              {"name":"ShallowDepthPattern","value":1},
-              {"name":"ShallowContour","value":2},
-              {"name":"SafetyContour","value":10},
-              {"name":"DeepContour","value":30},
-              {"name":"DisplayCategory","value":"1,2,4"}
-            ]
-          }
-        }
-      })
-  });
-  
-  
-  var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-  });
-  
-  
-  noaaLayer.on('tileerror', function() {
-    console.log('NOAA charts failed, switching to OpenStreetMap');
-    map.removeLayer(noaaLayer);
-    osmLayer.addTo(map);
-  });
-  
-  noaaLayer.addTo(map);
-})();
-</script>
 
     </main>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">

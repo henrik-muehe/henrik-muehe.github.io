@@ -23,21 +23,10 @@
   <meta name="twitter:description" content="Sailing on Wörthsee: 11.4 nautical miles in 3 hours 5 minutes, with a Garmin GPS track.">
   <link rel="stylesheet" href="/css/syntax.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-  <style>
-    .sailing-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.75rem; margin:1.5rem 0; }
-    .sailing-stat { background:white; border-radius:.25rem; padding:.85rem 1rem; box-shadow:0 1px 4px rgba(0,0,0,.16); }
-    .sailing-stat strong { display:block; font-size:1.25rem; }
-    .sailing-stat span { color:#666; font-size:.85rem; }
-    .sailing-note { color:#555; line-height:1.5; }
-    #map { height:60vh; min-height:420px; width:100%; border:1px solid #ccc; }
-    .speed-legend { margin:1rem 0; font-size:.85rem; color:#444; }
-    .speed-gradient { height:12px; border-radius:4px; margin:.5rem 0 .25rem; }
-    .speed-ticks { display:flex; justify-content:space-between; font-variant-numeric:tabular-nums; }
-    .speed-hint { margin:.5rem 0 0; line-height:1.5; }
-    .speed-tooltip { padding:.55rem .7rem; border:1px solid #bbb; box-shadow:0 2px 10px #0003; }
-    .speed-tooltip strong { font-size:1.25rem; color:#111; }
-    .speed-tooltip span { font-size:.75rem; color:#555; }
-  </style>
+  <link rel="stylesheet" href="/sailing/maps.css?v=1">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script defer src="/sailing/speed-track.js?v=2"></script>
+  <script defer src="/sailing/maps.js?v=1"></script>
 </head>
 <body class="ma0 avenir bg-near-white production">
 <header>
@@ -75,13 +64,7 @@
       <div class="sailing-stat"><strong>3.7 kn</strong><span>average speed</span></div>
       <div class="sailing-stat"><strong>10.7 kn</strong><span>fastest sampled leg</span></div>
     </div>
-    <div id="map" aria-label="Map of the Wörthsee sailing track, colored by estimated speed" aria-describedby="speed-legend"></div>
-    <div id="speed-legend" class="speed-legend" hidden>
-      <strong>Estimated speed over ground · knots</strong>
-      <div class="speed-gradient" aria-hidden="true"></div>
-      <div class="speed-ticks" aria-hidden="true"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12+</span></div>
-      <p class="speed-hint">Blue = slow, red = fast (0–12+ kn). Hover over the track or tap it to see speed and time. Each colored leg shows the average between two GPS fixes.</p>
-    </div>
+    <div id="map" class="sailing-map" data-gpx-src="track.gpx" data-time-zone="Europe/Berlin" aria-label="Sailing track colored by estimated speed"></div>
     <p><a href="track.gpx" download="sailing-woerthsee-2026-09-13.gpx">Download the GPX track</a></p>
     <p class="sailing-note">One continuous sailing track containing 595 original GPS positions. The launch and landing boundaries were inferred from the recorded movement: the last stationary fix before departure at 10:54:50 and the return to the landing area at 13:59:56 CEST. Shore time and road travel are excluded; positions and timestamps within the sailing section are unchanged.</p>
     <p class="sailing-note">Distance is the sum of WGS84 geodesic distances between successive fixes. Sampling intervals range from 1 to 41 seconds (median 18 seconds). Speeds are ground-speed estimates between fixes, not through-water or instantaneous instrument readings; the fastest sampled leg spans 4 seconds. GPS error and turns between samples affect these estimates.</p>
@@ -94,41 +77,8 @@
     <div><div class="ananke-socials"></div></div>
   </div>
 </footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="/sailing/speed-track.js?v=1"></script>
-<script>
-(async function () {
-  const mapElement = document.getElementById('map');
-  try {
-    const response = await fetch('track.gpx');
-    if (!response.ok) throw new Error('Could not load GPX track');
-    const source = await response.text();
-    const gpx = new DOMParser().parseFromString(source, 'application/xml');
-    if (gpx.querySelector('parsererror')) throw new Error('Could not parse GPX track');
-    const segments = SailingSpeed.parseGPX(gpx);
-    const legs = SailingSpeed.buildLegs(segments);
-    if (!legs.length) throw new Error('No track legs found');
-    const first = legs[0].a, last = legs[legs.length - 1].b;
 
-    const map = L.map('map');
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    const track = SailingSpeed.drawTrack(L, legs).addTo(map);
-    map.fitBounds(track.getBounds(), { padding: [20, 20] });
-    SailingSpeed.addSpeedHover(L, map, legs);
-    const legend = document.getElementById('speed-legend');
-    SailingSpeed.fillLegend(legend);
-    legend.hidden = false;
-    L.circleMarker([first.lat, first.lng], { radius: 6, color: '#fff', weight: 2, fillColor: '#18864b', fillOpacity: 1, bubblingMouseEvents: false }).addTo(map).bindPopup('Start · 10:54:50 CEST');
-    L.circleMarker([last.lat, last.lng], { radius: 6, color: '#fff', weight: 2, fillColor: '#d33', fillOpacity: 1, bubblingMouseEvents: false }).addTo(map).bindPopup('Finish · 13:59:56 CEST');
-  } catch (error) {
-    mapElement.textContent = 'Track map unavailable: ' + error.message;
-    mapElement.style.height = 'auto';
-    mapElement.style.padding = '1rem';
-  }
-})();
-</script>
+
+
 </body>
 </html>

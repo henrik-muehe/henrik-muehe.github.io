@@ -1,0 +1,20 @@
+/* Shared by every sailing entry and the overview. */
+.sailing-map { height:60vh; min-height:420px; width:100%; border:1px solid #ccc; }
+.sailing-map.minimap { height:180px; min-height:180px; border-radius:4px; overflow:hidden; margin-bottom:10px; }
+.sailing-map.minimap .leaflet-tile-pane { filter:grayscale(100%) contrast(1.1); }
+.sailing-map.minimap .leaflet-control-attribution { font-size:9px; }
+.sailing-map[data-map-state="empty"], .sailing-map[data-map-state="error"] {
+  height:auto !important; min-height:0; padding:1rem; color:#555;
+}
+.speed-legend { margin:1rem 0; font-size:.85rem; color:#444; }
+.speed-gradient { height:12px; border-radius:4px; margin:.5rem 0 .25rem; }
+.speed-ticks { display:flex; justify-content:space-between; font-variant-numeric:tabular-nums; }
+.speed-hint { margin:.5rem 0 0; line-height:1.5; }
+.speed-tooltip { padding:.55rem .7rem; border:1px solid #bbb; box-shadow:0 2px 10px #0003; }
+.speed-tooltip strong { font-size:1.25rem; color:#111; }
+.speed-tooltip span { font-size:.75rem; color:#555; }
+.sailing-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.75rem; margin:1.5rem 0; }
+.sailing-stat { background:white; border-radius:.25rem; padding:.85rem 1rem; box-shadow:0 1px 4px #0003; }
+.sailing-stat strong { display:block; font-size:1.25rem; }
+.sailing-stat span { color:#666; font-size:.85rem; }
+.sailing-note { color:#555; line-height:1.5; }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{TITLE}} | Henrik Mühe</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="author" content="Henrik Mühe">
+  <link rel="canonical" href="https://muehe.org/sailing/{{DATE_ID}}/">
+  <link rel="stylesheet" href="/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="/sailing/maps.css?v=1">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script defer src="/sailing/speed-track.js?v=2"></script>
+  <script defer src="/sailing/maps.js?v=1"></script>
+</head>
+<body class="ma0 avenir bg-near-white production">
+<header class="bg-black white-90 pa4">
+  <nav><a href="/" class="white-90 no-underline">Henrik Mühe</a> · <a href="/sailing/" class="white-90">Sailing</a></nav>
+  <h1 class="f2 fw2">{{TITLE}}</h1>
+</header>
+<main class="mw7 center ph3 pt4 pb7">
+  <div class="mb4">
+    <strong>Date:</strong> {{DATE_ISO}}<br>
+    {{LOG_DETAILS}}
+    <strong>Tracked distance:</strong> <span id="distance">—</span> nautical miles
+  </div>
+  <div id="map" class="sailing-map" data-gpx-src="track.gpx" data-time-zone="{{TIME_ZONE}}" aria-label="Sailing track colored by estimated speed"></div>
+  <p><a href="track.gpx" download>Download the GPX track</a></p>
+  <p><a href="/sailing/">← All sailing logs</a></p>
+</main>
+<footer class="bg-black pa3"><a class="white-70" href="https://muehe.org/">&copy; Henrik Mühe {{YEAR}}</a></footer>
+</body>
+</html>

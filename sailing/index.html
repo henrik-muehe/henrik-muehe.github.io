@@ -60,7 +60,12 @@
       
     
 	<link rel="stylesheet" href="/css/syntax.css">
-  </head><body class="ma0 avenir bg-near-white production">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="/sailing/maps.css?v=1">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script defer src="/sailing/speed-track.js?v=2"></script>
+  <script defer src="/sailing/maps.js?v=1"></script>
+</head><body class="ma0 avenir bg-near-white production">
 
     
 
@@ -127,12 +132,13 @@
 
     <main class="pb7" role="main">
       
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="/sailing/speed-track.js?v=1"></script>
+
+
+
+
 
 <div class="mw8 center ph3 pt4">
+  <div data-sailing-legend class="ph3" hidden></div>
   <div class="flex flex-wrap">
     <div class="w-100 w-50-m w-third-l pa3 flex">
       <div class="bg-white br2 shadow-1 pa3 flex flex-column w-100" style="min-height: 320px;">
@@ -146,8 +152,7 @@
           <div><strong>Recorder:</strong> Garmin GPSMAP 78sc</div>
         </div>
         <div class="minimap" id="map-20260913" style="height: 180px; width: 100%; border: 1px solid #ccc; margin-bottom: 10px; overflow: hidden; border-radius: 4px;"></div>
-        <div class="f7 gray mb2">Speed: blue (slow) → red (fast), 0–12+ kn<br>&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</div>
-        <script type="application/gpx+xml" class="gpx-data" data-filename="20260913" data-src="/sailing/20260913/track.gpx" data-speed="true"></script>
+        <script type="application/gpx+xml" class="gpx-data" data-filename="20260913" data-src="/sailing/20260913/track.gpx"></script>
         <div class="mt-auto">
           <a href="/sailing/20260913/" class="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-gray">View Details</a>
         </div>
@@ -86916,109 +86921,7 @@
   </div>
 </div>
 
-<script>
-$(document).ready(function() {
-  $('.gpx-data').each(async function() {
-    var filename = $(this).data('filename');
-    var gpxSource = $(this).text();
-    var mapId = 'map-' + filename;
-    var sourceUrl = $(this).data('src');
 
-    // New entries can share their downloadable GPX instead of duplicating it inline.
-    if (sourceUrl) {
-      try {
-        var response = await fetch(sourceUrl);
-        if (!response.ok) throw new Error('Could not load GPX track');
-        gpxSource = await response.text();
-      } catch (error) {
-        $('#' + mapId).html('<div class="tc gray pa3">Track map unavailable</div>').css('height', 'auto');
-        return;
-      }
-    }
-    
-    if (!gpxSource.match("xml")) {
-      $('#' + mapId).html('<div class="tc gray pa3">No track data available</div>').css('height', 'auto');
-      return;
-    }
-    
-    try {
-      var parser = new DOMParser();
-      var gpx = parser.parseFromString(gpxSource, "text/xml");
-      
-      var points = [];
-      var trkpts = gpx.getElementsByTagName('trkpt');
-      
-      for (var i = 0; i < trkpts.length; i++) {
-        var pt = trkpts[i];
-        points.push([parseFloat(pt.getAttribute('lat')), parseFloat(pt.getAttribute('lon'))]);
-      }
-      
-      if (points.length === 0) {
-        $('#' + mapId).html('<div class="tc gray pa3">No track points found</div>').css('height', 'auto');
-        return;
-      }
-      
-      var map = L.map(mapId, {
-        zoomControl: false,
-        attributionControl: false,
-        dragging: false,
-        touchZoom: false,
-        doubleClickZoom: false,
-        scrollWheelZoom: false,
-        boxZoom: false,
-        keyboard: false
-      });
-      
-      
-      var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: ''
-      }).addTo(map);
-      
-      
-      tileLayer.on('load', function() {
-        var container = tileLayer.getContainer();
-        if (container) {
-          $(container).css({
-            'filter': 'grayscale(100%) contrast(1.2)',
-            '-webkit-filter': 'grayscale(100%) contrast(1.2)'
-          });
-        }
-      });
-      
-      
-      setTimeout(function() {
-        var container = tileLayer.getContainer();
-        if (container) {
-          $(container).css({
-            'filter': 'grayscale(100%) contrast(1.2)',
-            '-webkit-filter': 'grayscale(100%) contrast(1.2)'
-          });
-        }
-      }, 100);
-      
-      
-      var polyline;
-      if ($(this).data('speed')) {
-        polyline = SailingSpeed.drawTrack(L, SailingSpeed.buildLegs(SailingSpeed.parseGPX(gpx))).addTo(map);
-      } else {
-        polyline = L.polyline(points, {
-          color: '#ff4444',
-          weight: 4,
-          opacity: 0.9,
-          dashArray: null
-        }).addTo(map);
-      }
-      
-      
-      map.fitBounds(polyline.getBounds(), {padding: [15, 15]});
-      
-    } catch (e) {
-      console.log('Error processing GPX for ' + filename + ':', e);
-      $('#' + mapId).html('<div class="tc gray pa3">Error loading track</div>').css('height', 'auto');
-    }
-  });
-});
-</script>
 
     </main>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">

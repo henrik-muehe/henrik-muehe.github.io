@@ -1,0 +1,7 @@
+# Local test/dev artifacts and secrets
+__pycache__/
+*.py[cod]
+node_modules/
+tmp/
+.env
+.env.*

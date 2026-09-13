@@ -79,8 +79,43 @@ test('the real sailing track matches the original geodesic statistics', () => {
   close(Math.max(...legs.map(leg => leg.knots)), 10.652876887626181, 0.001);
   assert.equal(legs.reduce((sum, leg) => sum + leg.elapsed, 0), 11106);
   const fastest = legs.reduce((a, b) => a.knots > b.knots ? a : b);
-  const tooltip = speed.tooltipHTML(fastest);
+  const tooltip = speed.tooltipHTML(fastest, 'Europe/Berlin');
   assert.match(tooltip, /10\.7 kn/);
   assert.match(tooltip, /12:59:45–12:59:49 CEST/);
   assert.match(tooltip, /GPS segment average · 4 s/);
+});
+
+test('historical time zones are explicit, with UTC as the safe default', () => {
+  const a = { lat: 37.5, lng: -122.2, time: Date.parse('2018-04-19T22:39:24Z') };
+  const b = { lat: 37.501, lng: -122.2, time: Date.parse('2018-04-19T22:39:34Z') };
+  const [leg] = speed.buildLegs([[a, b]]);
+  assert.match(speed.tooltipHTML(leg, 'America/Los_Angeles'), /15:39:24–15:39:34/);
+  assert.match(speed.tooltipHTML(leg, 'Pacific/Honolulu'), /12:39:24–12:39:34/);
+  assert.match(speed.tooltipHTML(leg), /22:39:24–22:39:34 UTC/);
+  assert.match(speed.tooltipHTML(leg), /19 Apr 2018/);
+  assert.equal(speed.formatTime(NaN), 'Time unavailable');
+  assert.match(speed.formatTime(a.time, 'America/Los_Angeles'), /15:39:24/);
+});
+
+test('multi-day hover includes both recorded dates', () => {
+  const [leg] = speed.buildLegs([[
+    { ...point(48, 11), time: Date.parse('2026-09-13T23:59:50Z') },
+    { ...point(48.001, 11), time: Date.parse('2026-09-14T00:00:10Z') }
+  ]]);
+  assert.match(speed.tooltipHTML(leg), /13 Sept 2026–14 Sept 2026/);
+});
+
+test('long tracks batch rendering without dropping or connecting any legs', () => {
+  const legs = Array.from({ length: 10000 }, (_, i) => ({
+    a: point(48, 11 + i / 100000), b: point(48.001, 11 + i / 100000),
+    knots: i % 127 === 0 ? null : (i % 130) / 10
+  }));
+  const L = { polyline: (lines, options) => ({ lines, options }), featureGroup: layers => layers };
+  const layers = speed.drawTrack(L, legs);
+  assert.ok(layers.length <= 50);
+  assert.equal(layers.reduce((sum, layer) => sum + layer.lines.length, 0), legs.length);
+  assert.ok(layers.every(layer => layer.lines.every(line => line.length === 2)));
+  assert.ok(layers.some(layer => layer.options.color === '#858b95'));
+  assert.ok(layers.every(layer => layer.options.interactive === false));
+  assert.equal(legs[1].knots, 0.1, 'Display quantization must not alter hover speed');
 });
