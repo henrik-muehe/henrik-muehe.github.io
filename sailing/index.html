@@ -133,8 +133,25 @@
 
 <div class="mw8 center ph3 pt4">
   <div class="flex flex-wrap">
-    
-    
+    <div class="w-100 w-50-m w-third-l pa3 flex">
+      <div class="bg-white br2 shadow-1 pa3 flex flex-column w-100" style="min-height: 320px;">
+        <h3 class="mt0 mb2">
+          <a href="/sailing/20260913/" class="link dark-gray hover-black">Wörthsee — 2026-09-13</a>
+        </h3>
+        <div class="f6 gray mb3">
+          <div><strong>Date:</strong> September 13, 2026</div>
+          <div><strong>Track:</strong> 10:55–14:00 CEST</div>
+          <div><strong>Distance:</strong> 11.4 NM · 21.1 km</div>
+          <div><strong>Recorder:</strong> Garmin GPSMAP 78sc</div>
+        </div>
+        <div class="minimap" id="map-20260913" style="height: 180px; width: 100%; border: 1px solid #ccc; margin-bottom: 10px; overflow: hidden; border-radius: 4px;"></div>
+        <div class="f7 gray mb2">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</div>
+        <script type="application/gpx+xml" class="gpx-data" data-filename="20260913" data-src="/sailing/20260913/track.gpx"></script>
+        <div class="mt-auto">
+          <a href="/sailing/20260913/" class="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-gray">View Details</a>
+        </div>
+      </div>
+    </div>
     <div class="w-100 w-50-m w-third-l pa3 flex">
       <div class="bg-white br2 shadow-1 pa3 flex flex-column w-100" style="min-height: 320px;">
         <h3 class="mt0 mb2">
@@ -86900,10 +86917,23 @@
 
 <script>
 $(document).ready(function() {
-  $('.gpx-data').each(function() {
+  $('.gpx-data').each(async function() {
     var filename = $(this).data('filename');
     var gpxSource = $(this).text();
     var mapId = 'map-' + filename;
+    var sourceUrl = $(this).data('src');
+
+    // New entries can share their downloadable GPX instead of duplicating it inline.
+    if (sourceUrl) {
+      try {
+        var response = await fetch(sourceUrl);
+        if (!response.ok) throw new Error('Could not load GPX track');
+        gpxSource = await response.text();
+      } catch (error) {
+        $('#' + mapId).html('<div class="tc gray pa3">Track map unavailable</div>').css('height', 'auto');
+        return;
+      }
+    }
     
     if (!gpxSource.match("xml")) {
       $('#' + mapId).html('<div class="tc gray pa3">No track data available</div>').css('height', 'auto');
