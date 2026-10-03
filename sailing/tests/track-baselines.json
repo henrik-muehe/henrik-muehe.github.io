@@ -143,5 +143,10 @@
     "gpx_sha256": "0f4b1536e2df4c41ae982c9525dbe65f3c0785c6a156d8c189cebb3ace9093a5",
     "points": 595,
     "time_zone": "Europe/Berlin"
+  },
+  "20261003": {
+    "gpx_sha256": "acc2296c3e4a803615520da048b2f0139c8242535872303ffc11c9bee8e67866",
+    "points": 986,
+    "time_zone": "Europe/Berlin"
   }
 }

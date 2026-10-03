@@ -102,8 +102,8 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(len(points), expected['points'])
                 total += len(points)
                 recorded += bool(points)
-        self.assertEqual(total, 27422)
-        self.assertEqual(recorded, 24)
+        self.assertEqual(total, 28408)
+        self.assertEqual(recorded, 25)
 
     def test_overview_links_all_entries_and_resolves_all_track_sources(self):
         page = Page((SAILING / 'index.html').read_text())
