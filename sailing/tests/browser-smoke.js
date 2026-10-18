@@ -93,11 +93,10 @@
   await inspect('empty-gpx', null, embedded('<gpx/>'), 'empty');
   await inspect('failed-download', null, future.replace('/sailing/20260913/track.gpx', '/sailing/tests/does-not-exist.gpx'), 'error');
   if (!results.filter(result => result.state === 'ready').every(result => result.arrows > 0)) throw new Error('A recorded track has no direction arrows');
-  // The overview legend drives every loaded thumbnail at once.
+  // The overview shows colored thumbnails with arrows but no speed legend.
   const thumbnails = [...document.querySelectorAll('.sailing-map.minimap[data-map-state="ready"]')];
   if (!thumbnails.length || !thumbnails.every(map => map.querySelector('.speed-track-arrows'))) throw new Error('Overview thumbnails lack arrows');
-  const overview = document.querySelector('[data-sailing-legend]');
-  if (sweepLegend(window, overview, document) === null) throw new Error('Overview legend highlights nothing');
-  results.push({ entry: 'overview-legend', state: 'ready', thumbnails: thumbnails.length });
+  if (document.querySelector('.speed-legend')) throw new Error('Overview should not show a speed legend');
+  results.push({ entry: 'overview', state: 'ready', thumbnails: thumbnails.length });
   return { passed: results.length, results };
 })();

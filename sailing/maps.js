@@ -2,9 +2,6 @@
 (function () {
   'use strict';
   const discovered = new WeakSet();
-  // Band highlighters of every rendered map on the page; the page's legend drives them all.
-  const highlighters = new Set();
-  let activeBand = null;
   let nextId = 0;
   const idleReadout = 'Hover over or drag along the scale to highlight every leg sailed at that speed.';
 
@@ -20,22 +17,7 @@
     return high >= max ? low + '+ kn' : low + '–' + high + ' kn';
   }
 
-  // Highlights the band on every rendered map and returns the combined summary.
-  function showBand(center) {
-    activeBand = center;
-    const total = { legs: 0, meters: 0, seconds: 0, tracks: 0, shown: highlighters.size };
-    highlighters.forEach(function (highlight) {
-      const summary = highlight(center);
-      if (!summary || !summary.legs) return;
-      total.legs += summary.legs;
-      total.meters += summary.meters;
-      total.seconds += summary.seconds;
-      total.tracks++;
-    });
-    return total;
-  }
-
-  function interactiveScale(element) {
+  function interactiveScale(element, highlight) {
     const max = SailingSpeed.maxKnots;
     const scale = element.querySelector('.speed-scale');
     const band = element.querySelector('.speed-band');
@@ -44,7 +26,7 @@
     function select(center) {
       if (center === current) return;
       current = center;
-      const total = showBand(center);
+      const total = highlight(center);
       if (center === null) {
         band.hidden = true;
         readout.textContent = idleReadout;
@@ -58,9 +40,8 @@
       band.style.width = ((high - low) / max * 100) + '%';
       band.hidden = false;
       const miles = total.meters / 1852;
-      let text = total.legs ? miles.toFixed(miles < 1 ? 2 : 1) + ' NM in ' + formatDuration(total.seconds) +
+      const text = total.legs ? miles.toFixed(miles < 1 ? 2 : 1) + ' NM in ' + formatDuration(total.seconds) +
         ' · ' + total.legs + ' GPS legs' : 'No legs at this speed';
-      if (total.shown > 1) text += ' · in ' + total.tracks + ' of ' + total.shown + ' loaded tracks';
       readout.innerHTML = '<strong>' + bandLabel(center) + '</strong> · ' + text;
       scale.setAttribute('aria-valuenow', center);
       scale.setAttribute('aria-valuetext', bandLabel(center) + ', ' + text);
@@ -97,7 +78,8 @@
     });
   }
 
-  function legend(element, preview) {
+  // The legend under a detail map; its scale highlights legs on that map.
+  function legend(element, highlight) {
     const max = SailingSpeed.maxKnots;
     // Labels every 3 kn; the minor marks under the gradient show every knot.
     let ticks = '';
@@ -113,13 +95,10 @@
       '<div class="speed-ticks" aria-hidden="true">' + ticks + '</div></div>' +
       '<p class="speed-readout" aria-live="polite">' + idleReadout + '</p>' +
       '<p class="speed-hint">Blue = slow, yellow ≈ 9 kn, crimson = fast (0–' + max + '+ kn). Gray = speed unavailable. ' +
-      'White arrows point in the direction of travel. ' +
-      (preview ? 'Open any entry, then hover over the track or tap it to see speed and time.' :
-        'Hover over the track or tap it to see speed and time.') +
+      'White arrows point in the direction of travel. Hover over the track or tap it to see speed and time.' +
       ' Colors show GPS averages between fixes, not instantaneous instrument readings.</p>';
     SailingSpeed.fillLegend(element);
-    interactiveScale(element);
-    element.hidden = false;
+    interactiveScale(element, highlight);
   }
 
   function message(element, text, state) {
@@ -167,7 +146,6 @@
       const track = SailingSpeed.drawTrack(L, legs).addTo(map);
       map.fitBounds(track.getBounds(), { padding: preview ? [15, 15] : [20, 20] });
       const arrows = SailingSpeed.addDirectionArrows(L, map, legs, preview ? { spacing: 70, reach: 8, size: 4 } : {});
-      const highlight = SailingSpeed.bandHighlighter(L, map, legs, track, arrows, preview ? { weight: 3 } : {});
       if (!preview) {
         SailingSpeed.addSpeedHover(L, map, legs, timeZone);
         const first = legs[0].a, last = legs[legs.length - 1].b;
@@ -180,13 +158,10 @@
         key.id = element.id + '-legend';
         element.insertAdjacentElement('afterend', key);
         element.setAttribute('aria-describedby', key.id);
-        legend(key, false);
+        legend(key, SailingSpeed.bandHighlighter(L, map, legs, track, arrows));
         const distance = document.getElementById(element.dataset.distanceTarget || 'distance');
         if (distance) distance.textContent = (legs.reduce(function (sum, leg) { return sum + leg.meters; }, 0) / 1852).toFixed(2);
       }
-      highlighters.add(highlight);
-      // A thumbnail that lazy-loads while the legend is in use joins the current highlight.
-      if (activeBand !== null) highlight(activeBand);
       element.dataset.legCount = String(legs.length);
       element.dataset.unknownSpeedCount = String(legs.filter(function (leg) { return !Number.isFinite(leg.knots); }).length);
       element.dataset.mapState = 'ready';
@@ -223,7 +198,6 @@
   }
 
   function init(root = document) {
-    root.querySelectorAll('[data-sailing-legend]').forEach(function (element) { legend(element, true); });
     // Compatibility with the historical index's inline GPX cards. Color is the
     // default for every card: no data-speed flag or per-entry JS is necessary.
     root.querySelectorAll('.gpx-data').forEach(function (script) {

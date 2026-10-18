@@ -23,7 +23,7 @@ Detailed map (speed colors, direction arrows, interactive legend, start/finish m
      data-time-zone="Europe/Berlin"></div>
 ```
 
-Thumbnail (same colors and arrows, lazy-loaded, noninteractive; the overview legend highlights all loaded thumbnails):
+Thumbnail (same colors and arrows, lazy-loaded, noninteractive; the overview has no speed legend):
 
 ```html
 <div class="sailing-map minimap"
@@ -39,7 +39,7 @@ If there is no recording, use an empty embedded GPX source and omit the download
 - One fixed scale on all maps: indigo/blue at 0 knots through teal, green and yellow (≈ 9 kn) to orange, red and crimson at 15+ knots.
 - The palette in `speed-track.js` has one stop per knot, spaced at equal perceptual distance (CIEDE2000 ≈ 14 per knot), so the difference between 13 and 14 kn is as visible as between 5 and 6 kn. The scale maximum, legend ticks and path limit all derive from the last palette stop; change the palette there, not in `maps.js` or CSS.
 - Faster legs are drawn on top of slower ones, so fast runs stay visible where tracks cross.
-- Hovering over (or dragging along, or using the arrow keys on) the legend scale highlights every leg within ±0.5 kn of that speed on the page's maps: the rest of the track is dimmed, matching legs get a white halo, and the legend shows their total distance, time and leg count. Bands use the displayed (clamped) speed, so the top band includes everything above 15 kn. On the overview, the legend drives all loaded thumbnails.
+- Hovering over (or dragging along, or using the arrow keys on) the legend scale highlights every leg within ±0.5 kn of that speed on that map: the rest of the track is dimmed, matching legs get a white halo, and the legend shows their total distance, time and leg count. Bands use the displayed (clamped) speed, so the top band includes everything above 15 kn. The legend appears only under detail maps, not on the overview.
 
 ## Direction arrows
 

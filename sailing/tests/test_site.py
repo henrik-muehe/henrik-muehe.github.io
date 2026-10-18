@@ -110,7 +110,8 @@ class SiteTests(unittest.TestCase):
     def test_overview_links_all_entries_and_resolves_all_track_sources(self):
         page = Page((SAILING / 'index.html').read_text())
         links = {a.get('href') for tag, a in page.elements if tag == 'a'}
-        self.assertTrue(any('data-sailing-legend' in attrs for _, attrs in page.elements))
+        # The speed legend lives under each detail map only, not on the overview.
+        self.assertFalse(any('data-sailing-legend' in attrs for _, attrs in page.elements))
         for file in ENTRIES:
             self.assertIn(f'/sailing/{file.parent.name}/', links)
         ids = {a.get('id') for _, a in page.elements}
