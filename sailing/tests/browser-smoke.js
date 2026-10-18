@@ -22,8 +22,9 @@
       const doc = frame.contentDocument;
       const paths = [...doc.querySelectorAll('#map .speed-track-leg')];
       if (expected === 'ready') {
-        if (!paths.length || paths.length > 50) throw new Error(label + ': unexpected path count ' + paths.length);
+        if (!paths.length || paths.length > frame.contentWindow.SailingSpeed.maxPaths) throw new Error(label + ': unexpected path count ' + paths.length);
         if (doc.querySelectorAll('.speed-legend').length !== 1) throw new Error(label + ': missing/duplicate legend');
+        if (doc.querySelector('.speed-ticks span:last-child').textContent !== '15+') throw new Error(label + ': legend does not end at 15+ kn');
         if (Number(map.dataset.legCount) < 1 || (points && Number(map.dataset.legCount) >= points)) throw new Error(label + ': invalid leg count');
         // Exercise the actual nearest-leg map event handler, not just formatting helpers.
         map.scrollIntoView({ block: 'center' });

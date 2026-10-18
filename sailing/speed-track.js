@@ -2,10 +2,20 @@
 (function (global) {
   'use strict';
 
+  // One fixed 0–15+ kn scale for every map. The stops are spaced at equal perceptual
+  // distance (CIEDE2000 ≈ 14 per knot), so 13 vs 14 kn is as distinct as 5 vs 6 kn.
   const palette = [
-    [0, '#3045ad'], [2, '#1685cb'], [4, '#16aa9a'], [6, '#80bb3f'],
-    [8, '#e8c638'], [10, '#ed7832'], [12, '#c83232']
+    [0, '#2a2a86'], [1, '#2e52c2'], [2, '#2877db'], [3, '#1d9be2'],
+    [4, '#15a8c2'], [5, '#10b2a7'], [6, '#22b579'], [7, '#59bf3b'],
+    [8, '#accb1d'], [9, '#e3c51a'], [10, '#f3aa1b'], [11, '#f5851e'],
+    [12, '#ec581b'], [13, '#d22d28'], [14, '#ad163c'], [15, '#86104f']
   ];
+  const maxKnots = palette[palette.length - 1][0];
+  // Display colors only; geometry and hover speeds keep full precision.
+  const displayStep = 0.25;
+  // One path per display color plus unknown-speed gray, even for a multi-day archive.
+  const maxPaths = maxKnots / displayStep + 2;
+  const unknownColor = '#858b95';
   const radians = Math.PI / 180;
 
   // Vincenty's inverse on WGS84; agrees with the geodesic calculation in the log.
@@ -92,7 +102,7 @@
   }
 
   function colorForSpeed(knots) {
-    if (!Number.isFinite(knots)) return '#858b95';
+    if (!Number.isFinite(knots)) return unknownColor;
     const value = Math.max(palette[0][0], Math.min(palette[palette.length - 1][0], knots));
     for (let i = 1; i < palette.length; i++) {
       const low = palette[i - 1], high = palette[i];
@@ -106,20 +116,25 @@
     }
   }
 
+  function displayBucket(knots) {
+    if (!Number.isFinite(knots)) return null;
+    return Math.round(Math.max(0, Math.min(maxKnots, knots)) / displayStep) * displayStep;
+  }
+
   function drawTrack(L, legs) {
-    // At most 50 SVG paths, even for a multi-day archive. Only display colors are
-    // rounded to 0.25 kn; geometry and hover speeds retain their full precision.
-    // Every leg remains a separate subpath: never connect disjoint recordings.
+    // Legs are grouped by display color into at most maxPaths SVG paths. Every leg
+    // remains a separate subpath: never connect disjoint recordings.
     const groups = new Map();
     legs.forEach(function (leg) {
-      const bucket = Number.isFinite(leg.knots) ? Math.round(Math.max(0, Math.min(12, leg.knots)) * 4) / 4 : null;
-      const color = colorForSpeed(bucket);
-      if (!groups.has(color)) groups.set(color, []);
-      groups.get(color).push([[leg.a.lat, leg.a.lng], [leg.b.lat, leg.b.lng]]);
+      const bucket = displayBucket(leg.knots);
+      if (!groups.has(bucket)) groups.set(bucket, []);
+      groups.get(bucket).push([[leg.a.lat, leg.a.lng], [leg.b.lat, leg.b.lng]]);
     });
-    return L.featureGroup(Array.from(groups, function (entry) {
-      return L.polyline(entry[1], {
-        color: entry[0], weight: 4, opacity: .95,
+    // Gray first, then slow to fast: rare fast runs stay visible where tracks cross.
+    const order = Array.from(groups.keys()).sort(function (a, b) { return (a === null ? -1 : a) - (b === null ? -1 : b); });
+    return L.featureGroup(order.map(function (bucket) {
+      return L.polyline(groups.get(bucket), {
+        color: colorForSpeed(bucket), weight: 4, opacity: .95,
         interactive: false, className: 'speed-track-leg'
       });
     }));
@@ -210,12 +225,14 @@
   }
 
   function fillLegend(element) {
-    const gradient = palette.map(function (stop) { return stop[1] + ' ' + (stop[0] / 12 * 100) + '%'; }).join(', ');
+    const gradient = palette.map(function (stop) { return stop[1] + ' ' + (stop[0] / maxKnots * 100) + '%'; }).join(', ');
     element.querySelector('.speed-gradient').style.background = 'linear-gradient(to right, ' + gradient + ')';
+    element.style.setProperty('--speed-max', maxKnots);
   }
 
-  const api = { palette: palette, distanceMeters: distanceMeters, parseGPX: parseGPX, buildLegs: buildLegs,
-    colorForSpeed: colorForSpeed, drawTrack: drawTrack, nearestLeg: nearestLeg,
+  const api = { palette: palette, maxKnots: maxKnots, displayStep: displayStep, maxPaths: maxPaths,
+    unknownColor: unknownColor, distanceMeters: distanceMeters, parseGPX: parseGPX, buildLegs: buildLegs,
+    colorForSpeed: colorForSpeed, displayBucket: displayBucket, drawTrack: drawTrack, nearestLeg: nearestLeg,
     formatTime: formatTime, tooltipHTML: tooltipHTML, addSpeedHover: addSpeedHover, fillLegend: fillLegend };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else global.SailingSpeed = api;

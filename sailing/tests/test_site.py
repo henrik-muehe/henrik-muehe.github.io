@@ -56,6 +56,8 @@ class SiteTests(unittest.TestCase):
     def test_all_dated_pages_and_overview_use_only_the_shared_renderer(self):
         template = Page((SAILING / 'templates/entry.html').read_text())
         self.assertEqual(len(template.dependencies), 3)
+        maps_css = [a['href'] for tag, a in template.elements if tag == 'link' and '/sailing/maps.css' in a.get('href', '')]
+        self.assertEqual(len(maps_css), 1)
         for file in [*ENTRIES, SAILING / 'index.html']:
             with self.subTest(file=file.relative_to(SITE)):
                 text = file.read_text()
@@ -69,7 +71,7 @@ class SiteTests(unittest.TestCase):
                 self.assertNotIn('data-speed=', text)
                 self.assertNotRegex(text, r'\{\{[A-Z_]+\}\}')
                 styles = [a.get('href') for tag, a in page.elements if tag == 'link']
-                self.assertEqual(styles.count('/sailing/maps.css?v=1'), 1)
+                self.assertEqual(styles.count(maps_css[0]), 1)
                 self.assertTrue(any('leaflet@1.9.4/dist/leaflet.css' in (s or '') for s in styles))
 
     def test_each_detail_map_has_one_source_and_explicit_valid_timezone(self):

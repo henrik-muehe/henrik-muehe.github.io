@@ -5,12 +5,18 @@
   let nextId = 0;
 
   function legend(element, preview) {
+    const max = SailingSpeed.maxKnots;
+    // Labels every 3 kn; the minor marks under the gradient show every knot.
+    let ticks = '';
+    for (let knots = 0; knots <= max; knots += 3) {
+      ticks += '<span style="left:' + (knots / max * 100) + '%">' + knots + (knots === max ? '+' : '') + '</span>';
+    }
     element.classList.add('speed-legend');
     element.innerHTML = '<strong>Estimated speed over ground · knots</strong>' +
       '<div class="speed-gradient" aria-hidden="true"></div>' +
-      '<div class="speed-ticks" aria-hidden="true"><span>0</span><span>2</span><span>4</span>' +
-      '<span>6</span><span>8</span><span>10</span><span>12+</span></div>' +
-      '<p class="speed-hint">Blue = slow, red = fast (0–12+ kn). Gray = speed unavailable. ' +
+      '<div class="speed-minor-ticks" aria-hidden="true"></div>' +
+      '<div class="speed-ticks" aria-hidden="true">' + ticks + '</div>' +
+      '<p class="speed-hint">Blue = slow, yellow ≈ 9 kn, crimson = fast (0–' + max + '+ kn). Gray = speed unavailable. ' +
       (preview ? 'Open any entry, then hover over the track or tap it to see speed and time.' :
         'Hover over the track or tap it to see speed and time.') +
       ' Colors show GPS averages between fixes, not instantaneous instrument readings.</p>';

@@ -36,10 +36,12 @@ If there is no recording, use an empty embedded GPX source and omit the download
 
 ## Meaning of the colors
 
-- One fixed scale on all maps: blue at 0 knots through green/yellow to red at 12+ knots.
+- One fixed scale on all maps: indigo/blue at 0 knots through teal, green and yellow (≈ 9 kn) to orange, red and crimson at 15+ knots.
+- The palette in `speed-track.js` has one stop per knot, spaced at equal perceptual distance (CIEDE2000 ≈ 14 per knot), so the difference between 13 and 14 kn is as visible as between 5 and 6 kn. The scale maximum, legend ticks and path limit all derive from the last palette stop; change the palette there, not in `maps.js` or CSS.
+- Faster legs are drawn on top of slower ones, so fast runs stay visible where tracks cross.
 - Speed is WGS84 distance divided by elapsed time between successive GPS fixes, not a live instrument/through-water measurement.
 - Missing or non-increasing timestamps produce gray legs and “Speed unavailable”. Separate GPX segments and invalid positions are never bridged.
-- The displayed colors are rounded to 0.25 knots so long historical tracks need at most 50 SVG paths. Geometry and hover speeds retain full precision.
+- The displayed colors are rounded to 0.25 knots, so even long historical tracks need at most 62 SVG paths (61 colors plus gray). Geometry and hover speeds retain full precision.
 - Readouts use the entry's explicit time zone (UTC by default) and include the recorded date for multi-day logs. Original timestamps are not rewritten, even if an old device had the wrong date.
 
 ## Browser smoke test

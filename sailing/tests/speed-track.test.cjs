@@ -45,13 +45,27 @@ test('missing, identical or backwards timestamps produce unknown speed, not Infi
   }
 });
 
-test('palette interpolates smoothly and clamps to a fixed 0–12 knot scale', () => {
+test('palette interpolates smoothly and clamps to a fixed 0–15 knot scale', () => {
+  assert.equal(speed.maxKnots, 15);
   for (const [knots, color] of speed.palette) assert.equal(speed.colorForSpeed(knots), color);
   assert.equal(speed.colorForSpeed(-1), speed.palette[0][1]);
   assert.equal(speed.colorForSpeed(50), speed.palette.at(-1)[1]);
   assert.notEqual(speed.colorForSpeed(3), speed.colorForSpeed(2));
   assert.notEqual(speed.colorForSpeed(3), speed.colorForSpeed(4));
   assert.equal(speed.colorForSpeed(NaN), '#858b95');
+});
+
+test('every 0.25 kn display step up to 15 kn has its own color, then clamps', () => {
+  const colors = [];
+  for (let knots = 0; knots <= speed.maxKnots; knots += speed.displayStep) colors.push(speed.colorForSpeed(speed.displayBucket(knots)));
+  assert.equal(colors.length, 61);
+  assert.equal(new Set(colors).size, colors.length);
+  assert.ok(!colors.includes(speed.unknownColor));
+  assert.equal(speed.displayBucket(13.9), 14);
+  assert.equal(speed.displayBucket(16.2), 15);
+  assert.equal(speed.displayBucket(-0.1), 0);
+  assert.equal(speed.displayBucket(null), null);
+  assert.equal(speed.maxPaths, colors.length + 1);
 });
 
 test('hover selects the nearest segment, respects tolerance, and handles zero-length legs', () => {
@@ -108,11 +122,15 @@ test('multi-day hover includes both recorded dates', () => {
 test('long tracks batch rendering without dropping or connecting any legs', () => {
   const legs = Array.from({ length: 10000 }, (_, i) => ({
     a: point(48, 11 + i / 100000), b: point(48.001, 11 + i / 100000),
-    knots: i % 127 === 0 ? null : (i % 130) / 10
+    knots: i % 127 === 0 ? null : (i % 170) / 10
   }));
   const L = { polyline: (lines, options) => ({ lines, options }), featureGroup: layers => layers };
   const layers = speed.drawTrack(L, legs);
-  assert.ok(layers.length <= 50);
+  assert.equal(layers.length, speed.maxPaths);
+  // Gray at the bottom, then slow to fast so fast runs are drawn on top.
+  const expected = [null];
+  for (let knots = 0; knots <= speed.maxKnots; knots += speed.displayStep) expected.push(knots);
+  assert.deepEqual(layers.map(layer => layer.options.color), expected.map(speed.colorForSpeed));
   assert.equal(layers.reduce((sum, layer) => sum + layer.lines.length, 0), legs.length);
   assert.ok(layers.every(layer => layer.lines.every(line => line.length === 2)));
   assert.ok(layers.some(layer => layer.options.color === '#858b95'));
