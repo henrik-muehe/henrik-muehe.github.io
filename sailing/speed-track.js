@@ -16,6 +16,8 @@
   // One path per display color plus unknown-speed gray, even for a multi-day archive.
   const maxPaths = maxKnots / displayStep + 2;
   const unknownColor = '#858b95';
+  // Hovering the legend highlights one palette step: the hovered speed ± 0.5 kn.
+  const bandHalfWidth = 0.5;
   const radians = Math.PI / 180;
 
   // Vincenty's inverse on WGS84; agrees with the geodesic calculation in the log.
@@ -121,7 +123,8 @@
     return Math.round(Math.max(0, Math.min(maxKnots, knots)) / displayStep) * displayStep;
   }
 
-  function drawTrack(L, legs) {
+  function drawTrack(L, legs, style) {
+    style = Object.assign({ weight: 4, opacity: .95, className: 'speed-track-leg' }, style);
     // Legs are grouped by display color into at most maxPaths SVG paths. Every leg
     // remains a separate subpath: never connect disjoint recordings.
     const groups = new Map();
@@ -134,10 +137,131 @@
     const order = Array.from(groups.keys()).sort(function (a, b) { return (a === null ? -1 : a) - (b === null ? -1 : b); });
     return L.featureGroup(order.map(function (bucket) {
       return L.polyline(groups.get(bucket), {
-        color: colorForSpeed(bucket), weight: 4, opacity: .95,
-        interactive: false, className: 'speed-track-leg'
+        color: colorForSpeed(bucket), weight: style.weight, opacity: style.opacity,
+        interactive: false, className: style.className
       });
     }));
+  }
+
+  // Bands use the displayed (clamped) speed, so the top band includes everything above 15 kn.
+  function inBand(knots, center) {
+    return Number.isFinite(knots) && Number.isFinite(center) &&
+      Math.abs(Math.max(0, Math.min(maxKnots, knots)) - center) <= bandHalfWidth;
+  }
+
+  function bandSummary(legs, center) {
+    return legs.reduce(function (sum, leg) {
+      if (inBand(leg.knots, center)) {
+        sum.legs++;
+        sum.meters += leg.meters;
+        sum.seconds += leg.elapsed;
+      }
+      return sum;
+    }, { legs: 0, meters: 0, seconds: 0 });
+  }
+
+  // Dims the whole track and redraws the legs within the hovered speed band on top.
+  function bandHighlighter(L, map, legs, track, arrows, style) {
+    style = Object.assign({ weight: 6 }, style);
+    let layers = [];
+    return function highlight(center) {
+      layers.forEach(function (layer) { map.removeLayer(layer); });
+      layers = [];
+      const active = Number.isFinite(center);
+      track.setStyle({ opacity: active ? .2 : .95 });
+      if (arrows) arrows.setStyle({ opacity: active ? .15 : .9, fillOpacity: active ? .15 : 1 });
+      if (!active) return null;
+      const matching = legs.filter(function (leg) { return inBand(leg.knots, center); });
+      const lines = matching.map(function (leg) { return [[leg.a.lat, leg.a.lng], [leg.b.lat, leg.b.lng]]; });
+      // Added one by one: a FeatureGroup adds its children in Leaflet ID order, not array order.
+      layers = [
+        L.polyline(lines, { color: '#1d2129', weight: style.weight + 5, opacity: .35, interactive: false }),
+        L.polyline(lines, { color: '#fff', weight: style.weight + 3, opacity: 1, interactive: false, className: 'speed-track-match-halo' }),
+        drawTrack(L, matching, { weight: style.weight, opacity: 1, className: 'speed-track-match' })
+      ];
+      layers.forEach(function (layer) { layer.addTo(map); });
+      return bandSummary(legs, center);
+    };
+  }
+
+  // Consecutive legs share point objects. A new run starts at every GPX segment break
+  // or skipped invalid position, so direction arrows never span disjoint recordings.
+  function continuousRuns(legs) {
+    const runs = [];
+    legs.forEach(function (leg, i) {
+      if (i === 0 || legs[i - 1].b !== leg.a) runs.push([leg.a]);
+      runs[runs.length - 1].push(leg.b);
+    });
+    return runs;
+  }
+
+  // Arrow anchors every `spacing` screen pixels along each run of {x, y} pixel points.
+  // The heading is the chord across ±reach pixels of track. Where that chord is much
+  // shorter than the track between its ends (GPS jitter while stopped, tacks, tight
+  // turns), no arrow is drawn rather than a misleading one.
+  function arrowPlacements(runs, spacing, reach) {
+    const arrows = [];
+    runs.forEach(function (run) {
+      const lengths = [0];
+      for (let i = 1; i < run.length; i++) {
+        lengths.push(lengths[i - 1] + Math.hypot(run[i].x - run[i - 1].x, run[i].y - run[i - 1].y));
+      }
+      const total = lengths[lengths.length - 1];
+      function at(distance) {
+        let low = 1, high = run.length - 1;
+        while (low < high) {
+          const middle = (low + high) >> 1;
+          if (lengths[middle] < distance) low = middle + 1;
+          else high = middle;
+        }
+        const span = lengths[low] - lengths[low - 1];
+        const fraction = span > 0 ? (distance - lengths[low - 1]) / span : 0;
+        return { x: run[low - 1].x + fraction * (run[low].x - run[low - 1].x),
+          y: run[low - 1].y + fraction * (run[low].y - run[low - 1].y) };
+      }
+      for (let s = spacing / 2; s < total; s += spacing) {
+        const from = Math.max(0, s - reach), to = Math.min(total, s + reach);
+        const a = at(from), b = at(to);
+        if (to - from < reach || Math.hypot(b.x - a.x, b.y - a.y) < .8 * (to - from)) continue;
+        const anchor = at(s);
+        arrows.push({ x: anchor.x, y: anchor.y, angle: Math.atan2(b.y - a.y, b.x - a.x) });
+      }
+    });
+    return arrows;
+  }
+
+  // Pixel outline of one notched arrowhead, tip ahead of the anchor along the heading.
+  function arrowShape(arrow, size) {
+    const cos = Math.cos(arrow.angle), sin = Math.sin(arrow.angle);
+    return [[1, 0], [-.7, .75], [-.3, 0], [-.7, -.75]].map(function (vertex) {
+      const x = vertex[0] * size, y = vertex[1] * size;
+      return { x: arrow.x + x * cos - y * sin, y: arrow.y + x * sin + y * cos };
+    });
+  }
+
+  // Direction-of-travel arrows at a fixed screen spacing, recomputed at every zoom level.
+  // One SVG path for all arrowheads; nonzero fill keeps overlapping heads solid.
+  function addDirectionArrows(L, map, legs, options) {
+    const settings = Object.assign({ spacing: 90, reach: 12, size: 6 }, options);
+    const runs = continuousRuns(legs).map(function (run) {
+      return run.map(function (point) { return L.latLng(point.lat, point.lng); });
+    });
+    const layer = L.polygon([], {
+      color: '#1d2129', weight: 1, opacity: .9, fillColor: '#fff', fillOpacity: 1, fillRule: 'nonzero',
+      smoothFactor: 0, interactive: false, className: 'speed-track-arrows'
+    }).addTo(map);
+    function update() {
+      const zoom = map.getZoom();
+      const projected = runs.map(function (run) {
+        return run.map(function (latlng) { return map.project(latlng, zoom); });
+      });
+      layer.setLatLngs(arrowPlacements(projected, settings.spacing, settings.reach).map(function (arrow) {
+        return [arrowShape(arrow, settings.size).map(function (point) { return map.unproject(L.point(point.x, point.y), zoom); })];
+      }));
+    }
+    update();
+    map.on('zoomend', update);
+    return layer;
   }
 
   // Search in screen pixels so selection remains usable at every zoom level.
@@ -231,8 +355,10 @@
   }
 
   const api = { palette: palette, maxKnots: maxKnots, displayStep: displayStep, maxPaths: maxPaths,
-    unknownColor: unknownColor, distanceMeters: distanceMeters, parseGPX: parseGPX, buildLegs: buildLegs,
-    colorForSpeed: colorForSpeed, displayBucket: displayBucket, drawTrack: drawTrack, nearestLeg: nearestLeg,
+    unknownColor: unknownColor, bandHalfWidth: bandHalfWidth, distanceMeters: distanceMeters, parseGPX: parseGPX,
+    buildLegs: buildLegs, colorForSpeed: colorForSpeed, displayBucket: displayBucket, drawTrack: drawTrack,
+    inBand: inBand, bandSummary: bandSummary, bandHighlighter: bandHighlighter, continuousRuns: continuousRuns,
+    arrowPlacements: arrowPlacements, arrowShape: arrowShape, addDirectionArrows: addDirectionArrows, nearestLeg: nearestLeg,
     formatTime: formatTime, tooltipHTML: tooltipHTML, addSpeedHover: addSpeedHover, fillLegend: fillLegend };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else global.SailingSpeed = api;

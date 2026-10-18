@@ -7,7 +7,13 @@
   height:auto !important; min-height:0; padding:1rem; color:#555;
 }
 .speed-legend { margin:1rem 0; font-size:.85rem; color:#444; }
-.speed-gradient { height:12px; border-radius:4px; margin:.5rem 0 0; }
+.speed-scale { position:relative; padding-top:.5rem; cursor:crosshair; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+.speed-scale:focus-visible { outline:2px solid #1d2129; outline-offset:3px; border-radius:4px; }
+.speed-gradient { position:relative; height:14px; border-radius:4px; }
+.speed-band { position:absolute; top:-4px; bottom:-4px; border:2px solid #1d2129; border-radius:4px;
+  box-shadow:0 0 0 2px #fff, 0 1px 6px #0006; pointer-events:none; }
+.speed-band[hidden] { display:none; }
+.speed-readout { margin:.35rem 0 0; min-height:1.5em; color:#333; font-variant-numeric:tabular-nums; }
 .speed-minor-ticks { height:4px; border-right:1px solid #888;
   background:repeating-linear-gradient(to right, #888 0 1px, transparent 1px calc(100% / var(--speed-max, 15))); }
 .speed-ticks { position:relative; height:1.4em; font-variant-numeric:tabular-nums; }

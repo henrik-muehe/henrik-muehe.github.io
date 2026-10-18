@@ -137,3 +137,97 @@ test('long tracks batch rendering without dropping or connecting any legs', () =
   assert.ok(layers.every(layer => layer.options.interactive === false));
   assert.equal(legs[1].knots, 0.1, 'Display quantization must not alter hover speed');
 });
+
+test('legend bands use the displayed speed, include the clamped top end, and never unknown speeds', () => {
+  assert.equal(speed.bandHalfWidth, 0.5);
+  assert.ok(speed.inBand(10.5, 10) && speed.inBand(9.5, 10) && !speed.inBand(10.51, 10));
+  assert.ok(speed.inBand(22, 15) && speed.inBand(16, 14.5) && !speed.inBand(16, 14));
+  assert.ok(speed.inBand(0, 0) && !speed.inBand(0.6, 0));
+  assert.ok(!speed.inBand(null, 5) && !speed.inBand(5, null));
+  const legs = [
+    { knots: 4.8, meters: 100, elapsed: 20 }, { knots: 5.4, meters: 50, elapsed: 10 },
+    { knots: 6, meters: 999, elapsed: 1 }, { knots: null, meters: 999, elapsed: 1 }
+  ];
+  assert.deepEqual(speed.bandSummary(legs, 5), { legs: 2, meters: 150, seconds: 30 });
+  assert.deepEqual(speed.bandSummary(legs, 12), { legs: 0, meters: 0, seconds: 0 });
+});
+
+test('direction arrows follow continuous runs and never bridge segment breaks', () => {
+  const a = point(48, 11, 0), b = point(48.001, 11, 10), c = point(48.002, 11, 20);
+  const d = point(49, 12, 30), e = point(49.001, 12, 40);
+  const runs = speed.continuousRuns(speed.buildLegs([[a, b, c], [d, e]]));
+  assert.deepEqual(runs, [[a, b, c], [d, e]]);
+  // A skipped invalid position also starts a new run.
+  const gap = speed.continuousRuns(speed.buildLegs([[a, b, point(NaN, 11, 15), c, point(48.003, 11, 30)]]));
+  assert.equal(gap.length, 2);
+  assert.equal(speed.continuousRuns([]).length, 0);
+});
+
+test('arrows sit at fixed screen spacing and point in the direction of travel', () => {
+  const east = [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 400, y: 0 }];
+  const arrows = speed.arrowPlacements([east], 90, 12);
+  assert.deepEqual(arrows.map(arrow => arrow.x), [45, 135, 225, 315]);
+  assert.ok(arrows.every(arrow => arrow.y === 0 && arrow.angle === 0));
+  const west = speed.arrowPlacements([[...east].reverse()], 90, 12);
+  assert.ok(west.every(arrow => Math.abs(Math.abs(arrow.angle) - Math.PI) < 1e-9));
+  const south = speed.arrowPlacements([[{ x: 5, y: 0 }, { x: 5, y: 100 }]], 90, 12);
+  close(south[0].angle, Math.PI / 2);
+  // Separate runs are measured independently; nothing spans the break between them.
+  const split = speed.arrowPlacements([[{ x: 0, y: 0 }, { x: 60, y: 0 }], [{ x: 0, y: 50 }, { x: 60, y: 50 }]], 90, 12);
+  assert.deepEqual(split.map(arrow => [arrow.x, arrow.y]), [[45, 0], [45, 50]]);
+  assert.deepEqual(speed.arrowPlacements([[{ x: 0, y: 0 }, { x: 20, y: 0 }]], 90, 12), []);
+});
+
+test('no arrows on GPS jitter while stopped or across a tack', () => {
+  const jitter = Array.from({ length: 200 }, (_, i) => ({ x: (i % 2) * 3, y: (i % 3) * 2 }));
+  assert.deepEqual(speed.arrowPlacements([jitter], 90, 12), []);
+  // A hairpin turn exactly at the arrow position: the chord is short, so skip it.
+  const tack = [{ x: 0, y: 0 }, { x: 45, y: 0 }, { x: 0, y: 4 }];
+  assert.deepEqual(speed.arrowPlacements([tack], 90, 12), []);
+});
+
+test('arrowheads point forward along the heading', () => {
+  const [tip, left, notch, right] = speed.arrowShape({ x: 10, y: 20, angle: 0 }, 6);
+  assert.deepEqual(tip, { x: 16, y: 20 });
+  assert.ok(left.x < 10 && right.x < 10 && notch.x < 10 && notch.x > left.x);
+  close(left.y - 20, -(right.y - 20));
+  const down = speed.arrowShape({ x: 0, y: 0, angle: Math.PI / 2 }, 6)[0];
+  close(down.x, 0);
+  close(down.y, 6);
+});
+
+test('arrows on a real track agree with the recorded direction of travel', () => {
+  const gpx = fs.readFileSync(path.join(__dirname, '../20261017/track.gpx'), 'utf8');
+  const points = Array.from(gpx.matchAll(/<trkpt\b[^>]*lat="([^"]+)"[^>]*lon="([^"]+)"[^>]*>[\s\S]*?<time>([^<]+)<\/time>[\s\S]*?<\/trkpt>/g),
+    m => ({ lat: Number(m[1]), lng: Number(m[2]), time: Date.parse(m[3]) }));
+  const legs = speed.buildLegs([points]);
+  // Web Mercator pixels at zoom 15, as Leaflet projects them.
+  const project = p => ({
+    x: 256 * 2 ** 15 * (p.lng + 180) / 360,
+    y: 256 * 2 ** 15 * (1 - Math.log(Math.tan(Math.PI / 4 + p.lat * Math.PI / 360)) / Math.PI) / 2
+  });
+  const runs = speed.continuousRuns(legs).map(run => run.map(project));
+  const arrows = speed.arrowPlacements(runs, 90, 12);
+  assert.ok(arrows.length > 100, `${arrows.length} arrows`);
+  const projected = legs.map(leg => ({ a: project(leg.a), b: project(leg.b) }));
+  const agree = arrows.filter(arrow => {
+    const nearest = projected.reduce((best, leg) => {
+      const distance = speed.nearestLeg([{ leg, a: leg.a, b: leg.b }], arrow, Infinity);
+      const squared = (distance.point.x - arrow.x) ** 2 + (distance.point.y - arrow.y) ** 2;
+      return squared < best.squared ? { leg, squared } : best;
+    }, { squared: Infinity }).leg;
+    const dx = nearest.b.x - nearest.a.x, dy = nearest.b.y - nearest.a.y;
+    return dx * Math.cos(arrow.angle) + dy * Math.sin(arrow.angle) > 0;
+  });
+  assert.ok(agree.length / arrows.length > 0.97, `${agree.length} of ${arrows.length} arrows follow the track`);
+});
+
+test('highlight and base tracks share the grouping but may use their own style', () => {
+  const legs = [{ a: point(48, 11), b: point(48.001, 11), knots: 5 }];
+  const L = { polyline: (lines, options) => ({ lines, options }), featureGroup: layers => layers };
+  const [layer] = speed.drawTrack(L, legs, { weight: 6, opacity: 1, className: 'speed-track-match' });
+  assert.equal(layer.options.weight, 6);
+  assert.equal(layer.options.className, 'speed-track-match');
+  assert.equal(layer.options.color, speed.colorForSpeed(5));
+  assert.equal(speed.drawTrack(L, legs)[0].options.weight, 4);
+});

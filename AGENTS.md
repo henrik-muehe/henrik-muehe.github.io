@@ -6,7 +6,7 @@ The old Hugo/Jekyll source is not present here; do not run Hugo over this tree o
 ## Sailing maps: one shared default
 
 - All old and new maps use `sailing/maps.js`, `sailing/maps.css`, and `sailing/speed-track.js` with Leaflet **1.9.4**.
-- Speed coloring, the 0–15+ knot legend, and detailed hover/tap readouts are the default. The scale is defined once by the palette in `sailing/speed-track.js`. Never add per-page map JavaScript, a `data-speed` opt-in, old CoffeeScript, or polyline-decorator code.
+- Speed coloring, direction arrows, the 0–15+ knot legend (hover it to highlight legs at that speed), and detailed hover/tap readouts are the default. The scale is defined once by the palette in `sailing/speed-track.js`. Never add per-page map JavaScript, a `data-speed` opt-in, old CoffeeScript, or polyline-decorator code; arrows are drawn by the shared renderer.
 - Start new entries from `sailing/templates/entry.html`, and index cards from `sailing/templates/card.html`. See `sailing/README.md`.
 - Keep original GPX data and track segment boundaries intact. Never fabricate missing speed/timestamps; unknown speeds are gray. Do not publish shore/road/home data when extracting a sailing track.
 - Set an explicit IANA time zone for each detail map. Existing regions: Europe/Berlin, America/Los_Angeles, Pacific/Honolulu. Unknown regions default to UTC, not Berlin.

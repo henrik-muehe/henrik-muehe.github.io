@@ -4,6 +4,29 @@
   const baseline = await (await fetch('/sailing/tests/track-baselines.json')).json();
   const template = await (await fetch('/sailing/templates/entry.html')).text();
   const results = [];
+  // Sweeps a legend scale in 0.5 kn steps; returns the first speed that highlights legs, or null.
+  function sweepLegend(win, legendRoot, mapRoot) {
+    const scale = legendRoot.querySelector('.speed-scale');
+    const box = scale.getBoundingClientRect();
+    const max = win.SailingSpeed.maxKnots;
+    const move = (type, knots) => scale.dispatchEvent(new win.PointerEvent(type, {
+      bubbles: type !== 'pointerleave', pointerType: 'mouse', clientX: box.left + box.width * knots / max, clientY: box.top + 10 }));
+    let found = null;
+    for (let knots = 0; knots <= max && found === null; knots += .5) {
+      move('pointermove', knots);
+      if (mapRoot.querySelector('.speed-track-match')) found = knots;
+    }
+    if (found !== null) {
+      if (legendRoot.querySelector('.speed-band').hidden) throw new Error('Legend band marker not shown');
+      if (!/kn · .*GPS legs/.test(legendRoot.querySelector('.speed-readout').textContent)) throw new Error('Legend readout missing');
+      const dimmed = mapRoot.querySelector('.speed-track-leg').getAttribute('stroke-opacity');
+      if (dimmed !== '0.2') throw new Error('Track not dimmed while highlighting: ' + dimmed);
+    }
+    move('pointerleave', 0);
+    if (mapRoot.querySelector('.speed-track-match')) throw new Error('Highlight not cleared on leaving the legend');
+    if (mapRoot.querySelector('.speed-track-leg').getAttribute('stroke-opacity') !== '0.95') throw new Error('Track opacity not restored');
+    return found;
+  }
   async function inspect(label, url, html, expected, points) {
     const frame = document.createElement('iframe');
     frame.style.cssText = 'position:fixed;top:0;left:0;width:900px;height:700px;z-index:99999;background:white';
@@ -34,7 +57,16 @@
         const tip = doc.querySelector('.speed-tooltip');
         if (!tip || !/kn|Speed unavailable/.test(tip.innerText)) throw new Error(label + ': hover missing');
       }
-      results.push({ entry: label, state: map.dataset.mapState, legs: Number(map.dataset.legCount || 0), paths: paths.length });
+      const result = { entry: label, state: map.dataset.mapState, legs: Number(map.dataset.legCount || 0), paths: paths.length };
+      if (expected === 'ready') {
+        const arrows = doc.querySelector('#map .speed-track-arrows');
+        if (!arrows) throw new Error(label + ': direction arrow layer missing');
+        result.arrows = (arrows.getAttribute('d').match(/z/gi) || []).length;
+        result.band = sweepLegend(frame.contentWindow, doc.querySelector('.speed-legend'), map);
+        const knownSpeeds = Number(map.dataset.unknownSpeedCount) < Number(map.dataset.legCount);
+        if (knownSpeeds !== (result.band !== null)) throw new Error(label + ': legend highlight does not match known speeds');
+      }
+      results.push(result);
       return { map, paths }; // Assertions on returned detached DOM remain possible.
     } finally {
       frame.remove();
@@ -60,5 +92,12 @@
   await inspect('invalid-xml', null, embedded('<gpx>'), 'error');
   await inspect('empty-gpx', null, embedded('<gpx/>'), 'empty');
   await inspect('failed-download', null, future.replace('/sailing/20260913/track.gpx', '/sailing/tests/does-not-exist.gpx'), 'error');
+  if (!results.filter(result => result.state === 'ready').every(result => result.arrows > 0)) throw new Error('A recorded track has no direction arrows');
+  // The overview legend drives every loaded thumbnail at once.
+  const thumbnails = [...document.querySelectorAll('.sailing-map.minimap[data-map-state="ready"]')];
+  if (!thumbnails.length || !thumbnails.every(map => map.querySelector('.speed-track-arrows'))) throw new Error('Overview thumbnails lack arrows');
+  const overview = document.querySelector('[data-sailing-legend]');
+  if (sweepLegend(window, overview, document) === null) throw new Error('Overview legend highlights nothing');
+  results.push({ entry: 'overview-legend', state: 'ready', thumbnails: thumbnails.length });
   return { passed: results.length, results };
 })();

@@ -15,7 +15,7 @@ No JavaScript needs to be copied or customized. The shared assets are already in
 
 ## Map markup
 
-Detailed map (speed colors, legend, start/finish markers, and hover/tap enabled automatically):
+Detailed map (speed colors, direction arrows, interactive legend, start/finish markers, and hover/tap enabled automatically):
 
 ```html
 <div id="map" class="sailing-map"
@@ -23,7 +23,7 @@ Detailed map (speed colors, legend, start/finish markers, and hover/tap enabled 
      data-time-zone="Europe/Berlin"></div>
 ```
 
-Thumbnail (same colors, lazy-loaded, noninteractive):
+Thumbnail (same colors and arrows, lazy-loaded, noninteractive; the overview legend highlights all loaded thumbnails):
 
 ```html
 <div class="sailing-map minimap"
@@ -39,6 +39,13 @@ If there is no recording, use an empty embedded GPX source and omit the download
 - One fixed scale on all maps: indigo/blue at 0 knots through teal, green and yellow (≈ 9 kn) to orange, red and crimson at 15+ knots.
 - The palette in `speed-track.js` has one stop per knot, spaced at equal perceptual distance (CIEDE2000 ≈ 14 per knot), so the difference between 13 and 14 kn is as visible as between 5 and 6 kn. The scale maximum, legend ticks and path limit all derive from the last palette stop; change the palette there, not in `maps.js` or CSS.
 - Faster legs are drawn on top of slower ones, so fast runs stay visible where tracks cross.
+- Hovering over (or dragging along, or using the arrow keys on) the legend scale highlights every leg within ±0.5 kn of that speed on the page's maps: the rest of the track is dimmed, matching legs get a white halo, and the legend shows their total distance, time and leg count. Bands use the displayed (clamped) speed, so the top band includes everything above 15 kn. On the overview, the legend drives all loaded thumbnails.
+
+## Direction arrows
+
+- White arrowheads show the direction of travel, every 90 screen pixels along the track on detail maps (70 px on thumbnails), and are recomputed at every zoom level.
+- They are drawn natively by `addDirectionArrows` in `speed-track.js` as one SVG path; there is no polyline-decorator dependency.
+- Arrows follow continuous runs only and never span GPX segment breaks. Where the track within ±12 px of an arrow is not roughly straight (GPS jitter while stopped, tacks, tight turns), that arrow is omitted rather than drawn pointing the wrong way.
 - Speed is WGS84 distance divided by elapsed time between successive GPS fixes, not a live instrument/through-water measurement.
 - Missing or non-increasing timestamps produce gray legs and “Speed unavailable”. Separate GPX segments and invalid positions are never bridged.
 - The displayed colors are rounded to 0.25 knots, so even long historical tracks need at most 62 SVG paths (61 colors plus gray). Geometry and hover speeds retain full precision.
@@ -58,6 +65,6 @@ This checks every migrated entry, actual hover handling, the future entry templa
 
 ## Maintenance
 
-`maps.js` discovers map elements and handles GPX loading, lazy thumbnails, legends, and empty/error states. `speed-track.js` handles distances, speeds, colors, and nearest-leg hover selection. `maps.css` styles every map and legend. Do not reintroduce per-page renderers.
+`maps.js` discovers map elements and handles GPX loading, lazy thumbnails, legends, and empty/error states. `speed-track.js` handles distances, speeds, colors, direction arrows, speed-band highlighting, and nearest-leg hover selection. `maps.css` styles every map and legend. Do not reintroduce per-page renderers.
 
 When changing asset URLs/cache versions, update all entries and the template together. Site contract tests enforce identical dependencies, the shared renderer, and preservation of the migrated original GPX data (`tests/track-baselines.json`). Legitimate track corrections require deliberate updates to the corresponding baseline.
